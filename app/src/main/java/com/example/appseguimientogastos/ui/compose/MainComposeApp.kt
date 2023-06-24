@@ -14,11 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.appseguimientogastos.R
 import com.example.compose.AppSeguimientoGastosTheme
 
-private val DefaultPadding = 12.dp
 
 @Composable
 fun MainComposeApp(
@@ -29,10 +27,14 @@ fun MainComposeApp(
         Surface(
             modifier = modifier.fillMaxSize()
         ) {
-            Column(modifier.padding(DefaultPadding)) {
-                IngresosCard()
-                GastosCard()
-                AhorroCard()
+            Column(modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
+
+                IncomeCard()
+
+                ExpensesCard()
+
+                SavingsCard()
+
             }
 
 
@@ -42,39 +44,56 @@ fun MainComposeApp(
     }
 }
 
-
+/**
+ * Card de la Dashboard
+ * */
 @Composable
 fun DashBoardCard(modifier: Modifier = Modifier) {
 
 }
 
+/**
+ * Card de Ingresos
+ * */
 @Composable
-fun IngresosCard(modifier: Modifier = Modifier) {
-
-    OverviewCard(modifier)
+fun IncomeCard(modifier: Modifier = Modifier) {
+    Row(modifier.padding(dimensionResource(id=R.dimen.default_padding))) {
+        OverviewCard(modifier)
+    }
 
 
 }
 
+/**
+ * Card de Gastos
+ * */
 @Composable
-fun GastosCard(modifier: Modifier = Modifier) {
-    OverviewCard(modifier)
-
+fun ExpensesCard(modifier: Modifier = Modifier) {
+    Row(modifier.padding(dimensionResource(id=R.dimen.default_padding))) {
+        OverviewCard(modifier)
+    }
 }
 
+/**
+ * Card de Ahorro
+ * */
 @Composable
-fun AhorroCard(modifier: Modifier = Modifier) {
-    OverviewCard(modifier)
-
+fun SavingsCard(modifier: Modifier = Modifier) {
+    Row(modifier.padding(dimensionResource(id=R.dimen.default_padding))) {
+        OverviewCard(modifier)
+    }
 }
 
+/**
+ * Plantilla de Card
+ * */
 @Composable
 fun OverviewCard(modifier: Modifier = Modifier) {
     Card {
         Column(
             modifier = modifier
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
-                .padding(DefaultPadding)
+                .padding(dimensionResource(id=R.dimen.default_padding))
         ) {
             Text(text = "Title", style = MaterialTheme.typography.displayMedium)
             Text(text = "0.00 €", style = MaterialTheme.typography.displaySmall)
