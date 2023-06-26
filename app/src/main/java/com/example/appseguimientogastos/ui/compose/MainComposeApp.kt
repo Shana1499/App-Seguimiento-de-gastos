@@ -2,45 +2,36 @@ package com.example.appseguimientogastos.ui.compose
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -78,7 +69,13 @@ fun MainComposeApp(
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    Column(modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))) {
+    Column(
+        modifier.padding(
+            top = dimensionResource(id = R.dimen.default_normalpadding),
+            start = dimensionResource(id = R.dimen.default_normalpadding),
+            end = dimensionResource(id = R.dimen.default_normalpadding)
+        )
+    ) {
 
         DashBoardCard()
 
@@ -113,6 +110,10 @@ fun MainAppBar(modifier: Modifier = Modifier) {
                 onDismissRequest = { showMenu = false }
             ) {
                 DropdownMenuItem(text = { Text("Menu Item 1") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text("Menu Item 2") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text("Menu Item 3") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text("Menu Item 4") }, onClick = { /*TODO*/ })
+                DropdownMenuItem(text = { Text("Menu Item 5") }, onClick = { /*TODO*/ })
             }
         },
 
