@@ -2,22 +2,47 @@ package com.example.appseguimientogastos.ui.compose
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.appseguimientogastos.R
@@ -27,6 +52,7 @@ import com.example.compose.md_theme_light_gastos
 import com.example.compose.md_theme_light_ingreso
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainComposeApp(
     modifier: Modifier = Modifier
@@ -36,62 +62,139 @@ fun MainComposeApp(
         Surface(
             modifier = modifier.fillMaxSize()
         ) {
-            Column(modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
+            Scaffold(topBar = {
+                MainAppBar()
 
-                DashBoardCard(modifier)
-
-                IncomeCard(modifier)
-
-                ExpensesCard(modifier)
-
-                SavingsCard(modifier)
+            }) { innerPadding ->
+                MainScreen(modifier = modifier.padding(innerPadding))
 
             }
 
 
         }
+    }
+}
 
+
+@Composable
+fun MainScreen(modifier: Modifier = Modifier) {
+    Column(modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))) {
+
+        DashBoardCard()
+
+        IncomeCard()
+
+        ExpensesCard()
+
+        SavingsCard()
 
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainAppBar(modifier: Modifier = Modifier) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                stringResource(id = R.string.app_name),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.displaySmall
+            )
+        },
+        navigationIcon = {
+            var showMenu by remember { mutableStateOf(false) }
+            IconButton(onClick = { showMenu = !showMenu }) {
+                Icon(Icons.Default.Menu, contentDescription = "Menu")
+            }
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }
+            ) {
+                DropdownMenuItem(text = { Text("Menu Item 1") }, onClick = { /*TODO*/ })
+            }
+        },
+
+        )
+
+}
+
 
 /**
  * Card de la Dashboard
  * */
 @Composable
 fun DashBoardCard(modifier: Modifier = Modifier) {
-    Row(modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
-        Card {
-            Column(
-                modifier = modifier
-                    .padding(dimensionResource(id = R.dimen.default_padding))
-            ) {
-                Text(
-                    text = stringResource(R.string.dashboard) + ":",
-                    style = MaterialTheme.typography.displayLarge
-                )
-                Row(modifier = modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
-                    val progressList: List<Float> = listOf(0.2f, 0.4f, 0.4f)
-                    val colorList = listOf(
-                        md_theme_light_ingreso,
-                        md_theme_light_gastos,
-                        md_theme_light_Ahorro
-                    )
-                    CustomProgressBar(progressList = progressList, colorList)
 
-                }
+    val progressList: List<Float> = listOf(0.2f, 0.4f, 0.4f)
+    val colorList = listOf(
+        md_theme_light_ingreso,
+        md_theme_light_gastos,
+        md_theme_light_Ahorro
+    )
+    val titleList = listOf(R.string.ingresos, R.string.gastos, R.string.ahorro)
+
+    Card(
+        modifier = modifier.padding(
+            bottom = dimensionResource(id = R.dimen.default_normalpadding),
+        )
+    ) {
+
+        Text(
+            modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding)),
+            text = stringResource(id = R.string.dashboard),
+            style = MaterialTheme.typography.displayLarge
+
+        )
+
+        Row(modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))) {
+
+            Column(modifier.padding(end = dimensionResource(id = R.dimen.default_bigpadding))) {
+
+                CustomProgressBar(progressList = progressList, colorList)
+
+            }
+
+            Column() {
+                Text(
+                    text = "Presupuesto: ",
+                    style = MaterialTheme.typography.displaySmall
+
+                )
+                Text(
+                    text = "0.00€",
+                    style = MaterialTheme.typography.displayMedium
+
+                )
+
+                infoProgressbar(
+                    progressList = progressList,
+                    titleList = titleList,
+                    colorList = colorList
+                )
+
 
             }
 
 
         }
+
+
     }
+
 }
+
 
 @Composable
 fun CustomProgressBar(progressList: List<Float>, colorList: List<Color>) {
     val colorScheme = MaterialTheme.colorScheme
-    Canvas(modifier = Modifier.size(200.dp)) {
+
+    Canvas(
+        modifier = Modifier
+            .size(170.dp)
+            .padding(dimensionResource(id = R.dimen.default_normalpadding))
+    ) {
         val strokeWidth = 30f
         var startAngle = -90f
         drawArc(
@@ -113,6 +216,47 @@ fun CustomProgressBar(progressList: List<Float>, colorList: List<Color>) {
             startAngle += sweepAngle
         }
     }
+
+}
+
+@Composable
+fun infoProgressbar(
+    modifier: Modifier = Modifier,
+    progressList: List<Float>,
+    titleList: List<Int>,
+    colorList: List<Color>
+) {
+    progressList.forEachIndexed { index, progress ->
+        Row(modifier.padding(bottom = dimensionResource(id = R.dimen.default_smallpadding))) {
+            Canvas(
+                modifier = Modifier
+                    .size(40.dp, 7.dp)
+            ) {
+
+                drawRoundRect(
+                    color = colorList[index],
+                    topLeft = Offset(0f, 23f),
+                    size = size,
+                    cornerRadius = CornerRadius(20f)
+                )
+
+
+            }
+            Text(
+                modifier = modifier.padding(start = 5.dp),
+                text = "xx% ",
+                style = MaterialTheme.typography.displaySmall
+
+            )
+            Text(
+                text = stringResource(id = titleList[index]),
+                style = MaterialTheme.typography.displaySmall
+
+            )
+        }
+
+
+    }
 }
 
 
@@ -121,9 +265,7 @@ fun CustomProgressBar(progressList: List<Float>, colorList: List<Color>) {
  * */
 @Composable
 fun IncomeCard(modifier: Modifier = Modifier) {
-    Row(modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
-        OverviewCard(modifier, stringResource(R.string.ingresos) + ":")
-    }
+    OverviewCard(modifier, stringResource(R.string.ingresos) + ":")
 
 
 }
@@ -134,9 +276,8 @@ fun IncomeCard(modifier: Modifier = Modifier) {
 @Composable
 fun ExpensesCard(modifier: Modifier = Modifier) {
 
-    Row(modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
-        OverviewCard(modifier, stringResource(R.string.gastos) + ":")
-    }
+    OverviewCard(modifier, stringResource(R.string.gastos) + ":")
+
 }
 
 /**
@@ -145,9 +286,8 @@ fun ExpensesCard(modifier: Modifier = Modifier) {
 @Composable
 fun SavingsCard(modifier: Modifier = Modifier) {
 
-    Row(modifier.padding(dimensionResource(id = R.dimen.default_padding))) {
-        OverviewCard(modifier, stringResource(R.string.ahorro) + ":")
-    }
+    OverviewCard(modifier, stringResource(R.string.ahorro) + ":")
+
 }
 
 /**
@@ -155,10 +295,14 @@ fun SavingsCard(modifier: Modifier = Modifier) {
  * */
 @Composable
 fun OverviewCard(modifier: Modifier = Modifier, title: String) {
-    Card {
+    Card(
+        modifier = modifier.padding(
+            bottom = dimensionResource(id = R.dimen.default_normalpadding),
+        )
+    ) {
         Column(
             modifier = modifier
-                .padding(dimensionResource(id = R.dimen.default_padding))
+                .padding(dimensionResource(id = R.dimen.default_normalpadding))
         ) {
             Text(text = title, style = MaterialTheme.typography.displayLarge)
             Text(text = "0.00 €", style = MaterialTheme.typography.displayMedium)
@@ -166,20 +310,19 @@ fun OverviewCard(modifier: Modifier = Modifier, title: String) {
                 text = stringResource(R.string.resumen) + ":",
                 style = MaterialTheme.typography.displaySmall
             )
-
-
         }
         Column(
             modifier = modifier
-                .padding(dimensionResource(id = R.dimen.default_padding))
+                .padding(dimensionResource(id = R.dimen.default_normalpadding))
         ) {
             Button(onClick = { /*TODO*/ }) {
                 Text(text = "Boton")
             }
         }
-
     }
+
 }
+
 
 @Preview(showBackground = true)
 @Composable

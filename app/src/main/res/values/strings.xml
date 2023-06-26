@@ -4,5 +4,5 @@
     <string name="gastos">Gastos</string>
     <string name="ingresos">Ingresos</string>
     <string name="resumen">Resumen</string>
-    <string name="dashboard">Dashboard</string>
+    <string name="dashboard">Resumen:</string>
 </resources>
