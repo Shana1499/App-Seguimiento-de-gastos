@@ -53,6 +53,7 @@ fun MainComposeApp(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
+    // list of nav screens + icons
     val items = listOf(Icons.Default.Favorite, Icons.Default.Face, Icons.Default.Email)
     val selectedItem = remember { mutableStateOf(items[0]) }
 
@@ -61,6 +62,7 @@ fun MainComposeApp(
             modifier = modifier.fillMaxSize()
         ) {
 
+            // Navigation Drawer
             ModalNavigationDrawer(
                 drawerState = drawerState,
                 drawerContent = {
@@ -86,6 +88,7 @@ fun MainComposeApp(
                             MainAppBar(drawerState, scope)
                         }
                     ) { innerPadding ->
+
                         MainScreen(modifier = modifier.padding(innerPadding))
                     }
                 }
@@ -108,47 +111,6 @@ fun MainAppBar(drawerState: DrawerState, scope: CoroutineScope) {
         )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CustomNavigationDrawer(drawerState: DrawerState, scope: CoroutineScope) {
-// icons to mimic drawer destinations
-    val items = listOf(Icons.Default.Favorite, Icons.Default.Face, Icons.Default.Email)
-    val selectedItem = remember { mutableStateOf(items[0]) }
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet {
-                Spacer(Modifier.height(12.dp))
-                items.forEach { item ->
-                    NavigationDrawerItem(
-                        icon = { Icon(item, contentDescription = null) },
-                        label = { Text(item.name) },
-                        selected = item == selectedItem.value,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            selectedItem.value = item
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
-                }
-            }
-        },
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = if (drawerState.isClosed) ">>> Swipe >>>" else "<<< Swipe <<<")
-                Spacer(Modifier.height(20.dp))
-                Button(onClick = { scope.launch { drawerState.open() } }) {
-                    Text("Click to open")
-                }
-            }
-        }
-    )
-}
 
 
 @Preview(showBackground = true)
