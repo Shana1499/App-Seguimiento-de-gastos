@@ -1,6 +1,9 @@
 package com.example.appseguimientogastos.ui.compose.mainscreen
 
 import android.content.res.Configuration
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,28 +14,30 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -90,12 +95,14 @@ fun DashBoardCard(modifier: Modifier = Modifier) {
     val scaledPadding =
         dimensionResource(id = R.dimen.default_normalpadding).value * scalingFactor.value
 
-    Card(
+    ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(
                 bottom = dimensionResource(id = R.dimen.default_normalpadding),
-            )
+            ),
+        elevation = CardDefaults.elevatedCardElevation()
+
     ) {
         // Title
         Row(
@@ -158,34 +165,39 @@ fun DashBoardCard(modifier: Modifier = Modifier) {
                 .padding(horizontal = dimensionResource(id = R.dimen.default_normalpadding))
         ) {
             FilterChip(
-                modifier = modifier.padding(end = dimensionResource(id = R.dimen.default_normalpadding)),
+                modifier = modifier.padding(end = dimensionResource(id = R.dimen.default_smallpadding)),
                 label = {
                     Text(text = "Mes Anterior")
                 },
                 selected = true,
-                onClick = { /*TODO*/ }
+                onClick = { /*TODO*/ },
+                elevation = FilterChipDefaults.elevatedFilterChipElevation()
+
             )
             FilterChip(
-                modifier = modifier.padding(end = dimensionResource(id = R.dimen.default_normalpadding)),
+                modifier = modifier.padding(end = dimensionResource(id = R.dimen.default_smallpadding)),
                 label = {
                     Text(text = "Mes Actual")
                 },
                 selected = true,
-                onClick = { /*TODO*/ }
+                onClick = { /*TODO*/ },
+                elevation = FilterChipDefaults.elevatedFilterChipElevation()
+
             )
             FilterChip(
                 label = {
-                    Text(text = "Selcciona")
+                    Text(text = "Selecciona")
                 },
                 selected = true,
                 onClick = { /*TODO*/ },
-                leadingIcon = {
+                trailingIcon = {
                     Icon(
                         Icons.Filled.ArrowDropDown,
                         contentDescription = "Localized description",
                         Modifier.size(AssistChipDefaults.IconSize)
                     )
-                }
+                },
+                elevation = FilterChipDefaults.elevatedFilterChipElevation(),
             )
         }
 
@@ -315,38 +327,85 @@ fun SavingsCard(modifier: Modifier = Modifier) {
  * */
 @Composable
 fun OverviewCard(modifier: Modifier = Modifier, title: String) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                bottom = dimensionResource(id = R.dimen.default_normalpadding),
-            )
+
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
+    ElevatedCard(
+        modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.default_normalpadding))
+
     ) {
         Column(
             modifier = modifier
-                .padding(dimensionResource(id = R.dimen.default_normalpadding))
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
+                )
         ) {
-            Row() {
-                Text(text = title, style = MaterialTheme.typography.displayLarge)
-                Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
-                    IconButton(
-                        onClick = { /* doSomething() */ }
-                    ) {
-                        Icon(
-                            Icons.Outlined.ArrowForward,
-                            contentDescription = "Localized description"
-                        )
+            Column(
+                modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
+
+            ) {
+                Row() {
+                    Text(text = title, style = MaterialTheme.typography.displayLarge)
+                    Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
+                        IconButton(
+                            onClick = { /* doSomething() */ }
+                        ) {
+                            Icon(
+                                Icons.Outlined.ArrowForward,
+                                contentDescription = "Localized description"
+                            )
+                        }
                     }
                 }
+
+
+                Text(text = "0.00 €", style = MaterialTheme.typography.displayMedium)
+                Row() {
+                    Text(
+                        modifier = modifier.padding(top = dimensionResource(id = R.dimen.default_normalpadding)),
+                        text = stringResource(R.string.resumen),
+                        style = MaterialTheme.typography.displaySmall
+
+                    )
+                    Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
+                        ExtraInfoItemButton(
+                            modifier = modifier,
+                            expanded = expanded,
+                            onClick = { expanded = !expanded })
+                    }
+                }
+
+                // if expanded=true show 5 first element of a list,
+                if (expanded) {
+                    Text(text = "Second...")
+                }
+                // else only show the first one
+                else {
+                    Text(text = "First Element")
+
+                }
+
+
             }
-
-
-            Text(text = "0.00 €", style = MaterialTheme.typography.displayMedium)
-            Text(
-                text = stringResource(R.string.resumen) + ":",
-                style = MaterialTheme.typography.displaySmall
-            )
         }
+
+    }
+}
+
+@Composable
+private fun ExtraInfoItemButton(
+    expanded: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier
+) {
+    IconButton(modifier = modifier, onClick = onClick) {
+        Icon(
+            imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+            contentDescription = ""
+        )
     }
 }
 
