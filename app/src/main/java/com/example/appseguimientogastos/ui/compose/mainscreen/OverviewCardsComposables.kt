@@ -1,6 +1,5 @@
 package com.example.appseguimientogastos.ui.compose.mainscreen
 
-import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -18,9 +17,9 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,25 +28,48 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import com.example.appseguimientogastos.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.compose.AppSeguimientoGastosTheme
+import com.example.appseguimientogastos.data.Month
+import com.example.appseguimientogastos.navigateSingleTopTo
 
 /**
  * Card de Ingresos
  * */
 @Composable
-fun IncomeCard(modifier: Modifier = Modifier) {
-    OverviewCard(modifier, stringResource(R.string.ingresos))
+fun IncomeCard(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    currentMonth: MutableState<Month>,
+    incomeScreen: MainComposeDestination,
+) {
+    OverviewCard(
+        modifier = modifier,
+        title = stringResource(R.string.ingresos),
+        currentMonth = currentMonth,
+        navController = navController, newScreen = incomeScreen
+    )
 }
 
 /**
  * Card de Gastos
  * */
 @Composable
-fun ExpensesCard(modifier: Modifier = Modifier) {
+fun ExpensesCard(
+    modifier: Modifier = Modifier,
+    currentMonth: MutableState<Month>,
+    navController: NavHostController, expensesScreen: MainComposeDestination,
 
-    OverviewCard(modifier, stringResource(R.string.gastos))
+    ) {
+
+    OverviewCard(
+        modifier,
+        stringResource(R.string.gastos),
+        currentMonth,
+        expensesScreen,
+        navController,
+    )
 
 }
 
@@ -55,17 +77,33 @@ fun ExpensesCard(modifier: Modifier = Modifier) {
  * Card de Ahorro
  * */
 @Composable
-fun SavingsCard(modifier: Modifier = Modifier) {
+fun SavingsCard(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    currentMonth: MutableState<Month>,
+    savingsScreen: MainComposeDestination,
 
-    OverviewCard(modifier, stringResource(R.string.ahorro))
+    ) {
+
+    OverviewCard(
+        modifier,
+        stringResource(R.string.ahorro),
+        currentMonth,
+        savingsScreen,
+        navController
+    )
 
 }
 
 @Composable
-fun TopEndNavigationButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun TopEndNavigationButton(
+    modifier: Modifier = Modifier,
+    screen: MainComposeDestination,
+    onTabSelected: (MainComposeDestination) -> Unit
+) {
     Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
         IconButton(
-            onClick = onClick
+            onClick = { onTabSelected(screen) }
         ) {
             Icon(
                 Icons.Outlined.ArrowForward,
@@ -76,10 +114,17 @@ fun TopEndNavigationButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun OverviewTitleComposable(modifier: Modifier = Modifier, title: String) {
-    Row(modifier=modifier) {
+fun OverviewTitleComposable(
+    modifier: Modifier = Modifier,
+    title: String,
+    newScreen: MainComposeDestination,
+    navController: NavHostController
+) {
+    Row(modifier = modifier) {
         Text(text = title, style = MaterialTheme.typography.displayLarge)
-        TopEndNavigationButton(onClick = { /*TODO*/ })
+        TopEndNavigationButton(
+            screen = newScreen,
+            onTabSelected = { newScreenSample -> navController.navigateSingleTopTo(newScreenSample.route) })
     }
 }
 
@@ -132,7 +177,13 @@ fun ContentSummaryComposable(modifier: Modifier = Modifier) {
  * Plantilla de Card
  * */
 @Composable
-fun OverviewCard(modifier: Modifier = Modifier, title: String) {
+fun OverviewCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    currentMonth: MutableState<Month>,
+    newScreen: MainComposeDestination,
+    navController: NavHostController
+) {
 
     ElevatedCard(
         modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.default_normalpadding))
@@ -152,7 +203,11 @@ fun OverviewCard(modifier: Modifier = Modifier, title: String) {
 
             ) {
                 // Title
-                OverviewTitleComposable(title = title)
+                OverviewTitleComposable(
+                    title = title,
+                    newScreen = newScreen,
+                    navController = navController
+                )
 
                 //Current Money Value
                 Text(text = "0.00 €", style = MaterialTheme.typography.displayMedium)
@@ -179,41 +234,3 @@ private fun ExtraInfoItemButton(
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun OverviewComposablePreview() {
-    AppSeguimientoGastosTheme {
-        Surface(
-        ) {
-            Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
-
-            ) {
-
-                IncomeCard()
-                ExpensesCard()
-                SavingsCard()
-
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun OverviewComposableDarkPreview() {
-    AppSeguimientoGastosTheme {
-        Surface(
-        ) {
-            Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
-
-            ) {
-                IncomeCard()
-                ExpensesCard()
-                SavingsCard()
-            }
-        }
-    }
-}
