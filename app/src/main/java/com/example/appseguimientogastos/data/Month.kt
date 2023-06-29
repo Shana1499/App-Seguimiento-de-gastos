@@ -1,8 +1,6 @@
 package com.example.appseguimientogastos.data
 
 import android.os.Build
-import androidx.compose.material3.DatePickerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import java.time.LocalDate
 import java.util.Calendar
 
@@ -21,11 +19,6 @@ val month: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 fun getCurrentMonth(): Month {
 
     return monthList[month - 1]
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-fun setCurrentMont(datePickerState: DatePickerState){
-    datePickerState.selectedDateMillis
 }
 
 fun getPreviouMonth(): Month {

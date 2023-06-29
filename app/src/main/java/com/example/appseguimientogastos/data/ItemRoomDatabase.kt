@@ -5,29 +5,26 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(AppSeguimientoGastos::class), version = 1)
-abstract class AppDatabase: RoomDatabase() {
-    abstract fun californiaParkDao(): AppSeguimientoGastosDao
+@Database(entities = [Item::class], version = 1, exportSchema = false)
+abstract class ItemRoomDatabase : RoomDatabase() {
+    abstract fun itemDao(): ItemDao
 
     companion object {
         @Volatile
-        private var INSTANCE: AppDatabase? = null
-
-        fun getDatabase(
-            context: Context
-        ): AppDatabase {
+        private var INSTANCE: ItemRoomDatabase? = null
+        fun getDatabase(context: Context): ItemRoomDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context,
-                    AppDatabase::class.java,
-                    "app_database"
+                    context.applicationContext,
+                    ItemRoomDatabase::class.java,
+                    "item_database"
                 )
-                    .createFromAsset("database/sql_basics.db")
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
-
-                instance
+                return instance
             }
         }
+
     }
 }
