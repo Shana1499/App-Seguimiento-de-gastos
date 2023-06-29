@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.appseguimientogastos.R
+import com.example.appseguimientogastos.data.getCurrentMonth
 import com.example.appseguimientogastos.ui.compose.mainscreen.MainScreen
 import com.example.compose.AppSeguimientoGastosTheme
 import kotlinx.coroutines.CoroutineScope
@@ -50,6 +51,9 @@ fun MainComposeApp(
     // list of nav screens + icons
     val items = listOf(Icons.Default.Favorite, Icons.Default.Face, Icons.Default.Email)
     val selectedItem = remember { mutableStateOf(items[0]) }
+    val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
+
+
 
     AppSeguimientoGastosTheme {
         Surface(
@@ -83,7 +87,10 @@ fun MainComposeApp(
                         }
                     ) { innerPadding ->
 
-                        MainScreen(modifier = modifier.padding(innerPadding))
+                        MainScreen(
+                            modifier = modifier.padding(innerPadding),
+                            currentMonth = currentMonth
+                        )
                     }
                 }
             )
@@ -105,7 +112,6 @@ fun MainAppBar(drawerState: DrawerState, scope: CoroutineScope) {
 
         )
 }
-
 
 
 @Preview(showBackground = true)
