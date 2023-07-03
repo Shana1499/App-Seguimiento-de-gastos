@@ -1,13 +1,12 @@
-package com.example.appseguimientogastos.data.item
+package com.example.appseguimientogastos.ui.data.item
 
-import com.example.appseguimientogastos.data.item.local.ItemEntity
-import com.example.appseguimientogastos.data.item.model.ItemDao
+import com.example.appseguimientogastos.ui.data.item.local.ItemEntity
+import com.example.appseguimientogastos.ui.data.item.model.ItemDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-
+/*
 class AppRepository @Inject constructor(
     private val itemDao: ItemDao
 ) {
@@ -33,3 +32,4 @@ class AppRepository @Inject constructor(
         }
     }
 }
+*/

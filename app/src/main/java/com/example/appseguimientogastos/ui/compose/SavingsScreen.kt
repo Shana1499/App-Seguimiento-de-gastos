@@ -8,14 +8,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.AddIncome
-import com.example.appseguimientogastos.AddSavings
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.AddSavings
+import com.example.appseguimientogastos.ui.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.navigateSingleTopTo
-import com.example.appseguimientogastos.ui.compose.mainscreen.AddButton
-import com.example.appseguimientogastos.ui.compose.mainscreen.SavingsCard
+import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.ui.navigateSingleTopTo
+import com.example.appseguimientogastos.ui.compose.components.AddButton
+import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
 
 @Composable
 fun SavingsScreen(

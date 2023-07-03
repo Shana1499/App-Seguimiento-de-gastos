@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.ui.compose.mainscreen
+package com.example.appseguimientogastos.ui.compose.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -31,72 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.navigateSingleTopTo
+import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.ui.domain.item.model.Item
+import com.example.appseguimientogastos.ui.domain.item.model.getFormattedPrice
+import com.example.appseguimientogastos.ui.navigateSingleTopTo
 
-/**
- * Card de Ingresos
- * */
-@Composable
-fun IncomeCard(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    currentMonth: MutableState<Month>,
-    incomeScreen: MainComposeDestination,
-) {
-    OverviewCard(
-        modifier = modifier,
-        title = stringResource(R.string.ingresos),
-        currentMonth = currentMonth,
-        newScreen = incomeScreen, navController = navController
-    )
-
-}
-
-/**
- * Card de Gastos
- * */
-@Composable
-fun ExpensesCard(
-    modifier: Modifier = Modifier,
-    currentMonth: MutableState<Month>,
-    navController: NavHostController, expensesScreen: MainComposeDestination,
-
-    ) {
-
-    OverviewCard(
-        modifier,
-        stringResource(R.string.gastos),
-        currentMonth,
-        expensesScreen,
-        navController,
-    )
-
-}
-
-/**
- * Card de Ahorro
- * */
-@Composable
-fun SavingsCard(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    currentMonth: MutableState<Month>,
-    savingsScreen: MainComposeDestination,
-
-    ) {
-
-    OverviewCard(
-        modifier,
-        stringResource(R.string.ahorro),
-        currentMonth,
-        savingsScreen,
-        navController,
-    )
-
-}
 
 @Composable
 fun OverviewTitleComposable(
@@ -125,7 +66,9 @@ fun DividerComposable(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ContentSummaryComposable(modifier: Modifier = Modifier) {
+fun ContentSummaryComposable(
+    modifier: Modifier = Modifier, listItem: List<Item>, currentMonth: MutableState<Month>,
+) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -145,16 +88,37 @@ fun ContentSummaryComposable(modifier: Modifier = Modifier) {
         }
     }
 
-    // if expanded=true show 5 first element of a list,
-    if (expanded) {
-        Text(text = "First Element")
-        Text(text = "Second...")
+    val newList = mutableListOf<Item>()
+    listItem.forEach { item ->
+        if (item.month == currentMonth.value.name) {
+            newList.add(item)
+        }
     }
-    // else only show the first one
-    else {
-        Text(text = "First Element")
 
+    if (newList.isNotEmpty()) {
+        // if expanded=true show 5 first element of a list,
+        if (expanded) {
+            newList.take(5).forEach { item ->
+                Row {
+                    Text(text = item.origin)
+                    Text(text = item.month)
+                    Text(text = item.getFormattedPrice())
+                }
+            }
+        }
+        // else only show the first one
+        else {
+            Row {
+                Text(text = newList[0].origin)
+                Text(text = newList[0].month)
+                Text(text = newList[0].getFormattedPrice())
+            }
+        }
+    }else{
+        Text(text = "There is no data")
     }
+
+
 }
 
 
@@ -168,6 +132,7 @@ fun OverviewCard(
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
     navController: NavHostController,
+    listItem: List<Item>,
 ) {
 
     ElevatedCard(
@@ -199,14 +164,13 @@ fun OverviewCard(
 
                 DividerComposable()
 
-                ContentSummaryComposable()
+                ContentSummaryComposable(listItem = listItem, currentMonth = currentMonth)
 
             }
         }
 
     }
 }
-
 
 
 @Composable
@@ -247,6 +211,7 @@ fun AddButton(
         }
     }
 }
+
 
 
 @Composable

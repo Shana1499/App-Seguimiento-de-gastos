@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.data.item.local
+package com.example.appseguimientogastos.ui.data.item.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -8,7 +8,7 @@ enum class Type(val typeName: String) {
     INCOMES("I"), EXPENSES("E"), SAVINGS("S")
 }
 @Entity(tableName = "database")
-data class ItemEntity(
+data class ItemEntity(//cambiar name a ItemVO
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "origin")

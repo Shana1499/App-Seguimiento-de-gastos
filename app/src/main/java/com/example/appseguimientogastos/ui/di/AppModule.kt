@@ -1,9 +1,9 @@
-package com.example.appseguimientogastos.di
+package com.example.appseguimientogastos.ui.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.appseguimientogastos.data.item.model.AppDatabase
-import com.example.appseguimientogastos.data.item.model.ItemDao
+import com.example.appseguimientogastos.ui.data.item.model.AppDatabase
+import com.example.appseguimientogastos.ui.data.item.model.ItemDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

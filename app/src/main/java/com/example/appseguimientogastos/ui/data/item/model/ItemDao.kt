@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.data.item.model
+package com.example.appseguimientogastos.ui.data.item.model
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.appseguimientogastos.data.item.local.ItemEntity
+import com.example.appseguimientogastos.ui.data.item.local.ItemEntity
 
 @Dao
 interface ItemDao {

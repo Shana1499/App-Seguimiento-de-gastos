@@ -35,19 +35,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.appseguimientogastos.Main
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.Main
+import com.example.appseguimientogastos.ui.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.data.getCurrentMonth
-import com.example.appseguimientogastos.data.item.local.Type
-import com.example.appseguimientogastos.data.monthList
-import com.example.appseguimientogastos.tabRowScreens
-import com.example.appseguimientogastos.ui.compose.mainscreen.OverviewTitleComposable
+import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.ui.data.getCurrentMonth
+import com.example.appseguimientogastos.ui.data.item.local.Type
+import com.example.appseguimientogastos.ui.data.monthList
+import com.example.appseguimientogastos.ui.navigateSingleTopTo
+import com.example.appseguimientogastos.ui.tabRowScreens
+import com.example.appseguimientogastos.ui.compose.components.OverviewTitleComposable
 import com.example.compose.AppSeguimientoGastosTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,9 +58,9 @@ fun AddScreen(
     currentType: Type,
     titleScreen: String,
     newScreen: MainComposeDestination,
-    navController: NavHostController
+    navController: NavHostController,
 
-) {
+    ) {
 
     var origin by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
@@ -148,37 +148,88 @@ fun AddScreen(
 
 
             }
+            CancelAddButtons(
+                newScreen = newScreen,
+                navController = navController
+            )
 
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = dimensionResource(id = R.dimen.default_normalpadding)),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(
-                        onClick = { /*TODO*/ }, modifier = modifier.padding(
-                            end = dimensionResource(id = R.dimen.default_smallpadding)
-                        )
-                    ) {
-                        Text(text = stringResource(R.string.add))
-
-                    }
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = modifier.padding(bottom = 40.dp)
-                    ) {
-                        Text(text = stringResource(R.string.cancel))
-
-                    }
-                }
-            }
         }
     }
 
 }
+
+@Composable
+fun CancelAddButtons(
+    modifier: Modifier = Modifier,
+    newScreen: MainComposeDestination,
+    navController: NavHostController,
+
+    ) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = R.dimen.default_normalpadding)),
+            horizontalArrangement = Arrangement.Center
+        ) {
+
+            AddItemButton(
+                modifier = modifier,
+                screen = newScreen,
+                onTabSelected = { newScreenSample ->
+                    navController.navigateSingleTopTo(
+                        newScreenSample.route
+                    )
+                })
+
+            CancelItemButton(
+                modifier = modifier,
+                screen = newScreen,
+                onTabSelected = { newScreenSample ->
+                    navController.navigateSingleTopTo(
+                        newScreenSample.route
+                    )
+                })
+        }
+    }
+}
+
+@Composable
+fun AddItemButton(
+    modifier: Modifier = Modifier,
+    screen: MainComposeDestination,
+    onTabSelected: (MainComposeDestination) -> Unit
+
+) {
+    Button(
+        onClick = { onTabSelected(screen) }, modifier = modifier.padding(
+            end = dimensionResource(id = R.dimen.default_smallpadding)
+        )
+    ) {
+        Text(text = stringResource(R.string.add))
+
+    }
+}
+
+@Composable
+fun CancelItemButton(
+    modifier: Modifier = Modifier,
+    screen: MainComposeDestination,
+    onTabSelected: (MainComposeDestination) -> Unit
+
+) {
+    Button(
+        onClick = { onTabSelected(screen) }, modifier = modifier.padding(
+            end = dimensionResource(id = R.dimen.default_smallpadding)
+        )
+    ) {
+        Text(text = stringResource(R.string.cancel))
+
+    }
+}
+
 
 @Composable
 fun AddIncomeScreen(
