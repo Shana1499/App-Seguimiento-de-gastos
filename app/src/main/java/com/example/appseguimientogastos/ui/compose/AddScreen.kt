@@ -38,15 +38,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.appseguimientogastos.ui.Main
-import com.example.appseguimientogastos.ui.MainComposeDestination
+import com.example.appseguimientogastos.Main
+import com.example.appseguimientogastos.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.getCurrentMonth
-import com.example.appseguimientogastos.ui.data.item.local.Type
-import com.example.appseguimientogastos.ui.data.monthList
-import com.example.appseguimientogastos.ui.navigateSingleTopTo
-import com.example.appseguimientogastos.ui.tabRowScreens
+import com.example.appseguimientogastos.data.Month
+import com.example.appseguimientogastos.data.getCurrentMonth
+import com.example.appseguimientogastos.data.item.local.Type
+import com.example.appseguimientogastos.data.monthList
+import com.example.appseguimientogastos.navigateSingleTopTo
+import com.example.appseguimientogastos.tabRowScreens
 import com.example.appseguimientogastos.ui.compose.components.OverviewTitleComposable
 import com.example.compose.AppSeguimientoGastosTheme
 

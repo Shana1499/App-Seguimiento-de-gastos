@@ -43,10 +43,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.getCurrentMonth
-import com.example.appseguimientogastos.ui.data.getPreviouMonth
-import com.example.appseguimientogastos.ui.data.monthList
+import com.example.appseguimientogastos.data.Month
+import com.example.appseguimientogastos.data.getCurrentMonth
+import com.example.appseguimientogastos.data.getPreviouMonth
+import com.example.appseguimientogastos.data.monthList
 import com.example.compose.AppSeguimientoGastosTheme
 import com.example.compose.md_theme_light_Ahorro
 import com.example.compose.md_theme_light_gastos
