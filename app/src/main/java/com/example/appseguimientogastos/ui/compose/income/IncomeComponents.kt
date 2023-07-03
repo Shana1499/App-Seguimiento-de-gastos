@@ -5,12 +5,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.data.item.local.ItemVO
-import com.example.appseguimientogastos.data.item.local.Type
-import com.example.appseguimientogastos.data.monthList
+import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.ui.data.item.local.Type
+import com.example.appseguimientogastos.ui.domain.item.model.Item
 import com.example.appseguimientogastos.ui.compose.components.OverviewCard
 
 
@@ -26,32 +25,25 @@ fun IncomeCard(
     incomeScreen: MainComposeDestination,
 ) {
 
-    val listIncomes = listOf<ItemVO>(
-        ItemVO(
+    val listIncomes = listOf(
+        Item(
             id = 0,
-            origin = "prueba1Incomes",
+            origin = "prueba1Income",
             price = 12.0,
             type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
+            month = currentMonth.value.name
+        ), Item(
             id = 0,
-            origin = "prueba2Incomes",
+            origin = "prueba2Income",
             price = 14.0,
             type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
+            month = currentMonth.value.name
+        ), Item(
             id = 0,
-            origin = "prueba3Incomes",
+            origin = "prueba3Income",
             price = 16.0,
             type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ),
-        ItemVO(
-            id = 0,
-            origin = "prueba4Incomes",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[0].name
+            month = currentMonth.value.name
         )
     )
     OverviewCard(
@@ -59,7 +51,7 @@ fun IncomeCard(
         title = stringResource(R.string.ingresos),
         currentMonth = currentMonth,
         newScreen = incomeScreen, navController = navController,
-        listItemData=listIncomes
+        listItem=listIncomes
     )
 
 }

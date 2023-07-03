@@ -6,23 +6,23 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.appseguimientogastos.ui.data.item.local.ItemVO
+import com.example.appseguimientogastos.ui.data.item.local.ItemEntity
 
 @Dao
 interface ItemDao {
     @Query("SELECT * from 'database' ORDER BY origin ASC")
-    fun getAll(): List<ItemVO>
+    fun getAll(): List<ItemEntity>
 
     @Query("SELECT * from 'database' WHERE id = :id")
-    fun getItem(id: Int): ItemVO
+    fun getItem(id: Int): ItemEntity
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(item: ItemVO)
+    suspend fun insert(item: ItemEntity)
 
     @Update
-    suspend fun update(item: ItemVO)
+    suspend fun update(item: ItemEntity)
 
     @Delete
-    suspend fun delete(item: ItemVO)
+    suspend fun delete(item: ItemEntity)
 
 }

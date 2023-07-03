@@ -10,14 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.MainComposeApp
-import com.example.appseguimientogastos.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
+import com.example.appseguimientogastos.ui.MainComposeDestination
 import com.example.appseguimientogastos.ui.compose.expenses.ExpensesCard
 import com.example.appseguimientogastos.ui.compose.income.IncomeCard
 import com.example.appseguimientogastos.ui.compose.mainscreen.DashBoardCard
 import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
+import com.example.appseguimientogastos.ui.data.Month
 
 @Composable
 fun MainScreen(
@@ -29,6 +28,10 @@ fun MainScreen(
     savingsScreen: MainComposeDestination,
 
     ) {
+
+    //VIEW MODEL
+
+    //UI
 
     LazyColumn {
         item {
@@ -69,4 +72,5 @@ fun MainComposeAppPreview() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun MainComposeAppDarkPreview() {
-    MainComposeApp()}
+    MainComposeApp()
+}

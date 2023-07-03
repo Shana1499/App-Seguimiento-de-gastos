@@ -16,20 +16,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.appseguimientogastos.AddIncome
-import com.example.appseguimientogastos.Main
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.AddIncome
+import com.example.appseguimientogastos.ui.Main
+import com.example.appseguimientogastos.ui.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.data.getCurrentMonth
-import com.example.appseguimientogastos.data.item.local.ItemVO
-import com.example.appseguimientogastos.data.item.local.Type
-import com.example.appseguimientogastos.data.monthList
-import com.example.appseguimientogastos.navigateSingleTopTo
-import com.example.appseguimientogastos.tabRowScreens
+import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.ui.data.getCurrentMonth
+import com.example.appseguimientogastos.ui.data.item.local.Type
+import com.example.appseguimientogastos.ui.data.monthList
+import com.example.appseguimientogastos.ui.domain.item.model.Item
+import com.example.appseguimientogastos.ui.navigateSingleTopTo
+import com.example.appseguimientogastos.ui.tabRowScreens
 import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.compose.components.OverviewCard
-import com.example.appseguimientogastos.ui.compose.income.IncomeCard
 import com.example.compose.AppSeguimientoGastosTheme
 
 @Composable
@@ -39,6 +38,33 @@ fun IncomeScreen(
     navController: NavHostController,
     incomeScreen: MainComposeDestination,
 ) {
+    val listIncomes = listOf<Item>(
+        Item(
+            id = 0,
+            origin = "prueba1Income",
+            price = 12.0,
+            type = Type.INCOMES.typeName,
+            month = monthList[6].name
+        ), Item(
+            id = 0,
+            origin = "prueba2Income",
+            price = 14.0,
+            type = Type.INCOMES.typeName,
+            month = monthList[6].name
+        ), Item(
+            id = 0,
+            origin = "prueba3Income",
+            price = 16.0,
+            type = Type.INCOMES.typeName,
+            month = monthList[6].name
+        ), Item(
+            id = 0,
+            origin = "prueba4Income",
+            price = 12.0,
+            type = Type.INCOMES.typeName,
+            month = monthList[0].name
+        )
+    )
 
     LazyColumn {
         item {
@@ -46,11 +72,13 @@ fun IncomeScreen(
                 modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
 
             ) {
-
-                IncomeCard(
-                    navController = navController,
+                OverviewCard(
+                    modifier = modifier,
+                    title = stringResource(R.string.ingresos),
                     currentMonth = currentMonth,
-                    incomeScreen = incomeScreen
+                    newScreen = incomeScreen,
+                    navController = navController,
+                    listItem = listIncomes,
                 )
                 val addScreen = AddIncome
                 AddButton(
@@ -106,5 +134,6 @@ fun IncomeScreenDarkPreview() {
         )
     }
 }
+
 
 
