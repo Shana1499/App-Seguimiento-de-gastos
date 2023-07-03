@@ -1,1 +1,0 @@
-# App-Seguimiento-de-gastos
