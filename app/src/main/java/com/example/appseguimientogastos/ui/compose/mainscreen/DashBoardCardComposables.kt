@@ -162,6 +162,7 @@ fun FilterChipsComposables(
     currentMonth: MutableState<Month>,
 ) {
     var showDialog by remember { mutableStateOf(false) }
+    var selectedMonthText by remember { mutableStateOf(monthList[0].name) }
 
     FilterChip(
         modifier = modifier.padding(end = dimensionResource(id = R.dimen.default_smallpadding)),
@@ -187,8 +188,6 @@ fun FilterChipsComposables(
         elevation = FilterChipDefaults.elevatedFilterChipElevation()
     )
 
-    val selectedTextChip = stringResource(id = R.string.selecciona)
-    var selectedMonthText by remember { mutableStateOf(monthList[0].name) }
 
     Column(
     ) {

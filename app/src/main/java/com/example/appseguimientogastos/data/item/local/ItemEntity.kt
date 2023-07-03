@@ -1,12 +1,14 @@
-package com.example.appseguimientogastos.data
+package com.example.appseguimientogastos.data.item.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.text.NumberFormat
-
-@Entity
-data class Item(
+enum class Type(val typeName: String) {
+    INCOMES("I"), EXPENSES("E"), SAVINGS("S")
+}
+@Entity(tableName = "database")
+data class ItemEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "origin")
@@ -20,5 +22,5 @@ data class Item(
 
 )
 
-fun Item.getFormattedPrice(): String =
+fun ItemEntity.getFormattedPrice(): String =
     NumberFormat.getCurrencyInstance().format(price)

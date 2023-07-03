@@ -23,7 +23,7 @@ import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
- * Contract for information needed on every Rally navigation destination
+ * Contract for information needed on every navigation destination
  */
 interface MainComposeDestination {
     val icon: ImageVector
@@ -32,7 +32,7 @@ interface MainComposeDestination {
 }
 
 /**
- * Rally app navigation destinations
+ * app navigation destinations
  */
 object Main : MainComposeDestination {
     override val icon = Icons.Filled.Home
@@ -56,6 +56,22 @@ object Savings : MainComposeDestination {
     override val icon = Icons.Filled.MoneyOff
     override val name = "Savings"
     override val route = "saving"
+}
+
+object AddIncome : MainComposeDestination {
+    override val icon = Icons.Filled.MoneyOff
+    override val name = "AddIncome"
+    override val route = "add-income"
+}
+object AddExpenses : MainComposeDestination {
+    override val icon = Icons.Filled.MoneyOff
+    override val name = "AddExpenses"
+    override val route = "add-expenses"
+}
+object AddSavings : MainComposeDestination {
+    override val icon = Icons.Filled.MoneyOff
+    override val name = "AddSavings"
+    override val route = "add-savings"
 }
 
 

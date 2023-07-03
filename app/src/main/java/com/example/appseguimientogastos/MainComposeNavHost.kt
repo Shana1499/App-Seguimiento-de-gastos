@@ -19,11 +19,17 @@ package com.example.appseguimientogastos
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.appseguimientogastos.data.Month
+import com.example.appseguimientogastos.data.item.local.Type
+import com.example.appseguimientogastos.ui.compose.AddExpensesScreen
+import com.example.appseguimientogastos.ui.compose.AddIncomeScreen
+import com.example.appseguimientogastos.ui.compose.AddSavingsScreen
+import com.example.appseguimientogastos.ui.compose.AddScreen
 import com.example.appseguimientogastos.ui.compose.ExpensesScreen
 import com.example.appseguimientogastos.ui.compose.IncomeScreen
 import com.example.appseguimientogastos.ui.compose.MainScreen
@@ -55,7 +61,8 @@ fun MainComposeNavHost(
                 navController = navController,
                 incomeScreen = incomeScreen,
                 expensesScreen = expensesScreen,
-                savingsScreen = savingsScreen
+                savingsScreen = savingsScreen,
+
 
             )
         }
@@ -70,20 +77,46 @@ fun MainComposeNavHost(
             ExpensesScreen(
                 currentMonth = currentMonth,
                 navController = navController,
-                expensesScreen = homeScreen
+                expensesScreen = homeScreen,
+
             )
         }
         composable(route = Savings.route) {
             SavingsScreen(
                 currentMonth = currentMonth,
                 navController = navController,
-                savingsScreen = homeScreen
+                savingsScreen = homeScreen,
+
+            )
+        }
+
+        composable(route=AddIncome.route){
+            AddIncomeScreen(
+                currentMonth = currentMonth,
+                newScreen = homeScreen,
+                navController = navController
+            )
+        }
+        composable(route=AddExpenses.route){
+            AddExpensesScreen(
+                currentMonth = currentMonth,
+                newScreen = homeScreen,
+                navController = navController
+            )
+        }
+        composable(route=AddSavings.route){
+            AddSavingsScreen(
+                currentMonth = currentMonth,
+                newScreen = homeScreen,
+                navController = navController
             )
         }
 
 
     }
 }
+
+
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {

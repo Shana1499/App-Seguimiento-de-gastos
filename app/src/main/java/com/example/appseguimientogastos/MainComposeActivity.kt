@@ -6,10 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -22,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.appseguimientogastos.data.getCurrentMonth
@@ -41,14 +38,13 @@ class MainComposeActivity : ComponentActivity() {
 
 @Composable
 fun MainComposeApp(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AppSeguimientoGastosTheme {
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
 
         // list of nav screens + icons
-        val items = listOf(Icons.Default.Favorite, Icons.Default.Face, Icons.Default.Email)
         val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
 
         val navController = rememberNavController()
@@ -87,7 +83,8 @@ fun MainComposeApp(
                         navController = navController,
                         modifier = Modifier.padding(innerPadding),
                         currentMonth = currentMonth,
-                        allScreens = tabRowScreens
+                        allScreens = tabRowScreens,
+
 
                     )
                 }
@@ -98,19 +95,14 @@ fun MainComposeApp(
 
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun MainComposeAppPreview() {
     MainComposeApp()
-
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun MainComposeAppDarkPreview() {
     MainComposeApp()
-
 }
-
-

@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -48,8 +50,9 @@ fun IncomeCard(
         modifier = modifier,
         title = stringResource(R.string.ingresos),
         currentMonth = currentMonth,
-        navController = navController, newScreen = incomeScreen
+        newScreen = incomeScreen, navController = navController
     )
+
 }
 
 /**
@@ -90,27 +93,9 @@ fun SavingsCard(
         stringResource(R.string.ahorro),
         currentMonth,
         savingsScreen,
-        navController
+        navController,
     )
 
-}
-
-@Composable
-fun TopEndNavigationButton(
-    modifier: Modifier = Modifier,
-    screen: MainComposeDestination,
-    onTabSelected: (MainComposeDestination) -> Unit
-) {
-    Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
-        IconButton(
-            onClick = { onTabSelected(screen) }
-        ) {
-            Icon(
-                Icons.Outlined.ArrowForward,
-                contentDescription = "Localized description"
-            )
-        }
-    }
 }
 
 @Composable
@@ -182,7 +167,7 @@ fun OverviewCard(
     title: String,
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
 
     ElevatedCard(
@@ -221,6 +206,48 @@ fun OverviewCard(
 
     }
 }
+
+
+
+@Composable
+fun TopEndNavigationButton(
+    modifier: Modifier = Modifier,
+    screen: MainComposeDestination,
+    onTabSelected: (MainComposeDestination) -> Unit
+) {
+    Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
+        IconButton(
+            onClick = { onTabSelected(screen) }
+        ) {
+            Icon(
+                Icons.Outlined.ArrowForward,
+                contentDescription = "Localized description"
+            )
+        }
+    }
+}
+
+@Composable
+fun AddButton(
+    modifier: Modifier = Modifier,
+    screen: MainComposeDestination,
+    onTabSelected: (MainComposeDestination) -> Unit
+) {
+    Box(
+        modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(id = R.dimen.default_normalpadding)),
+        contentAlignment = Alignment.TopEnd
+    ) {
+        FloatingActionButton(
+            onClick = { onTabSelected(screen) },
+            modifier = Modifier.align(Alignment.BottomEnd)
+        ) {
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
+        }
+    }
+}
+
 
 @Composable
 private fun ExtraInfoItemButton(
