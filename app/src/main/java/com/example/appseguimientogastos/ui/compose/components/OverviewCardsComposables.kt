@@ -31,12 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.ui.MainComposeDestination
+import com.example.appseguimientogastos.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.domain.item.model.Item
-import com.example.appseguimientogastos.ui.domain.item.model.getFormattedPrice
-import com.example.appseguimientogastos.ui.navigateSingleTopTo
+import com.example.appseguimientogastos.data.Month
+import com.example.appseguimientogastos.data.item.local.ItemVO
+import com.example.appseguimientogastos.data.item.local.getFormattedPrice
+import com.example.appseguimientogastos.navigateSingleTopTo
 
 
 @Composable
@@ -67,7 +67,7 @@ fun DividerComposable(modifier: Modifier = Modifier) {
 
 @Composable
 fun ContentSummaryComposable(
-    modifier: Modifier = Modifier, listItem: List<Item>, currentMonth: MutableState<Month>,
+    modifier: Modifier = Modifier, listItemData: List<ItemVO>, currentMonth: MutableState<Month>,
 ) {
     var expanded by remember {
         mutableStateOf(false)
@@ -88,8 +88,8 @@ fun ContentSummaryComposable(
         }
     }
 
-    val newList = mutableListOf<Item>()
-    listItem.forEach { item ->
+    val newList = mutableListOf<ItemVO>()
+    listItemData.forEach { item ->
         if (item.month == currentMonth.value.name) {
             newList.add(item)
         }
@@ -132,7 +132,7 @@ fun OverviewCard(
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    listItem: List<Item>,
+    listItemData: List<ItemVO>,
 ) {
 
     ElevatedCard(
@@ -164,7 +164,7 @@ fun OverviewCard(
 
                 DividerComposable()
 
-                ContentSummaryComposable(listItem = listItem, currentMonth = currentMonth)
+                ContentSummaryComposable(listItemData = listItemData, currentMonth = currentMonth)
 
             }
         }

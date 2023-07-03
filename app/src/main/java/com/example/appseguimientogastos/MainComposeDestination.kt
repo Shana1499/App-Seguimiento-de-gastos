@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.appseguimientogastos.ui
+package com.example.appseguimientogastos
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
