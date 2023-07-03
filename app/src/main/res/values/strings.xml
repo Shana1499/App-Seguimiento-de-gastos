@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">App Seguimiento Gastos</string>
+    <string name="ahorro">Ahorro</string>
+    <string name="gastos">Gastos</string>
+    <string name="ingresos">Ingresos</string>
+    <string name="resumen">Resumen:</string>
+    <string name="dashboard">Resumen</string>
+    <string name="principal">Principal</string>
+    <string name="selecciona">Selecciona</string>
+    <string name="add_incomes">Añadir Ingresos</string>
+    <string name="add_expenses">Añadir Gastos</string>
+    <string name="add_savings">Añadir Ahorros</string>
+    <string name="add">Añadir</string>
+    <string name="cancel">Cancelar</string>
+
+</resources>
