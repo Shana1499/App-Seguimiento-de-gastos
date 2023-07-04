@@ -65,40 +65,11 @@ fun MainComposeApp(
             tabRowScreens.find { it.route == currentDestination?.route } ?: Main
 
         //VIEW MODEL
-        val viewModel: MainViewModel = getViewModel()
-        val myItems by viewModel.myItems.observeAsState(initial = emptyList())
+       /* val viewModel: MainViewModel = getViewModel()
+        val myItems by viewModel.myItems.observeAsState(initial = emptyList())*/
 
 
-        val listIncomes = listOf<ItemVO>(
-            ItemVO(
-                id = 0,
-                origin = "prueba1Incomes",
-                price = 12.0,
-                type = Type.INCOMES.typeName,
-                month = monthList[6].name
-            ), ItemVO(
-                id = 0,
-                origin = "prueba2Incomes",
-                price = 14.0,
-                type = Type.INCOMES.typeName,
-                month = monthList[6].name
-            ), ItemVO(
-                id = 0,
-                origin = "prueba3Incomes",
-                price = 16.0,
-                type = Type.INCOMES.typeName,
-                month = monthList[6].name
-            ),
-            ItemVO(
-                id = 0,
-                origin = "prueba4Incomes",
-                price = 12.0,
-                type = Type.INCOMES.typeName,
-                month = monthList[0].name
-            )
-        )
 
-        listIncomes.forEach { item-> viewModel.addEntity(item = item)}
 
         //UI
         Surface(

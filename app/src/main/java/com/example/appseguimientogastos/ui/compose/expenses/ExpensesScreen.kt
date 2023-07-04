@@ -25,8 +25,8 @@ fun ExpensesScreen(
     expensesScreen: MainComposeDestination,
 ) {
     // VIEWMODEL
-    val viewModel: IncomeViewModel = getViewModel()
-    val state: IncomeState = viewModel.uiState.collectAsState().value
+    /*val viewModel: IncomeViewModel = getViewModel()
+    val state: IncomeState = viewModel.uiState.collectAsState().value*/
 
 
     // COMPOSABLES (UI)
