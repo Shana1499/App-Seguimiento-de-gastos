@@ -4,21 +4,61 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.ui.activity.MainComposeApp
-import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
+import com.example.appseguimientogastos.ui.compose.MainComposeApp
+import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.compose.expenses.ExpensesCard
 import com.example.appseguimientogastos.ui.compose.income.IncomeCard
 import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
 import com.example.appseguimientogastos.ui.data.Month
-import org.koin.androidx.compose.getViewModel
+import com.example.appseguimientogastos.ui.navigation.Expenses
+import com.example.appseguimientogastos.ui.navigation.Incomes
+import com.example.appseguimientogastos.ui.navigation.Main
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
+import com.example.appseguimientogastos.ui.navigation.Savings
+import kotlinx.coroutines.CoroutineScope
 
+
+@Composable
+fun MainScreenComposable(
+    modifier: Modifier = Modifier,
+    currentMonth: MutableState<Month>,
+    navController: NavHostController,
+    drawerState: DrawerState,
+    scope: CoroutineScope,
+) {
+    // VIEWMODEL
+    /*val viewModel: MainViewModel = getViewModel()
+    val state: MainState = viewModel.uiState.collectAsState().value*/
+
+    // COMPOSABLES (UI)
+
+    CommonUI(
+        navController = navController,
+        currentScreen = Main,
+        drawerState = drawerState,
+        scope = scope
+    ) { innerPadding ->
+        Column(modifier.padding(innerPadding)) {
+            MainScreen(
+                currentMonth = currentMonth,
+                navController = navController,
+                incomeScreen = Incomes,
+                expensesScreen = Expenses,
+                savingsScreen = Savings
+            )
+        }
+
+    }
+
+}
 
 @Composable
 fun MainScreen(
@@ -28,16 +68,7 @@ fun MainScreen(
     incomeScreen: MainComposeDestination,
     expensesScreen: MainComposeDestination,
     savingsScreen: MainComposeDestination,
-
-    ) {
-    // VIEWMODEL
-    val viewModel: MainViewModel = getViewModel()
-    val state: MainState = viewModel.uiState.collectAsState().value
-    // val viewModel = getViewModel<MainViewModel>()
-    // val myItems by viewModel.myItems.observeAsState(initial = emptyList())
-
-
-    // COMPOSABLES (UI)
+) {
     LazyColumn {
         item {
             Column(
@@ -48,13 +79,13 @@ fun MainScreen(
                 IncomeCard(
                     modifier = modifier,
                     currentMonth = currentMonth, navController = navController,
-                    incomeScreen=incomeScreen
+                    incomeScreen = incomeScreen
                 )
                 ExpensesCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
                     navController = navController,
-                    expensesScreen=expensesScreen
+                    expensesScreen = expensesScreen
                 )
                 SavingsCard(
                     modifier = modifier,

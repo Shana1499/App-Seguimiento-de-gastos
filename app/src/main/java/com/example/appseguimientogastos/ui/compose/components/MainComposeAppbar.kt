@@ -41,7 +41,7 @@ fun MainComposeAppBar(
 }
 
 @Composable
-fun CustoNavigationDrawer(
+fun CustomNavigationDrawer(
     modifier: Modifier = Modifier,
     allScreens: List<MainComposeDestination>,
     onTabSelected: (MainComposeDestination) -> Unit,
