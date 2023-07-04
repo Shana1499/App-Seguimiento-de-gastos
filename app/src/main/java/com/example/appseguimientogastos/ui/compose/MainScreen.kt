@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,6 +20,8 @@ import com.example.appseguimientogastos.ui.compose.expenses.ExpensesCard
 import com.example.appseguimientogastos.ui.compose.income.IncomeCard
 import com.example.appseguimientogastos.ui.compose.mainscreen.DashBoardCard
 import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
+import com.example.appseguimientogastos.ui.compose.view_model.MainViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun MainScreen(
@@ -30,6 +34,11 @@ fun MainScreen(
 
     ) {
 
+    //VIEWMODEL
+    val viewModel = getViewModel<MainViewModel>()
+    val myItems by viewModel.myItems.observeAsState(initial = emptyList())
+
+    //UI
     LazyColumn {
         item {
             Column(
