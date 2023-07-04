@@ -5,13 +5,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.data.item.local.ItemVO
-import com.example.appseguimientogastos.data.item.local.Type
-import com.example.appseguimientogastos.data.monthList
 import com.example.appseguimientogastos.ui.compose.components.OverviewCard
+import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.ui.data.item.local.ItemVO
+import com.example.appseguimientogastos.ui.data.item.local.Type
+import com.example.appseguimientogastos.ui.data.monthList
 
 
 /**
@@ -54,6 +54,8 @@ fun IncomeCard(
             month = monthList[0].name
         )
     )
+
+    listIncomes.forEach { item-> }
     OverviewCard(
         modifier = modifier,
         title = stringResource(R.string.ingresos),

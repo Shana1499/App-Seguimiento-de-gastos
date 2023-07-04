@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.ui.compose
+package com.example.appseguimientogastos.ui.compose.expenses
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -8,20 +8,21 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.AddSavings
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.navigation.AddExpenses
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.navigateSingleTopTo
+import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.compose.components.AddButton
-import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
+import com.example.appseguimientogastos.ui.data.Month
+
+
 
 @Composable
-fun SavingsScreen(
+fun ExpensesScreen(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
     navController: NavHostController,
-    savingsScreen: MainComposeDestination,
+    expensesScreen: MainComposeDestination,
 ) {
 
     LazyColumn {
@@ -30,13 +31,12 @@ fun SavingsScreen(
                 modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
 
             ) {
-
-                SavingsCard(
-                    navController = navController,
+                ExpensesCard(
                     currentMonth = currentMonth,
-                    savingsScreen = savingsScreen
+                    navController = navController,
+                    expensesScreen = expensesScreen
                 )
-                val addScreen= AddSavings
+                val addScreen= AddExpenses
                 AddButton(
                     screen = addScreen,
                     onTabSelected = { newAddScreen-> navController.navigateSingleTopTo(newAddScreen.route) })

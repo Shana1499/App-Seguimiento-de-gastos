@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos
+package com.example.appseguimientogastos.ui.activity
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -20,10 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.appseguimientogastos.data.getCurrentMonth
-import com.example.appseguimientogastos.ui.compose.CustoNavigationDrawer
-import com.example.appseguimientogastos.ui.compose.MainComposeAppBar
+import com.example.appseguimientogastos.ui.compose.components.CustoNavigationDrawer
+import com.example.appseguimientogastos.ui.compose.components.MainComposeAppBar
+import com.example.appseguimientogastos.ui.data.getCurrentMonth
+import com.example.appseguimientogastos.ui.data.item.local.ItemVO
+import com.example.appseguimientogastos.ui.data.item.local.Type
+import com.example.appseguimientogastos.ui.data.monthList
+import com.example.appseguimientogastos.ui.navigation.Main
+import com.example.appseguimientogastos.ui.navigation.MainComposeNavHost
+import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
+import com.example.appseguimientogastos.ui.navigation.tabRowScreens
+import com.example.appseguimientogastos.ui.view_model.MainViewModel
 import com.example.compose.AppSeguimientoGastosTheme
+import org.koin.androidx.compose.getViewModel
 
 class MainComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +62,43 @@ fun MainComposeApp(
         val currentScreen =
             tabRowScreens.find { it.route == currentDestination?.route } ?: Main
 
+        //VIEW MODEL
+        val viewModel:MainViewModel = getViewModel()
+        val myItems by viewModel.myItems.observeAsState(initial = emptyList())
 
+
+        val listIncomes = listOf<ItemVO>(
+            ItemVO(
+                id = 0,
+                origin = "prueba1Incomes",
+                price = 12.0,
+                type = Type.INCOMES.typeName,
+                month = monthList[6].name
+            ), ItemVO(
+                id = 0,
+                origin = "prueba2Incomes",
+                price = 14.0,
+                type = Type.INCOMES.typeName,
+                month = monthList[6].name
+            ), ItemVO(
+                id = 0,
+                origin = "prueba3Incomes",
+                price = 16.0,
+                type = Type.INCOMES.typeName,
+                month = monthList[6].name
+            ),
+            ItemVO(
+                id = 0,
+                origin = "prueba4Incomes",
+                price = 12.0,
+                type = Type.INCOMES.typeName,
+                month = monthList[0].name
+            )
+        )
+
+        listIncomes.forEach { item-> viewModel.addEntity(item = item)}
+
+        //UI
         Surface(
             modifier = modifier.fillMaxSize()
         ) {

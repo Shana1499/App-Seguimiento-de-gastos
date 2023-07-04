@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.ui.compose
+package com.example.appseguimientogastos.ui.compose.income
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -11,25 +11,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.appseguimientogastos.AddIncome
-import com.example.appseguimientogastos.Main
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.navigation.AddIncome
+import com.example.appseguimientogastos.ui.navigation.Main
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.data.getCurrentMonth
-import com.example.appseguimientogastos.data.item.local.ItemVO
-import com.example.appseguimientogastos.data.item.local.Type
-import com.example.appseguimientogastos.data.monthList
-import com.example.appseguimientogastos.navigateSingleTopTo
-import com.example.appseguimientogastos.tabRowScreens
+import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
+import com.example.appseguimientogastos.ui.navigation.tabRowScreens
 import com.example.appseguimientogastos.ui.compose.components.AddButton
-import com.example.appseguimientogastos.ui.compose.components.OverviewCard
-import com.example.appseguimientogastos.ui.compose.income.IncomeCard
+import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.ui.data.getCurrentMonth
 import com.example.compose.AppSeguimientoGastosTheme
 
 @Composable

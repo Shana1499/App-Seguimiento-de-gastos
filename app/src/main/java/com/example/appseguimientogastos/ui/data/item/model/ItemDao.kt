@@ -1,20 +1,21 @@
-package com.example.appseguimientogastos.data.item.model
+package com.example.appseguimientogastos.ui.data.item.model
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.appseguimientogastos.data.item.local.ItemVO
+import com.example.appseguimientogastos.ui.data.item.local.ItemVO
 
 @Dao
 interface ItemDao {
-    @Query("SELECT * from 'database' ORDER BY origin ASC")
-    fun getAll(): List<ItemVO>
+    @Query("SELECT * from asgdatabase ORDER BY origin ASC")
+    fun getAll(): LiveData<List<ItemVO>>
 
-    @Query("SELECT * from 'database' WHERE id = :id")
-    fun getItem(id: Int): ItemVO
+    @Query("SELECT * from asgdatabase WHERE id = :id")
+    fun getItem(id: Int): LiveData<ItemVO>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: ItemVO)

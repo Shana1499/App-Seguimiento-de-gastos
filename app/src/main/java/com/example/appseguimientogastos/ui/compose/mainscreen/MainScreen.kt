@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.ui.compose
+package com.example.appseguimientogastos.ui.compose.mainscreen
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -6,22 +6,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.MainComposeApp
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.activity.MainComposeApp
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
 import com.example.appseguimientogastos.ui.compose.expenses.ExpensesCard
 import com.example.appseguimientogastos.ui.compose.income.IncomeCard
-import com.example.appseguimientogastos.ui.compose.mainscreen.DashBoardCard
 import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
-import com.example.appseguimientogastos.ui.compose.view_model.MainViewModel
-import org.koin.androidx.compose.getViewModel
+import com.example.appseguimientogastos.ui.data.Month
+
 
 @Composable
 fun MainScreen(
@@ -34,9 +30,9 @@ fun MainScreen(
 
     ) {
 
-    //VIEWMODEL
-    val viewModel = getViewModel<MainViewModel>()
-    val myItems by viewModel.myItems.observeAsState(initial = emptyList())
+    //VIEW MODEL
+    // val viewModel = getViewModel<MainViewModel>()
+    // val myItems by viewModel.myItems.observeAsState(initial = emptyList())
 
     //UI
     LazyColumn {
@@ -78,4 +74,5 @@ fun MainComposeAppPreview() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun MainComposeAppDarkPreview() {
-    MainComposeApp()}
+    MainComposeApp()
+}

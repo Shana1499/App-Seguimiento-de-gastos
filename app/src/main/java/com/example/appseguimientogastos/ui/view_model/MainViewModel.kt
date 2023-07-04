@@ -1,9 +1,9 @@
-package com.example.appseguimientogastos.ui.compose.view_model
+package com.example.appseguimientogastos.ui.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appseguimientogastos.data.item.local.ItemVO
-import com.example.appseguimientogastos.data.item.model.ItemDao
+import com.example.appseguimientogastos.ui.data.item.local.ItemVO
+import com.example.appseguimientogastos.ui.data.item.model.ItemDao
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val itemDao: ItemDao) :ViewModel(){
@@ -15,5 +15,8 @@ class MainViewModel(private val itemDao: ItemDao) :ViewModel(){
             itemDao.insert(item)
         }
     }
+
+
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.ui.compose
+package com.example.appseguimientogastos.ui.compose.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,16 +38,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.appseguimientogastos.Main
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.navigation.Main
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.data.getCurrentMonth
-import com.example.appseguimientogastos.data.item.local.Type
-import com.example.appseguimientogastos.data.monthList
-import com.example.appseguimientogastos.navigateSingleTopTo
-import com.example.appseguimientogastos.tabRowScreens
-import com.example.appseguimientogastos.ui.compose.components.OverviewTitleComposable
+import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.ui.data.getCurrentMonth
+import com.example.appseguimientogastos.ui.data.item.local.Type
+import com.example.appseguimientogastos.ui.data.monthList
+import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
+import com.example.appseguimientogastos.ui.navigation.tabRowScreens
 import com.example.compose.AppSeguimientoGastosTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
