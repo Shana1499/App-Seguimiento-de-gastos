@@ -24,7 +24,9 @@ import com.example.appseguimientogastos.ui.navigation.tabRowScreens
 import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.data.getCurrentMonth
+import com.example.appseguimientogastos.ui.view_model.MainViewModel
 import com.example.compose.AppSeguimientoGastosTheme
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun IncomeScreen(
@@ -33,7 +35,12 @@ fun IncomeScreen(
     navController: NavHostController,
     incomeScreen: MainComposeDestination,
 ) {
+    // VIEWMODEL
+    val viewModel: IncomeViewModel = getViewModel()
+    val state: IncomeState = viewModel.uiState.collectAsState().value
 
+
+    // COMPOSABLES (UI)
     LazyColumn {
         item {
             Column(
