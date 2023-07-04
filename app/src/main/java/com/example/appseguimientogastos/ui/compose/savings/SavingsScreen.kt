@@ -14,6 +14,7 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.data.Month
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SavingsScreen(
@@ -22,6 +23,12 @@ fun SavingsScreen(
     navController: NavHostController,
     savingsScreen: MainComposeDestination,
 ) {
+    // VIEWMODEL
+    val viewModel: IncomeViewModel = getViewModel()
+    val state: IncomeState = viewModel.uiState.collectAsState().value
+
+
+    // COMPOSABLES (UI)
 
     LazyColumn {
         item {

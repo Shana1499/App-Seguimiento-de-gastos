@@ -58,7 +58,6 @@ fun AddScreen(
     titleScreen: String,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-
     ) {
 
     var origin by remember { mutableStateOf("") }

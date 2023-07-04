@@ -17,6 +17,7 @@ import com.example.appseguimientogastos.ui.compose.expenses.ExpensesCard
 import com.example.appseguimientogastos.ui.compose.income.IncomeCard
 import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
 import com.example.appseguimientogastos.ui.data.Month
+import org.koin.androidx.compose.getViewModel
 
 
 @Composable
@@ -29,12 +30,14 @@ fun MainScreen(
     savingsScreen: MainComposeDestination,
 
     ) {
-
-    //VIEW MODEL
+    // VIEWMODEL
+    val viewModel: MainViewModel = getViewModel()
+    val state: MainState = viewModel.uiState.collectAsState().value
     // val viewModel = getViewModel<MainViewModel>()
     // val myItems by viewModel.myItems.observeAsState(initial = emptyList())
 
-    //UI
+
+    // COMPOSABLES (UI)
     LazyColumn {
         item {
             Column(
