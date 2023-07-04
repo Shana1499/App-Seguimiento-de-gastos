@@ -58,103 +58,100 @@ fun AddScreen(
     titleScreen: String,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    ) {
+) {
 
     var origin by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var month by remember { mutableStateOf("") }
-    Column(modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))) {
 
+    Card(modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.default_normalpadding))) {
+        OverviewTitleComposable(
+            modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding)),
+            title = titleScreen,
+            newScreen = newScreen,
+            navController = navController
+        )
 
-        Card(modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.default_normalpadding))) {
-            OverviewTitleComposable(
-                modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding)),
-                title = titleScreen,
-                newScreen = newScreen,
-                navController = navController
+        Divider(
+            modifier.padding(
+                start = dimensionResource(id = R.dimen.default_normalpadding),
+                end = dimensionResource(id = R.dimen.default_normalpadding)
+            )
+        )
+        Column(modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))) {
+            TextField(
+                modifier = modifier.fillMaxWidth(),
+                value = origin,
+                onValueChange = { newOrigin -> origin = newOrigin },
+                label = { Text(text = "Origin") }
+            )
+            Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.default_smallpadding)))
+            TextField(
+                modifier = modifier.fillMaxWidth(),
+                value = price,
+                onValueChange = { newPrice -> price = newPrice },
+                label = { Text(text = "Price") }
             )
 
-            Divider(
-                modifier.padding(
-                    start = dimensionResource(id = R.dimen.default_normalpadding),
-                    end = dimensionResource(id = R.dimen.default_normalpadding)
-                )
-            )
-            Column(modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))) {
-                TextField(
-                    modifier = modifier.fillMaxWidth(),
-                    value = origin,
-                    onValueChange = { newOrigin -> origin = newOrigin },
-                    label = { Text(text = "Origin") }
-                )
-                Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.default_smallpadding)))
-                TextField(
-                    modifier = modifier.fillMaxWidth(),
-                    value = price,
-                    onValueChange = { newPrice -> price = newPrice },
-                    label = { Text(text = "Price") }
-                )
+            Row() {
+                var showDialog by remember { mutableStateOf(false) }
+                var selectedMonthText by remember { mutableStateOf(currentMonth.value) }
 
-                Row() {
-                    var showDialog by remember { mutableStateOf(false) }
-                    var selectedMonthText by remember { mutableStateOf(currentMonth.value) }
+                Column {
+                    Text(text = "Selecciona un mes:")
 
-                    Column {
-                        Text(text = "Selecciona un mes:")
+                    FilterChip(
+                        label = {
+                            Text(text = selectedMonthText.name)
+                        },
+                        selected = true,
+                        onClick = { showDialog = !showDialog },
+                        trailingIcon = {
+                            Icon(
+                                Icons.Filled.ArrowDropDown,
+                                contentDescription = "Localized description",
+                                Modifier.size(AssistChipDefaults.IconSize)
+                            )
+                        },
+                        elevation = FilterChipDefaults.elevatedFilterChipElevation(),
+                    )
 
-                        FilterChip(
-                            label = {
-                                Text(text = selectedMonthText.name)
-                            },
-                            selected = true,
-                            onClick = { showDialog = !showDialog },
-                            trailingIcon = {
-                                Icon(
-                                    Icons.Filled.ArrowDropDown,
-                                    contentDescription = "Localized description",
-                                    Modifier.size(AssistChipDefaults.IconSize)
-                                )
-                            },
-                            elevation = FilterChipDefaults.elevatedFilterChipElevation(),
-                        )
-
-                        DropdownMenu(
-                            expanded = showDialog,
-                            onDismissRequest = { showDialog = false }) {
+                    DropdownMenu(
+                        expanded = showDialog,
+                        onDismissRequest = { showDialog = false }) {
 
 
-                            monthList.forEach { monthSelected ->
+                        monthList.forEach { monthSelected ->
 
-                                DropdownMenuItem(
-                                    text = { Text(monthSelected.name) },
-                                    onClick = {
-                                        selectedMonthText = monthSelected
-                                        currentMonth.value = monthSelected
-                                        month = monthSelected.name
-                                        showDialog = false
-                                    })
-                                Divider()
+                            DropdownMenuItem(
+                                text = { Text(monthSelected.name) },
+                                onClick = {
+                                    selectedMonthText = monthSelected
+                                    currentMonth.value = monthSelected
+                                    month = monthSelected.name
+                                    showDialog = false
+                                })
+                            Divider()
 
 
-                            }
                         }
-
                     }
-
 
                 }
 
 
             }
-            CancelAddButtons(
-                newScreen = newScreen,
-                navController = navController
-            )
+
 
         }
-    }
+        CancelAddButtons(
+            newScreen = newScreen,
+            navController = navController
+        )
 
+    }
 }
+
 
 @Composable
 fun CancelAddButtons(
@@ -226,64 +223,6 @@ fun CancelItemButton(
         Text(text = stringResource(R.string.cancel))
 
     }
-}
-
-
-@Composable
-fun AddIncomeScreen(
-    modifier: Modifier = Modifier,
-    currentMonth: MutableState<Month>,
-    newScreen: MainComposeDestination,
-    navController: NavHostController
-) {
-
-    AddScreen(
-        Modifier,
-        currentMonth = currentMonth,
-        currentType = Type.INCOMES,
-        stringResource(R.string.add_incomes),
-        newScreen = newScreen,
-        navController = navController
-    )
-
-}
-
-@Composable
-fun AddExpensesScreen(
-    modifier: Modifier = Modifier,
-    currentMonth: MutableState<Month>,
-    newScreen: MainComposeDestination,
-    navController: NavHostController
-) {
-
-    AddScreen(
-        Modifier,
-        currentMonth = currentMonth,
-        currentType = Type.EXPENSES,
-        stringResource(R.string.add_expenses),
-        newScreen = newScreen,
-        navController = navController
-    )
-
-}
-
-@Composable
-fun AddSavingsScreen(
-    modifier: Modifier = Modifier,
-    currentMonth: MutableState<Month>,
-    newScreen: MainComposeDestination,
-    navController: NavHostController
-) {
-
-    AddScreen(
-        Modifier,
-        currentMonth = currentMonth,
-        currentType = Type.SAVINGS,
-        stringResource(R.string.add_savings),
-        newScreen = newScreen,
-        navController = navController
-    )
-
 }
 
 @Composable
