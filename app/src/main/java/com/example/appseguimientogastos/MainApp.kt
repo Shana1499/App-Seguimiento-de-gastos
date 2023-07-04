@@ -31,7 +31,7 @@ class MainApp : Application() {
     private fun initializeDI() {
         startKoin {
             androidContext(this@MainApp)
-            modules(appModule)
+            modules(appModule) 
 
         }
     }
