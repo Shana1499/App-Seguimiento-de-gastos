@@ -35,7 +35,7 @@ fun MainScreenComposable(
     scope: CoroutineScope,
 ) {
     // VIEWMODEL
-    /*val viewModel: MainViewModel = getViewModel()
+    /*val viewModel: BaseViewModel = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value*/
 
     // COMPOSABLES (UI)

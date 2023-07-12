@@ -55,7 +55,6 @@ fun IncomeCard(
         )
     )
 
-    listIncomes.forEach { item-> }
     OverviewCard(
         modifier = modifier,
         title = stringResource(R.string.ingresos),

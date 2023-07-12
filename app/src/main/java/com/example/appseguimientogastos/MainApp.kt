@@ -2,7 +2,7 @@ package com.example.appseguimientogastos
 
 import android.app.Application
 import com.example.appseguimientogastos.ui.data.item.model.AppDatabase
-import com.example.appseguimientogastos.ui.view_model.MainViewModel
+import com.example.appseguimientogastos.ui.view_model.BaseViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -24,7 +24,7 @@ class MainApp : Application() {
         single { get<AppDatabase>().itemDao() }
 
         // Define a ViewModel instance of MyViewModel
-        viewModel { MainViewModel(get()) }
+        viewModel { BaseViewModel(get()) }
     }
 
 

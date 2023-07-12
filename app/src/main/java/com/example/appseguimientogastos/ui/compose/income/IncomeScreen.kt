@@ -31,7 +31,7 @@ import com.example.appseguimientogastos.ui.data.getCurrentMonth
 import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.Savings
-import com.example.appseguimientogastos.ui.view_model.MainViewModel
+import com.example.appseguimientogastos.ui.view_model.BaseViewModel
 import com.example.compose.AppSeguimientoGastosTheme
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel

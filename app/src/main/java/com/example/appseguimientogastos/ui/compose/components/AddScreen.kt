@@ -47,7 +47,9 @@ import com.example.appseguimientogastos.ui.data.item.local.Type
 import com.example.appseguimientogastos.ui.data.monthList
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.navigation.tabRowScreens
+import com.example.appseguimientogastos.ui.view_model.BaseViewModel
 import com.example.compose.AppSeguimientoGastosTheme
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,10 +61,15 @@ fun AddScreen(
     newScreen: MainComposeDestination,
     navController: NavHostController,
 ) {
+    // VIEWMODEL
+    //val viewModel: BaseViewModel = getViewModel()
+    //val state: MainState = viewModel.uiState.collectAsState().value
 
     var origin by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var month by remember { mutableStateOf("") }
+
+    //UI
 
     Card(modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.default_normalpadding))) {
         OverviewTitleComposable(
