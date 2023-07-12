@@ -22,37 +22,9 @@ fun SavingsCard(
     navController: NavHostController,
     currentMonth: MutableState<Month>,
     savingsScreen: MainComposeDestination,
+    listItemData: List<ItemVO>,
 
     ) {
-
-    val listIncomes = listOf<ItemVO>(
-        ItemVO(
-            id = 0,
-            origin = "prueba1Savings",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba2Savings",
-            price = 14.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba3Savings",
-            price = 16.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ),
-        ItemVO(
-            id = 0,
-            origin = "prueba4Savings",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[0].name
-        )
-    )
 
     OverviewCard(
         modifier,
@@ -60,7 +32,7 @@ fun SavingsCard(
         currentMonth,
         savingsScreen,
         navController,
-        listIncomes,
+        listItemData,
     )
 
 }

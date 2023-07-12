@@ -7,61 +7,53 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.appseguimientogastos.ui.navigation.AddIncome
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
-import com.example.appseguimientogastos.ui.navigation.tabRowScreens
 import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.ui.compose.mainscreen.MainScreen
 import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.getCurrentMonth
-import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.Incomes
-import com.example.appseguimientogastos.ui.navigation.Savings
-import com.example.appseguimientogastos.ui.view_model.BaseViewModel
-import com.example.compose.AppSeguimientoGastosTheme
+import com.example.appseguimientogastos.ui.view_model.IncomeViewModel
+import com.example.appseguimientogastos.ui.view_model.MainState
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun IncomeScreenComposable(
-    modifier: Modifier=Modifier,
-    currentMonth: MutableState<Month>,
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
     // VIEWMODEL
-    /* val viewModel: IncomeViewModel = getViewModel()
-     val state: IncomeState = viewModel.uiState.collectAsState().value*/
+    val viewModel: IncomeViewModel = getViewModel()
+    val state: MainState = viewModel.uiState.collectAsState().value
 
 
     // COMPOSABLES (UI)
+    state.currentScreen = Incomes
 
     CommonUI(
         navController = navController,
-        currentScreen = Incomes,
+        currentScreen = state.currentScreen,
         drawerState = drawerState,
         scope = scope
-    ) {innerPadding ->
+    ) { innerPadding ->
         Column(modifier.padding(innerPadding)) {
             IncomeScreen(
-                currentMonth = currentMonth,
+                currentMonth = state.currentMonth,
                 navController = navController,
                 incomeScreen = Main,
+                viewModel = viewModel
             )
         }
     }
@@ -74,7 +66,9 @@ fun IncomeScreen(
     currentMonth: MutableState<Month>,
     navController: NavHostController,
     incomeScreen: MainComposeDestination,
-) {
+    viewModel: IncomeViewModel,
+
+    ) {
 
     LazyColumn {
         item {
@@ -86,7 +80,8 @@ fun IncomeScreen(
                 IncomeCard(
                     navController = navController,
                     currentMonth = currentMonth,
-                    incomeScreen = incomeScreen
+                    incomeScreen = incomeScreen,
+                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.incomesList)
                 )
                 val addScreen = AddIncome
                 AddButton(
@@ -98,6 +93,7 @@ fun IncomeScreen(
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun IncomeScreenPreview() {

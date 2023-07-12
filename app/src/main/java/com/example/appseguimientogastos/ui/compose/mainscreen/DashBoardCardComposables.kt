@@ -47,6 +47,7 @@ import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.data.getCurrentMonth
 import com.example.appseguimientogastos.ui.data.getPreviouMonth
 import com.example.appseguimientogastos.ui.data.monthList
+import com.example.appseguimientogastos.ui.view_model.MainViewModel
 import com.example.compose.AppSeguimientoGastosTheme
 import com.example.compose.md_theme_light_Ahorro
 import com.example.compose.md_theme_light_gastos
@@ -57,8 +58,14 @@ import com.example.compose.md_theme_light_ingreso
  * */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashBoardCard(modifier: Modifier = Modifier, currentMonth: MutableState<Month>) {
+fun DashBoardCard(
+    modifier: Modifier = Modifier,
+    currentMonth: MutableState<Month>,
+    viewModel: MainViewModel
+) {
 
+
+    //UI
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
@@ -72,7 +79,7 @@ fun DashBoardCard(modifier: Modifier = Modifier, currentMonth: MutableState<Mont
         TitleDashBoardComposable()
 
         //Content
-        ContentDashBoardComposable(currentMonth = currentMonth)
+        ContentDashBoardComposable(currentMonth = currentMonth, viewModel = viewModel)
     }
 }
 
@@ -232,8 +239,12 @@ fun FilterChipsComposables(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentDashBoardComposable(modifier: Modifier = Modifier, currentMonth: MutableState<Month>) {
-    val progressList: List<Float> = listOf(0.2f, 0.4f, 0.4f)
+fun ContentDashBoardComposable(
+    modifier: Modifier = Modifier,
+    currentMonth: MutableState<Month>,
+    viewModel: MainViewModel
+) {
+    val progressList: List<Float> = viewModel.computeProgress(currentMonth)
     val colorList = listOf(
         md_theme_light_ingreso,
         md_theme_light_gastos,
@@ -363,7 +374,7 @@ fun InfoProgressbar(
                         start = dimensionResource(id = R.dimen.default_normalpadding),
                         end = dimensionResource(id = R.dimen.default_normalpadding)
                     ),
-                    text = "xx% " + stringResource(id = titleList[index]),
+                    text = progressList[index].toString()+"% " + stringResource(id = titleList[index]),
                     style = MaterialTheme.typography.displaySmall
 
                 )
@@ -394,46 +405,6 @@ fun MonthListPickerComposablePreview() {
 
                 }
 
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun DashBoardComposablePreview() {
-    AppSeguimientoGastosTheme {
-        Surface(
-        ) {
-            Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
-
-            ) {
-                val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
-
-                DashBoardCard(Modifier, currentMonth)
-
-            }
-        }
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun DashBoardComposableDarkPreview() {
-    AppSeguimientoGastosTheme {
-        Surface(
-        ) {
-            Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
-
-            ) {
-                val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
-
-                DashBoardCard(Modifier, currentMonth)
             }
         }
     }

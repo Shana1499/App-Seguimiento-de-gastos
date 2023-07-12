@@ -39,12 +39,11 @@ fun MainComposeApp(
     startDestination: String = Main.route,
 ) {
     AppSeguimientoGastosTheme {
-        // hay que poner aqui MainComposeNavHost
-        // list of nav screens + icons
-        val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
+
+
 
         MainComposeNavHost(
             navController = navController,
@@ -53,7 +52,6 @@ fun MainComposeApp(
 
             composable(route = Main.route) {
                 MainScreenComposable(
-                    currentMonth = currentMonth,
                     navController = navController,
                     drawerState = drawerState,
                     scope = scope
@@ -61,21 +59,18 @@ fun MainComposeApp(
             }
             composable(route = Incomes.route) {
                 IncomeScreenComposable(
-                    currentMonth = currentMonth,
                     navController = navController, drawerState = drawerState,
                     scope = scope
                 )
             }
             composable(route = Expenses.route) {
                 ExpensesScreenComposable(
-                    currentMonth = currentMonth,
                     navController = navController, drawerState = drawerState,
                     scope = scope
                 )
             }
             composable(route = Savings.route) {
                 SavingsScreenComposable(
-                    currentMonth = currentMonth,
                     navController = navController, drawerState = drawerState,
                     scope = scope
                 )
@@ -83,7 +78,6 @@ fun MainComposeApp(
 
             composable(route = AddIncome.route) {
                 AddIncomeScreenComposable(
-                    currentMonth = currentMonth,
                     navController = navController,
                     drawerState = drawerState,
                     scope = scope
@@ -91,7 +85,6 @@ fun MainComposeApp(
             }
             composable(route = AddExpenses.route) {
                 AddExpenseScreenComposable(
-                    currentMonth = currentMonth,
                     navController = navController,
                     drawerState = drawerState,
                     scope = scope
@@ -99,7 +92,6 @@ fun MainComposeApp(
             }
             composable(route = AddSavings.route) {
                 AddSavingScreenComposable(
-                    currentMonth = currentMonth,
                     navController = navController,
                     drawerState = drawerState,
                     scope = scope

@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,10 +45,12 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.data.getCurrentMonth
 import com.example.appseguimientogastos.ui.data.item.local.Type
+import com.example.appseguimientogastos.ui.data.month
 import com.example.appseguimientogastos.ui.data.monthList
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.navigation.tabRowScreens
-import com.example.appseguimientogastos.ui.view_model.BaseViewModel
+import com.example.appseguimientogastos.ui.view_model.AddViewModel
+import com.example.appseguimientogastos.ui.view_model.MainState
 import com.example.compose.AppSeguimientoGastosTheme
 import org.koin.androidx.compose.getViewModel
 
@@ -62,13 +65,17 @@ fun AddScreen(
     navController: NavHostController,
 ) {
     // VIEWMODEL
-    //val viewModel: BaseViewModel = getViewModel()
-    //val state: MainState = viewModel.uiState.collectAsState().value
+    val viewModel: AddViewModel = getViewModel()
+    val state: MainState = viewModel.uiState.collectAsState().value
+
+
+    var showDialog by remember { mutableStateOf(false) }
+    val selectedMonthText by remember { mutableStateOf(currentMonth) }
+
 
     var origin by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
-    var month by remember { mutableStateOf("") }
-
+    var month by remember { mutableStateOf(selectedMonthText.value.name) }
     //UI
 
     Card(modifier = modifier.padding(bottom = dimensionResource(id = R.dimen.default_normalpadding))) {
@@ -101,15 +108,13 @@ fun AddScreen(
             )
 
             Row() {
-                var showDialog by remember { mutableStateOf(false) }
-                var selectedMonthText by remember { mutableStateOf(currentMonth.value) }
 
                 Column {
                     Text(text = "Selecciona un mes:")
 
                     FilterChip(
                         label = {
-                            Text(text = selectedMonthText.name)
+                            Text(text = selectedMonthText.value.name)
                         },
                         selected = true,
                         onClick = { showDialog = !showDialog },
@@ -133,7 +138,7 @@ fun AddScreen(
                             DropdownMenuItem(
                                 text = { Text(monthSelected.name) },
                                 onClick = {
-                                    selectedMonthText = monthSelected
+                                    selectedMonthText.value = monthSelected
                                     currentMonth.value = monthSelected
                                     month = monthSelected.name
                                     showDialog = false
@@ -153,7 +158,12 @@ fun AddScreen(
         }
         CancelAddButtons(
             newScreen = newScreen,
-            navController = navController
+            navController = navController,
+            viewModel = viewModel,
+            type=currentType,
+            origin=origin,
+            price=price,
+            month = month
         )
 
     }
@@ -165,6 +175,11 @@ fun CancelAddButtons(
     modifier: Modifier = Modifier,
     newScreen: MainComposeDestination,
     navController: NavHostController,
+    viewModel: AddViewModel,
+    type: Type,
+    origin: String,
+    price: String,
+    month: String,
 
     ) {
     Box(
@@ -181,6 +196,7 @@ fun CancelAddButtons(
                 modifier = modifier,
                 screen = newScreen,
                 onTabSelected = { newScreenSample ->
+                    viewModel.addItem(origin=origin, price = price, month = month, type =type)
                     navController.navigateSingleTopTo(
                         newScreenSample.route
                     )
@@ -206,7 +222,9 @@ fun AddItemButton(
 
 ) {
     Button(
-        onClick = { onTabSelected(screen) }, modifier = modifier.padding(
+        onClick = {
+            onTabSelected(screen)
+        }, modifier = modifier.padding(
             end = dimensionResource(id = R.dimen.default_smallpadding)
         )
     ) {

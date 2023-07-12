@@ -22,35 +22,10 @@ fun ExpensesCard(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
     navController: NavHostController, expensesScreen: MainComposeDestination,
+    listItemData: List<ItemVO>,
 
     ) {
-    val listIncomes = listOf<ItemVO>(
-        ItemVO(
-            id = 0,
-            origin = "prueba1Expenses",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba2Expenses",
-            price = 14.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba3Expenses",
-            price = 16.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba4Expenses",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[0].name
-        )
-    )
+
 
     OverviewCard(
         modifier,
@@ -58,7 +33,7 @@ fun ExpensesCard(
         currentMonth,
         expensesScreen,
         navController,
-        listIncomes,
+        listItemData,
     )
 
 }
