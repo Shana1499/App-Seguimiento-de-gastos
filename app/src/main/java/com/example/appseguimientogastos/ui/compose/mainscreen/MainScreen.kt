@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,36 +25,43 @@ import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.ui.navigation.Savings
+import com.example.appseguimientogastos.ui.view_model.MainState
+import com.example.appseguimientogastos.ui.view_model.MainViewModelItem
 import kotlinx.coroutines.CoroutineScope
+import org.koin.androidx.compose.getViewModel
 
 
 @Composable
 fun MainScreenComposable(
     modifier: Modifier = Modifier,
-    currentMonth: MutableState<Month>,
     navController: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
 ) {
     // VIEWMODEL
-    /*val viewModel: BaseViewModel = getViewModel()
-    val state: MainState = viewModel.uiState.collectAsState().value*/
+    val viewModel: MainViewModelItem = getViewModel()
+    val state: MainState = viewModel.uiState.collectAsState().value
+
+    val data = viewModel.myItems.observeAsState()
 
     // COMPOSABLES (UI)
 
+    state.currentScreen=Main
+
     CommonUI(
         navController = navController,
-        currentScreen = Main,
+        currentScreen = state.currentScreen,
         drawerState = drawerState,
         scope = scope
     ) { innerPadding ->
         Column(modifier.padding(innerPadding)) {
             MainScreen(
-                currentMonth = currentMonth,
+                currentMonth = state.currentMonth,
                 navController = navController,
                 incomeScreen = Incomes,
                 expensesScreen = Expenses,
-                savingsScreen = Savings
+                savingsScreen = Savings,
+                viewModel=viewModel
             )
         }
 
@@ -68,6 +77,7 @@ fun MainScreen(
     incomeScreen: MainComposeDestination,
     expensesScreen: MainComposeDestination,
     savingsScreen: MainComposeDestination,
+    viewModel: MainViewModelItem,
 ) {
     LazyColumn {
         item {
@@ -75,23 +85,28 @@ fun MainScreen(
                 modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
 
             ) {
-                DashBoardCard(currentMonth = currentMonth)
+                DashBoardCard(currentMonth = currentMonth, viewModel = viewModel)
                 IncomeCard(
                     modifier = modifier,
                     currentMonth = currentMonth, navController = navController,
-                    incomeScreen = incomeScreen
+                    incomeScreen = incomeScreen,
+                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.incomesList)
                 )
                 ExpensesCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
                     navController = navController,
-                    expensesScreen = expensesScreen
+                    expensesScreen = expensesScreen,
+                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.expensesList)
+
                 )
                 SavingsCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
                     navController = navController,
-                    savingsScreen = savingsScreen
+                    savingsScreen = savingsScreen,
+                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.savingsList)
+
                 )
             }
         }

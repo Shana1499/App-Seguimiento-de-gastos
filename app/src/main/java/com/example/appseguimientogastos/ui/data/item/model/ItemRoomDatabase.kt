@@ -31,7 +31,7 @@ abstract class AppDatabase : RoomDatabase() {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java, "jetpack"
+                    AppDatabase::class.java, databaseName
                 )
                     .build()
                 INSTANCE = instance

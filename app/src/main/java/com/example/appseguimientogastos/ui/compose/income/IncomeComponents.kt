@@ -10,8 +10,6 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.compose.components.OverviewCard
 import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.data.item.local.ItemVO
-import com.example.appseguimientogastos.ui.data.item.local.Type
-import com.example.appseguimientogastos.ui.data.monthList
 
 
 /**
@@ -24,43 +22,16 @@ fun IncomeCard(
     navController: NavHostController,
     currentMonth: MutableState<Month>,
     incomeScreen: MainComposeDestination,
-) {
+    listItemData: MutableList<ItemVO>,
 
-    val listIncomes = listOf<ItemVO>(
-        ItemVO(
-            id = 0,
-            origin = "prueba1Incomes",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba2Incomes",
-            price = 14.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba3Incomes",
-            price = 16.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ),
-        ItemVO(
-            id = 0,
-            origin = "prueba4Incomes",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[0].name
-        )
-    )
+    ) {
 
     OverviewCard(
-        modifier = modifier,
-        title = stringResource(R.string.ingresos),
-        currentMonth = currentMonth,
-        newScreen = incomeScreen, navController = navController,
-        listItemData=listIncomes
-    )
+            modifier = modifier,
+            title = stringResource(R.string.ingresos),
+            currentMonth = currentMonth,
+            newScreen = incomeScreen, navController = navController,
+            listItemData=listItemData
+        )
 
 }

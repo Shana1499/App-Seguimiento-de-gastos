@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.navigation.NavHostController
@@ -15,39 +16,40 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.ui.compose.expenses.ExpensesScreen
 import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.Savings
+import com.example.appseguimientogastos.ui.view_model.MainState
+import com.example.appseguimientogastos.ui.view_model.SavingsViewModelItem
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SavingsScreenComposable(
     modifier: Modifier = Modifier,
-    currentMonth: MutableState<Month>,
     navController: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
 ) {
     // VIEWMODEL
-    /*val viewModel: MainViewModel = getViewModel()
-    val state: MainState = viewModel.uiState.collectAsState().value*/
+    val viewModel: SavingsViewModelItem = getViewModel()
+    val state: MainState = viewModel.uiState.collectAsState().value
 
     // COMPOSABLES (UI)
+    state.currentScreen = Savings
 
     CommonUI(
         navController = navController,
-        currentScreen = Savings,
+        currentScreen = state.currentScreen,
         drawerState = drawerState,
         scope = scope
     ) { innerPadding ->
         Column(modifier.padding(innerPadding)) {
             SavingsScreen(
-                currentMonth = currentMonth,
+                currentMonth = state.currentMonth,
                 navController = navController,
                 savingsScreen = Main,
+                viewModel = viewModel
             )
         }
     }
@@ -58,12 +60,8 @@ fun SavingsScreen(
     currentMonth: MutableState<Month>,
     navController: NavHostController,
     savingsScreen: MainComposeDestination,
+    viewModel: SavingsViewModelItem,
 ) {
-    // VIEWMODEL
-    /*val viewModel: IncomeViewModel = getViewModel()
-    val state: IncomeState = viewModel.uiState.collectAsState().value*/
-
-
     // COMPOSABLES (UI)
 
     LazyColumn {
@@ -76,7 +74,8 @@ fun SavingsScreen(
                 SavingsCard(
                     navController = navController,
                     currentMonth = currentMonth,
-                    savingsScreen = savingsScreen
+                    savingsScreen = savingsScreen,
+                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.savingsList)
                 )
                 val addScreen= AddSavings
                 AddButton(
