@@ -1,6 +1,5 @@
 package com.example.appseguimientogastos.ui.compose.mainscreen
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,7 +46,7 @@ import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.data.getCurrentMonth
 import com.example.appseguimientogastos.ui.data.getPreviouMonth
 import com.example.appseguimientogastos.ui.data.monthList
-import com.example.appseguimientogastos.ui.view_model.MainViewModel
+import com.example.appseguimientogastos.ui.view_model.MainViewModelItem
 import com.example.compose.AppSeguimientoGastosTheme
 import com.example.compose.md_theme_light_Ahorro
 import com.example.compose.md_theme_light_gastos
@@ -61,7 +60,7 @@ import com.example.compose.md_theme_light_ingreso
 fun DashBoardCard(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
-    viewModel: MainViewModel
+    viewModel: MainViewModelItem
 ) {
 
 
@@ -242,9 +241,9 @@ fun FilterChipsComposables(
 fun ContentDashBoardComposable(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
-    viewModel: MainViewModel
+    viewModel: MainViewModelItem
 ) {
-    val progressList: List<Float> = viewModel.computeProgress(currentMonth)
+    val progressList: List<Float> = viewModel.computeProgress(currentMonth=currentMonth)
     val colorList = listOf(
         md_theme_light_ingreso,
         md_theme_light_gastos,

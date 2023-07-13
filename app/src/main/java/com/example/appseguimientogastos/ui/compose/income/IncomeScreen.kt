@@ -22,7 +22,7 @@ import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.navigation.Incomes
-import com.example.appseguimientogastos.ui.view_model.IncomeViewModel
+import com.example.appseguimientogastos.ui.view_model.IncomeViewModelItem
 import com.example.appseguimientogastos.ui.view_model.MainState
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
@@ -35,7 +35,7 @@ fun IncomeScreenComposable(
     scope: CoroutineScope
 ) {
     // VIEWMODEL
-    val viewModel: IncomeViewModel = getViewModel()
+    val viewModel: IncomeViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
 
 
@@ -66,7 +66,7 @@ fun IncomeScreen(
     currentMonth: MutableState<Month>,
     navController: NavHostController,
     incomeScreen: MainComposeDestination,
-    viewModel: IncomeViewModel,
+    viewModel: IncomeViewModelItem,
 
     ) {
 

@@ -2,16 +2,16 @@ package com.example.appseguimientogastos.ui.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.appseguimientogastos.ui.data.item.local.ItemVO
+import com.example.appseguimientogastos.ui.data.ItemsRepository
 import com.example.appseguimientogastos.ui.data.item.model.ItemDao
-import com.example.appseguimientogastos.ui.data.month
-import com.example.appseguimientogastos.ui.view_model.utils.BaseViewModel
+import com.example.appseguimientogastos.ui.view_model.utils.ItemBaseViewModel
 import com.example.appseguimientogastos.ui.view_model.utils.CoroutinesUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class AddViewModel(itemDao: ItemDao) : BaseViewModel(itemDao) {
+class AddViewModelItem(itemsRepository: ItemsRepository) :
+    ItemBaseViewModel(itemsRepository = itemsRepository) {
 
     private val coroutinesUtils = CoroutinesUtils()
 
@@ -23,11 +23,3 @@ class AddViewModel(itemDao: ItemDao) : BaseViewModel(itemDao) {
 
 }
 
-class AddViewModelFactory(private val itemDao: ItemDao) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(BaseViewModel::class.java)) {
-            return AddViewModel(itemDao) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

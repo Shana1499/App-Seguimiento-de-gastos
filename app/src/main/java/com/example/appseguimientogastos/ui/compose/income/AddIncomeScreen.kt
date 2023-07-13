@@ -15,15 +15,12 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.compose.components.AddScreen
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.ui.compose.expenses.AddExpensesScreen
 import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.data.item.local.Type
 import com.example.appseguimientogastos.ui.navigation.AddIncome
-import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.Incomes
-import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
-import com.example.appseguimientogastos.ui.view_model.AddViewModel
+import com.example.appseguimientogastos.ui.view_model.AddViewModelItem
 import com.example.appseguimientogastos.ui.view_model.MainState
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
@@ -36,7 +33,7 @@ fun AddIncomeScreenComposable(
     scope: CoroutineScope,
 ) {
     // VIEWMODEL
-    val viewModel: AddViewModel = getViewModel()
+    val viewModel: AddViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
 
     // COMPOSABLES (UI)

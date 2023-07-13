@@ -1,20 +1,22 @@
 package com.example.appseguimientogastos.ui.view_model.utils
 
-import android.content.ClipData
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.example.appseguimientogastos.ui.data.ItemsRepository
 import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.data.item.local.ItemVO
 import com.example.appseguimientogastos.ui.data.item.local.Type
-import com.example.appseguimientogastos.ui.data.item.model.ItemDao
 
-open class BaseViewModel(private val itemDao: ItemDao) : ViewModel() {
+//en lugar de pasar itemdao pasar repository
 
-    val myItems: LiveData<List<ItemVO>>  = itemDao.getAll()
 
+open class ItemBaseViewModel(
+    protected val itemsRepository: ItemsRepository,
+) : ViewModel() {
     private val coroutinesUtils = CoroutinesUtils()
+
+    val myItems: LiveData<List<ItemVO>> = itemsRepository.readAllItems
 
     fun getItemByMonthList(
         currentMonth: MutableState<Month>,
@@ -32,6 +34,7 @@ open class BaseViewModel(private val itemDao: ItemDao) : ViewModel() {
 
 
     }
+
     fun getItemByTypeList(type: Type): MutableList<ItemVO> {
         val itemList = mutableListOf<ItemVO>()
         coroutinesUtils.runMain {
@@ -45,7 +48,6 @@ open class BaseViewModel(private val itemDao: ItemDao) : ViewModel() {
     }
 
 
-
     fun addItem(origin: String, price: String, month: String, type: Type) {
         val newitem = ItemVO(
             origin = origin,
@@ -54,34 +56,25 @@ open class BaseViewModel(private val itemDao: ItemDao) : ViewModel() {
             type = type.typeName
         )
         coroutinesUtils.runBG {
-            itemDao.insert(newitem)
+            itemsRepository.addItem(item = newitem)
         }
 
     }
 
     fun getItem(itemId: Int): LiveData<ItemVO> {
-        return itemDao.getItem(id = itemId)
+        return itemsRepository.getItem(id = itemId)
     }
 
     fun updateItem(item: ItemVO) {
         coroutinesUtils.runBG {
-            itemDao.update(item)
+            itemsRepository.update(item)
         }
     }
 
     fun deleteItem(item: ItemVO) {
         coroutinesUtils.runBG {
-            itemDao.delete(item)
+            itemsRepository.delete(item)
         }
     }
 
-}
-
-class BaseViewModelFactory(private val itemDao: ItemDao) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(BaseViewModel::class.java)) {
-            return BaseViewModel(itemDao) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 }

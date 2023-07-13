@@ -45,11 +45,10 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.data.getCurrentMonth
 import com.example.appseguimientogastos.ui.data.item.local.Type
-import com.example.appseguimientogastos.ui.data.month
 import com.example.appseguimientogastos.ui.data.monthList
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.navigation.tabRowScreens
-import com.example.appseguimientogastos.ui.view_model.AddViewModel
+import com.example.appseguimientogastos.ui.view_model.AddViewModelItem
 import com.example.appseguimientogastos.ui.view_model.MainState
 import com.example.compose.AppSeguimientoGastosTheme
 import org.koin.androidx.compose.getViewModel
@@ -65,7 +64,7 @@ fun AddScreen(
     navController: NavHostController,
 ) {
     // VIEWMODEL
-    val viewModel: AddViewModel = getViewModel()
+    val viewModel: AddViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
 
 
@@ -175,7 +174,7 @@ fun CancelAddButtons(
     modifier: Modifier = Modifier,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    viewModel: AddViewModel,
+    viewModel: AddViewModelItem,
     type: Type,
     origin: String,
     price: String,

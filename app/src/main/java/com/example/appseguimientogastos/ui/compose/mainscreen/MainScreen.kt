@@ -8,6 +8,7 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +26,7 @@ import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.ui.navigation.Savings
 import com.example.appseguimientogastos.ui.view_model.MainState
-import com.example.appseguimientogastos.ui.view_model.MainViewModel
+import com.example.appseguimientogastos.ui.view_model.MainViewModelItem
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
 
@@ -38,10 +39,10 @@ fun MainScreenComposable(
     scope: CoroutineScope,
 ) {
     // VIEWMODEL
-    val viewModel: MainViewModel = getViewModel()
+    val viewModel: MainViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
 
-    viewModel.myItems
+    val data = viewModel.myItems.observeAsState()
 
     // COMPOSABLES (UI)
 
@@ -76,7 +77,7 @@ fun MainScreen(
     incomeScreen: MainComposeDestination,
     expensesScreen: MainComposeDestination,
     savingsScreen: MainComposeDestination,
-    viewModel: MainViewModel,
+    viewModel: MainViewModelItem,
 ) {
     LazyColumn {
         item {
@@ -89,7 +90,7 @@ fun MainScreen(
                     modifier = modifier,
                     currentMonth = currentMonth, navController = navController,
                     incomeScreen = incomeScreen,
-                    listItemData = viewModel.incomesList
+                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.incomesList)
                 )
                 ExpensesCard(
                     modifier = modifier,

@@ -3,17 +3,18 @@ package com.example.appseguimientogastos.ui.view_model
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.appseguimientogastos.ui.data.ItemsRepository
 import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.item.local.ItemVO
 import com.example.appseguimientogastos.ui.data.item.local.Type
 import com.example.appseguimientogastos.ui.data.item.model.ItemDao
-import com.example.appseguimientogastos.ui.view_model.utils.BaseViewModel
+import com.example.appseguimientogastos.ui.view_model.utils.ItemBaseViewModel
 import com.example.appseguimientogastos.ui.view_model.utils.CoroutinesUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class MainViewModel(itemDao: ItemDao) : BaseViewModel(itemDao) {
+class MainViewModelItem(itemsRepository: ItemsRepository) :
+    ItemBaseViewModel(itemsRepository = itemsRepository) {
 
     private val coroutinesUtils = CoroutinesUtils()
 
@@ -26,8 +27,10 @@ class MainViewModel(itemDao: ItemDao) : BaseViewModel(itemDao) {
     val savingsList = getItemByTypeList(Type.SAVINGS)
 
     fun computeProgress(
-        currentMonth: MutableState<Month>
+        currentMonth: MutableState<Month>,
     ): List<Float> {
+
+
         val newProgressList = mutableListOf<Float>()
 
         val totalIncomes = getItemByMonthList(currentMonth, incomesList).sumOf { it.price }
@@ -49,13 +52,4 @@ class MainViewModel(itemDao: ItemDao) : BaseViewModel(itemDao) {
     }
 
 
-}
-
-class MainViewModelFactory(private val itemDao: ItemDao) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(BaseViewModel::class.java)) {
-            return MainViewModel(itemDao) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 }

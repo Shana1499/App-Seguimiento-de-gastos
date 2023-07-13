@@ -20,7 +20,7 @@ import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.Savings
 import com.example.appseguimientogastos.ui.view_model.MainState
-import com.example.appseguimientogastos.ui.view_model.SavingsViewModel
+import com.example.appseguimientogastos.ui.view_model.SavingsViewModelItem
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
 
@@ -32,7 +32,7 @@ fun SavingsScreenComposable(
     scope: CoroutineScope,
 ) {
     // VIEWMODEL
-    val viewModel: SavingsViewModel = getViewModel()
+    val viewModel: SavingsViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
 
     // COMPOSABLES (UI)
@@ -60,7 +60,7 @@ fun SavingsScreen(
     currentMonth: MutableState<Month>,
     navController: NavHostController,
     savingsScreen: MainComposeDestination,
-    viewModel: SavingsViewModel,
+    viewModel: SavingsViewModelItem,
 ) {
     // COMPOSABLES (UI)
 

@@ -19,7 +19,7 @@ import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.data.Month
 import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.Main
-import com.example.appseguimientogastos.ui.view_model.ExpenseViewModel
+import com.example.appseguimientogastos.ui.view_model.ExpenseViewModelItem
 import com.example.appseguimientogastos.ui.view_model.MainState
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
@@ -32,7 +32,7 @@ fun ExpensesScreenComposable(
     scope: CoroutineScope,
 ) {
     // VIEWMODEL
-    val viewModel: ExpenseViewModel = getViewModel()
+    val viewModel: ExpenseViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
 
     // COMPOSABLES (UI)
@@ -62,7 +62,7 @@ fun ExpensesScreen(
     currentMonth: MutableState<Month>,
     navController: NavHostController,
     expensesScreen: MainComposeDestination,
-    viewModel: ExpenseViewModel,
+    viewModel: ExpenseViewModelItem,
 ) {
 
     // COMPOSABLES (UI)
