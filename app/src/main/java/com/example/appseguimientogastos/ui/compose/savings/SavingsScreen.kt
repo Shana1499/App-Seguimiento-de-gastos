@@ -16,9 +16,11 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.Savings
+import com.example.appseguimientogastos.ui.view_model.BaseState
 import com.example.appseguimientogastos.ui.view_model.MainState
 import com.example.appseguimientogastos.ui.view_model.SavingsViewModelItem
 import kotlinx.coroutines.CoroutineScope
@@ -34,13 +36,14 @@ fun SavingsScreenComposable(
     // VIEWMODEL
     val viewModel: SavingsViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
+    val basestate: BaseState = viewModel.baseState.collectAsState().value
 
     // COMPOSABLES (UI)
-    state.currentScreen = Savings
+    val currentScreen = Savings
 
     CommonUI(
         navController = navController,
-        currentScreen = state.currentScreen,
+        currentScreen = currentScreen,
         drawerState = drawerState,
         scope = scope
     ) { innerPadding ->
@@ -49,7 +52,7 @@ fun SavingsScreenComposable(
                 currentMonth = state.currentMonth,
                 navController = navController,
                 savingsScreen = Main,
-                viewModel = viewModel
+                listData = state.savingsListByMonth
             )
         }
     }
@@ -60,7 +63,7 @@ fun SavingsScreen(
     currentMonth: MutableState<Month>,
     navController: NavHostController,
     savingsScreen: MainComposeDestination,
-    viewModel: SavingsViewModelItem,
+    listData: List<Item>,
 ) {
     // COMPOSABLES (UI)
 
@@ -75,7 +78,7 @@ fun SavingsScreen(
                     navController = navController,
                     currentMonth = currentMonth,
                     savingsScreen = savingsScreen,
-                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.savingsList)
+                    listItemData = listData
                 )
                 val addScreen= AddSavings
                 AddButton(

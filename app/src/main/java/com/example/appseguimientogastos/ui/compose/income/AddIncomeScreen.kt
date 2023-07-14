@@ -15,12 +15,13 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.compose.components.AddScreen
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.item.local.Type
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.navigation.AddIncome
 import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.ui.view_model.AddViewModelItem
+import com.example.appseguimientogastos.ui.view_model.BaseState
 import com.example.appseguimientogastos.ui.view_model.MainState
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
@@ -35,13 +36,14 @@ fun AddIncomeScreenComposable(
     // VIEWMODEL
     val viewModel: AddViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
+    val basestate: BaseState = viewModel.baseState.collectAsState().value
 
     // COMPOSABLES (UI)
-    state.currentScreen = AddIncome
+    val currentScreen = AddIncome
 
     CommonUI(
         navController = navController,
-        currentScreen = state.currentScreen,
+        currentScreen = currentScreen,
         drawerState = drawerState,
         scope = scope
     ) { innerPadding ->
@@ -50,6 +52,7 @@ fun AddIncomeScreenComposable(
                 currentMonth = state.currentMonth,
                 newScreen = Incomes,
                 navController = navController,
+                onAddItem = viewModel::onAddItem
             )
         }
     }
@@ -61,7 +64,8 @@ fun AddIncomeScreen(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
-    navController: NavHostController
+    navController: NavHostController,
+    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit
 ) {
 
     AddScreen(
@@ -70,7 +74,8 @@ fun AddIncomeScreen(
         currentType = Type.INCOMES,
         stringResource(R.string.add_incomes),
         newScreen = newScreen,
-        navController = navController
+        navController = navController,
+        onAddItem= onAddItem
     )
 
 }

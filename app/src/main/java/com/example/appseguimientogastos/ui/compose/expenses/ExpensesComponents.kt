@@ -7,10 +7,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.item.local.ItemVO
-import com.example.appseguimientogastos.ui.data.item.local.Type
-import com.example.appseguimientogastos.ui.data.monthList
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.compose.components.OverviewCard
 
 
@@ -22,7 +20,7 @@ fun ExpensesCard(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
     navController: NavHostController, expensesScreen: MainComposeDestination,
-    listItemData: List<ItemVO>,
+    listItemData: List<Item>,
 
     ) {
 

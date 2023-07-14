@@ -16,9 +16,11 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.Main
+import com.example.appseguimientogastos.ui.view_model.BaseState
 import com.example.appseguimientogastos.ui.view_model.ExpenseViewModelItem
 import com.example.appseguimientogastos.ui.view_model.MainState
 import kotlinx.coroutines.CoroutineScope
@@ -34,14 +36,15 @@ fun ExpensesScreenComposable(
     // VIEWMODEL
     val viewModel: ExpenseViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
+    val basestate: BaseState = viewModel.baseState.collectAsState().value
 
     // COMPOSABLES (UI)
 
-    state.currentScreen=Expenses
+    val currentScreen=Expenses
 
     CommonUI(
         navController = navController,
-        currentScreen = state.currentScreen,
+        currentScreen = currentScreen,
         drawerState = drawerState,
         scope = scope
     ) { innerPadding ->
@@ -50,7 +53,7 @@ fun ExpensesScreenComposable(
                 currentMonth = state.currentMonth,
                 navController = navController,
                 expensesScreen = Main,
-                viewModel = viewModel
+                listData = state.expensesListByMonth
             )
         }
     }
@@ -62,7 +65,7 @@ fun ExpensesScreen(
     currentMonth: MutableState<Month>,
     navController: NavHostController,
     expensesScreen: MainComposeDestination,
-    viewModel: ExpenseViewModelItem,
+    listData: List<Item>,
 ) {
 
     // COMPOSABLES (UI)
@@ -76,7 +79,7 @@ fun ExpensesScreen(
                     currentMonth = currentMonth,
                     navController = navController,
                     expensesScreen = expensesScreen,
-                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.expenseList)
+                    listItemData = listData
                 )
                 val addScreen= AddExpenses
                 AddButton(

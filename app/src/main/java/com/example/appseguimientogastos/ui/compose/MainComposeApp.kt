@@ -4,14 +4,10 @@ import android.content.res.Configuration
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.appseguimientogastos.ui.compose.expenses.AddExpenseScreenComposable
 import com.example.appseguimientogastos.ui.compose.expenses.ExpensesScreenComposable
@@ -20,7 +16,6 @@ import com.example.appseguimientogastos.ui.compose.income.IncomeScreenComposable
 import com.example.appseguimientogastos.ui.compose.mainscreen.MainScreenComposable
 import com.example.appseguimientogastos.ui.compose.savings.AddSavingScreenComposable
 import com.example.appseguimientogastos.ui.compose.savings.SavingsScreenComposable
-import com.example.appseguimientogastos.ui.data.getCurrentMonth
 import com.example.appseguimientogastos.ui.navigation.AddExpenses
 import com.example.appseguimientogastos.ui.navigation.AddIncome
 import com.example.appseguimientogastos.ui.navigation.AddSavings
@@ -29,7 +24,6 @@ import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeNavHost
 import com.example.appseguimientogastos.ui.navigation.Savings
-import com.example.appseguimientogastos.ui.navigation.tabRowScreens
 import com.example.compose.AppSeguimientoGastosTheme
 
 

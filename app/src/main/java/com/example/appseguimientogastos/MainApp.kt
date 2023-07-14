@@ -1,14 +1,19 @@
 package com.example.appseguimientogastos
 
 import android.app.Application
-import com.example.appseguimientogastos.ui.data.ItemsRepository
-import com.example.appseguimientogastos.ui.data.item.model.AppDatabase
+import android.content.Context
+import com.example.appseguimientogastos.data.ItemsRepositoryImpl
+import com.example.appseguimientogastos.data.data_source.Database
+import com.example.appseguimientogastos.data.data_source.DatabaseImpl
+import com.example.appseguimientogastos.data.data_source.Local
+import com.example.appseguimientogastos.data.data_source.LocalImpl
+import com.example.appseguimientogastos.domain.ItemsRepository
 import com.example.appseguimientogastos.ui.view_model.AddViewModelItem
 import com.example.appseguimientogastos.ui.view_model.ExpenseViewModelItem
 import com.example.appseguimientogastos.ui.view_model.IncomeViewModelItem
-import com.example.appseguimientogastos.ui.view_model.utils.ItemBaseViewModel
 import com.example.appseguimientogastos.ui.view_model.MainViewModelItem
 import com.example.appseguimientogastos.ui.view_model.SavingsViewModelItem
+import com.example.appseguimientogastos.ui.view_model.utils.ItemBaseViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -23,14 +28,15 @@ class MainApp : Application() {
     }
 
     val appModule = module {
-        // Define a singleton instance of AppDatabase
-        single { AppDatabase.getInstance(androidContext()) }
 
-        // Define a singleton instance of ItemDao
-        single { get<AppDatabase>().itemDao() }
+        single<Context> { this@MainApp }
 
+        single<Database> { DatabaseImpl(get()) }
+
+        single<Local> { LocalImpl(get()) }
         // Define a singleton instance of ItemsRepository
-        single { ItemsRepository(get()) }
+        single<ItemsRepository> { ItemsRepositoryImpl(get()) }
+
 
         // Define ViewModel instances
         viewModel { ItemBaseViewModel(get()) }

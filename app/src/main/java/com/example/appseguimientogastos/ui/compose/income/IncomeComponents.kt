@@ -8,8 +8,8 @@ import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.ui.compose.components.OverviewCard
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.item.local.ItemVO
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Item
 
 
 /**
@@ -22,7 +22,7 @@ fun IncomeCard(
     navController: NavHostController,
     currentMonth: MutableState<Month>,
     incomeScreen: MainComposeDestination,
-    listItemData: MutableList<ItemVO>,
+    listItemData: List<Item>,
 
     ) {
 

@@ -31,11 +31,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.item.local.ItemVO
-import com.example.appseguimientogastos.ui.data.item.local.getFormattedPrice
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Item
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 
 
@@ -67,7 +66,7 @@ fun DividerComposable(modifier: Modifier = Modifier) {
 
 @Composable
 fun ContentSummaryComposable(
-    modifier: Modifier = Modifier, listItemData: List<ItemVO>, currentMonth: MutableState<Month>,
+    modifier: Modifier = Modifier, listItemData: List<Item>, currentMonth: MutableState<Month>,
 ) {
     var expanded by remember {
         mutableStateOf(false)
@@ -88,7 +87,7 @@ fun ContentSummaryComposable(
         }
     }
 
-    val newList = mutableListOf<ItemVO>()
+    val newList = mutableListOf<Item>()
     listItemData.forEach { item ->
         if (item.month == currentMonth.value.name) {
             newList.add(item)
@@ -132,7 +131,7 @@ fun OverviewCard(
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    listItemData: List<ItemVO>,
+    listItemData: List<Item>,
 ) {
 
     ElevatedCard(

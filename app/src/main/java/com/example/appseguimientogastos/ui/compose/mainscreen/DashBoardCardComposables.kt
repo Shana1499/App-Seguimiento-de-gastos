@@ -42,11 +42,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.getCurrentMonth
-import com.example.appseguimientogastos.ui.data.getPreviouMonth
-import com.example.appseguimientogastos.ui.data.monthList
-import com.example.appseguimientogastos.ui.view_model.MainViewModelItem
+import com.example.appseguimientogastos.domain.model.Item
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.data.model.getCurrentMonth
+import com.example.appseguimientogastos.data.model.getPreviouMonth
+import com.example.appseguimientogastos.data.model.monthList
 import com.example.compose.AppSeguimientoGastosTheme
 import com.example.compose.md_theme_light_Ahorro
 import com.example.compose.md_theme_light_gastos
@@ -60,7 +60,10 @@ import com.example.compose.md_theme_light_ingreso
 fun DashBoardCard(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
-    viewModel: MainViewModelItem
+    listIncomes: List<Item>,
+    listExpenses: List<Item>,
+    listSavings: List<Item>,
+    progressList: List<Float>
 ) {
 
 
@@ -78,7 +81,12 @@ fun DashBoardCard(
         TitleDashBoardComposable()
 
         //Content
-        ContentDashBoardComposable(currentMonth = currentMonth, viewModel = viewModel)
+        ContentDashBoardComposable(
+            currentMonth = currentMonth, listIncomes = listIncomes,
+            listExpenses = listExpenses,
+            listSavings = listSavings,
+            progressList = progressList
+        )
     }
 }
 
@@ -185,7 +193,7 @@ fun FilterChipsComposables(
     FilterChip(
         modifier = modifier.padding(end = dimensionResource(id = R.dimen.default_smallpadding)),
         label = {
-            Text(text ="Mes Actual")
+            Text(text = "Mes Actual")
         },
         selected = true,
         onClick = {
@@ -241,9 +249,11 @@ fun FilterChipsComposables(
 fun ContentDashBoardComposable(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
-    viewModel: MainViewModelItem
+    listIncomes: List<Item>,
+    listExpenses: List<Item>,
+    listSavings: List<Item>,
+    progressList: List<Float>
 ) {
-    val progressList: List<Float> = viewModel.computeProgress(currentMonth=currentMonth)
     val colorList = listOf(
         md_theme_light_ingreso,
         md_theme_light_gastos,
@@ -373,7 +383,7 @@ fun InfoProgressbar(
                         start = dimensionResource(id = R.dimen.default_normalpadding),
                         end = dimensionResource(id = R.dimen.default_normalpadding)
                     ),
-                    text = progressList[index].toString()+"% " + stringResource(id = titleList[index]),
+                    text = progressList[index].toString() + "% " + stringResource(id = titleList[index]),
                     style = MaterialTheme.typography.displaySmall
 
                 )

@@ -39,16 +39,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.appseguimientogastos.R
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.data.model.getCurrentMonth
+import com.example.appseguimientogastos.data.model.month
+import com.example.appseguimientogastos.data.model.monthList
+import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
-import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.ui.data.Month
-import com.example.appseguimientogastos.ui.data.getCurrentMonth
-import com.example.appseguimientogastos.ui.data.item.local.Type
-import com.example.appseguimientogastos.ui.data.monthList
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.navigation.tabRowScreens
 import com.example.appseguimientogastos.ui.view_model.AddViewModelItem
+import com.example.appseguimientogastos.ui.view_model.BaseState
 import com.example.appseguimientogastos.ui.view_model.MainState
 import com.example.compose.AppSeguimientoGastosTheme
 import org.koin.androidx.compose.getViewModel
@@ -62,15 +64,11 @@ fun AddScreen(
     titleScreen: String,
     newScreen: MainComposeDestination,
     navController: NavHostController,
+    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit
 ) {
-    // VIEWMODEL
-    val viewModel: AddViewModelItem = getViewModel()
-    val state: MainState = viewModel.uiState.collectAsState().value
-
 
     var showDialog by remember { mutableStateOf(false) }
     val selectedMonthText by remember { mutableStateOf(currentMonth) }
-
 
     var origin by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
@@ -158,11 +156,12 @@ fun AddScreen(
         CancelAddButtons(
             newScreen = newScreen,
             navController = navController,
-            viewModel = viewModel,
+            onAddItem = onAddItem,
             type=currentType,
             origin=origin,
             price=price,
-            month = month
+            month = month,
+
         )
 
     }
@@ -174,7 +173,7 @@ fun CancelAddButtons(
     modifier: Modifier = Modifier,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    viewModel: AddViewModelItem,
+    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit,
     type: Type,
     origin: String,
     price: String,
@@ -195,10 +194,12 @@ fun CancelAddButtons(
                 modifier = modifier,
                 screen = newScreen,
                 onTabSelected = { newScreenSample ->
-                    viewModel.addItem(origin=origin, price = price, month = month, type =type)
-                    navController.navigateSingleTopTo(
-                        newScreenSample.route
-                    )
+                    onAddItem(origin,price, month,type){
+                        navController.navigateSingleTopTo(
+                            newScreenSample.route
+                        )
+                    }
+
                 })
 
             CancelItemButton(
@@ -269,7 +270,8 @@ fun FakeAddScreen() {
                 currentType = currentType,
                 stringResource(R.string.add_incomes),
                 newScreen = currentScreen,
-                navController = navController
+                navController = navController,
+                onAddItem = {_,_,_,_,_->},
             )
         }
     }

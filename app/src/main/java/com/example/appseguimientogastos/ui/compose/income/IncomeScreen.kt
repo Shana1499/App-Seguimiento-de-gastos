@@ -20,8 +20,10 @@ import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.compose.components.AddButton
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.ui.data.Month
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.navigation.Incomes
+import com.example.appseguimientogastos.ui.view_model.BaseState
 import com.example.appseguimientogastos.ui.view_model.IncomeViewModelItem
 import com.example.appseguimientogastos.ui.view_model.MainState
 import kotlinx.coroutines.CoroutineScope
@@ -37,14 +39,15 @@ fun IncomeScreenComposable(
     // VIEWMODEL
     val viewModel: IncomeViewModelItem = getViewModel()
     val state: MainState = viewModel.uiState.collectAsState().value
+    val basestate: BaseState = viewModel.baseState.collectAsState().value
 
 
     // COMPOSABLES (UI)
-    state.currentScreen = Incomes
+    val currentScreen = Incomes
 
     CommonUI(
         navController = navController,
-        currentScreen = state.currentScreen,
+        currentScreen = currentScreen,
         drawerState = drawerState,
         scope = scope
     ) { innerPadding ->
@@ -53,7 +56,7 @@ fun IncomeScreenComposable(
                 currentMonth = state.currentMonth,
                 navController = navController,
                 incomeScreen = Main,
-                viewModel = viewModel
+                listData = state.incomesListByMonth
             )
         }
     }
@@ -66,8 +69,7 @@ fun IncomeScreen(
     currentMonth: MutableState<Month>,
     navController: NavHostController,
     incomeScreen: MainComposeDestination,
-    viewModel: IncomeViewModelItem,
-
+    listData: List<Item>,
     ) {
 
     LazyColumn {
@@ -81,7 +83,7 @@ fun IncomeScreen(
                     navController = navController,
                     currentMonth = currentMonth,
                     incomeScreen = incomeScreen,
-                    listItemData = viewModel.getItemByMonthList(currentMonth, viewModel.incomesList)
+                    listItemData = listData
                 )
                 val addScreen = AddIncome
                 AddButton(
