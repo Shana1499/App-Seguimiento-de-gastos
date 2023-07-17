@@ -1,7 +1,5 @@
 package com.example.appseguimientogastos.data.model
 
-import java.text.NumberFormat
-
 
 data class ItemVO(
     val id: Int = 0,
@@ -9,6 +7,5 @@ data class ItemVO(
     val price: Double,
     val type: String,
     val month: String
-
 )
 
