@@ -1,20 +1,17 @@
 package com.example.appseguimientogastos.ui.view_model
 
 import com.example.appseguimientogastos.domain.ItemsRepository
-import com.example.appseguimientogastos.ui.view_model.utils.CoroutinesUtils
 import com.example.appseguimientogastos.ui.view_model.utils.ItemBaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainViewModelItem(itemsRepository: ItemsRepository) :
     ItemBaseViewModel(itemsRepository = itemsRepository) {
 
-    private val coroutinesUtils = CoroutinesUtils()
-
     // UI state
     val uiState = MutableStateFlow(
         MainState()
     )
-    init {
+    /*init {
         coroutinesUtils.runBG {
             // por cada lista un get
             val incomesList = itemsRepository.getIncomesList()
@@ -25,7 +22,7 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
             val expensesListByMonth = getItemByMonthList(uiState.value.currentMonth, expensesList)
             val savingsListByMonth = getItemByMonthList(uiState.value.currentMonth,savingsList)
 
-            val progressList = computeProgress()
+           // val progressList = computeProgress()
 
             coroutinesUtils.runMain {
                 baseState.value = baseState.value.copy(
@@ -40,12 +37,12 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
                     incomesListByMonth=incomesListByMonth,
                     expensesListByMonth = expensesListByMonth,
                     savingsListByMonth = savingsListByMonth,
-                    progressList=progressList,
+                   // progressList=progressList,
                     isLoading = false
                 )
             }
         }
-    }
+    }*/
 
 
 // mover al base state

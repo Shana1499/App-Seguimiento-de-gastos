@@ -2,10 +2,10 @@ package com.example.appseguimientogastos.ui.view_model.utils
 
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
+import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.ItemsRepository
 import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.domain.model.Type
-import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.ui.view_model.BaseState
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 open class ItemBaseViewModel(
     protected val itemsRepository: ItemsRepository,
 ) : ViewModel() {
-    private val coroutinesUtils = CoroutinesUtils()
+    val coroutinesUtils = CoroutinesUtils()
 
 
     // UI state
