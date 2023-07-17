@@ -2,11 +2,16 @@ package com.example.appseguimientogastos
 
 import android.app.Application
 import android.content.Context
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.example.appseguimientogastos.data.ItemsRepositoryImpl
 import com.example.appseguimientogastos.data.data_source.Database
 import com.example.appseguimientogastos.data.data_source.DatabaseImpl
 import com.example.appseguimientogastos.data.data_source.Local
 import com.example.appseguimientogastos.data.data_source.LocalImpl
+import com.example.appseguimientogastos.data.data_source.constant.Constant
+import com.example.appseguimientogastos.data.data_source.settings.AndroidSettings
+import com.example.appseguimientogastos.data.data_source.settings.Settings
 import com.example.appseguimientogastos.domain.ItemsRepository
 import com.example.appseguimientogastos.ui.view_model.AddViewModelItem
 import com.example.appseguimientogastos.ui.view_model.ExpenseViewModelItem
@@ -31,11 +36,24 @@ class MainApp : Application() {
 
         single<Context> { this@MainApp }
 
-        single<Database> { DatabaseImpl(get()) }
+        single<Settings> {
+            AndroidSettings(
+                EncryptedSharedPreferences.create(
+                    get(),
+                    Constant.preferencesName(get()),
+                    MasterKey.Builder(get()).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build(),
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                )
+            )
+        }
+
+        single<Database> { DatabaseImpl(get(), get()) }
 
         single<Local> { LocalImpl(get()) }
         // Define a singleton instance of ItemsRepository
         single<ItemsRepository> { ItemsRepositoryImpl(get()) }
+
 
 
         // Define ViewModel instances
