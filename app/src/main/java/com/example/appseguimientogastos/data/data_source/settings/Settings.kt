@@ -1,4 +1,4 @@
-package com.worldline.ascott_hotel.data.data_source.settings
+package com.example.appseguimientogastos.data.data_source.settings
 
 interface Settings {
     fun getString(key: String): String?

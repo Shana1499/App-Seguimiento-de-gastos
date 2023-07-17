@@ -1,7 +1,6 @@
-package com.worldline.ascott_hotel.data.datasource.settings
+package com.example.appseguimientogastos.data.data_source.settings
 
 import android.content.SharedPreferences
-import com.worldline.ascott_hotel.data.data_source.settings.Settings
 
 class AndroidSettings(private val preferences: SharedPreferences) : Settings {
 
