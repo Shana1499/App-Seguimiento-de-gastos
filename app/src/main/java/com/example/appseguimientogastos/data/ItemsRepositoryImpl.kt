@@ -22,4 +22,16 @@ class ItemsRepositoryImpl(private val local: Local) : ItemsRepository {
         return local.getItemsListByType(Type.EXPENSES)
     }
 
+    override suspend fun getItem(id: Int): Item {
+        return local.getItem(id)
+    }
+
+    override suspend fun update(item: Item) {
+        local.update(item)
+    }
+
+    override suspend fun delete(item: Item) {
+       local.delete(item)
+    }
+
 }

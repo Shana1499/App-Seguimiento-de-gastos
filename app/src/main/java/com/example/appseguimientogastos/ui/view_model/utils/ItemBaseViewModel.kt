@@ -54,20 +54,25 @@ open class ItemBaseViewModel(
 
     }
 
-    /*fun getItem(itemId: Int): ItemVO {
-        return itemsRepository.getItem(id = itemId)
+    fun getItem(itemId: Int): Item? {
+        var item: Item? = null
+        coroutinesUtils.runBG {
+            item = itemsRepository.getItem(id = itemId)
+        }
+        return item
+
     }
 
-    fun updateItem(item: ItemVO) {
+    fun updateItem(item: Item) {
         coroutinesUtils.runBG {
             itemsRepository.update(item)
         }
     }
 
-    fun deleteItem(item: ItemVO) {
+    fun deleteItem(item: Item) {
         coroutinesUtils.runBG {
             itemsRepository.delete(item)
         }
-    }*/
+    }
 
 }

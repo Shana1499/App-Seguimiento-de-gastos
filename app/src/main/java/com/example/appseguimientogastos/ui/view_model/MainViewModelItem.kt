@@ -11,7 +11,7 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
     val uiState = MutableStateFlow(
         MainState()
     )
-   /* init {
+    init {
         coroutinesUtils.runBG {
             // por cada lista un get
             val incomesList = itemsRepository.getIncomesList()
@@ -42,7 +42,7 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
                 )
             }
         }
-    }*/
+    }
 
 
 // mover al base state

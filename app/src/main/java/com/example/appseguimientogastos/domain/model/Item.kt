@@ -1,8 +1,10 @@
 package com.example.appseguimientogastos.domain.model
 
 import com.example.appseguimientogastos.data.model.ItemVO
+import kotlinx.serialization.Serializable
 import java.text.NumberFormat
 
+@Serializable
 data class Item(
     val id: Int = 0,
     val origin: String,
