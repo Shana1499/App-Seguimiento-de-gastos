@@ -1,26 +1,26 @@
 package com.example.appseguimientogastos.data.data_source
 
-import com.example.appseguimientogastos.domain.model.Item
+import com.example.appseguimientogastos.data.model.ItemVO
 import com.example.appseguimientogastos.domain.model.Type
 
 class LocalImpl(private val database: Database) : Local {
-    override suspend fun addItem(item: Item) {
-        database.addItem(item.toItemVO())
+    override suspend fun addItem(item: ItemVO) {
+        database.addItem(item)
     }
 
-    override suspend fun getItemsListByType(type: Type): List<Item> {
+    override suspend fun getItemsListByType(type: Type): List<ItemVO> {
         return database.getItemsListByType(type = type)
     }
 
-    override suspend fun getItem(id: Int): Item {
+    override suspend fun getItem(id: Int): ItemVO? {
         return database.getItemByID(id = id)
     }
 
-    override suspend fun update(item: Item) {
-        database.update(item = item.toItemVO())
+    override suspend fun update(item: ItemVO) {
+        database.update(item = item)
     }
 
-    override suspend fun delete(item: Item) {
-        database.delete(item = item.toItemVO())
+    override suspend fun delete(itemId: Int) {
+        database.delete( itemId = itemId)
     }
 }

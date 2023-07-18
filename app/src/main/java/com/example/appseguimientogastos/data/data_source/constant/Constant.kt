@@ -93,7 +93,10 @@ class Constant {
         val URL_SEPARATOR: String = "/"
 
 
-       val jsonCustom = Json {
+        const val keyItemsList = "KEY_ITEMS_LIST"
+
+
+        val jsonCustom = Json {
             isLenient = true
             ignoreUnknownKeys = true
             allowSpecialFloatingPointValues = true

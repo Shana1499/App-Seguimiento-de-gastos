@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 open class ItemBaseViewModel(
     protected val itemsRepository: ItemsRepository,
 ) : ViewModel() {
-    val coroutinesUtils = CoroutinesUtils()
+    protected val coroutinesUtils = CoroutinesUtils()
 
 
     // UI state
@@ -24,7 +24,7 @@ open class ItemBaseViewModel(
     )
 
 
-    fun getItemByMonthList(
+    protected fun getItemByMonthList(
         currentMonth: MutableState<Month>,
         mutableList: List<Item>
     ): MutableList<Item> {
@@ -41,20 +41,52 @@ open class ItemBaseViewModel(
 
     }
 
-    fun addItem(origin: String, price: String, month: String, type: Type) {
-        val newitem = Item(
+    fun onAddItem(
+        origin: String,
+        price: String,
+        month: String,
+        type: Type,
+        onAddItemCompleted:()->Unit
+    ) {
+        val newItem = Item(
             origin = origin,
-            price = price.toDouble(),
+            price = price.toDoubleOrNull() ?: 0.0,
             month = month,
             type = type.typeName
         )
         coroutinesUtils.runBG {
-            itemsRepository.addItem(item = newitem)
+            itemsRepository.addItem(newItem)
+            // actualizar baseState
+            updateBaseState(onAddItemCompleted=onAddItemCompleted )
+
+
         }
+
 
     }
 
-    fun getItem(itemId: Int): Item? {
+    protected fun updateBaseState(onAddItemCompleted: () -> Unit) {
+        coroutinesUtils.runBG {
+            // por cada lista un get
+            val incomesList = itemsRepository.getIncomesList()
+            val expensesList = itemsRepository.getExpensesList()
+            val savingsList = itemsRepository.getSavingsList()
+
+            coroutinesUtils.runMain {
+                baseState.value = baseState.value.copy(
+                    // poner las listas
+                    incomesList = incomesList,
+                    expensesList = expensesList,
+                    savingsList = savingsList,
+                    isLoading = false
+                )
+                onAddItemCompleted()
+
+            }
+        }
+    }
+
+    protected fun getItem(itemId: Int): Item? {
         var item: Item? = null
         coroutinesUtils.runBG {
             item = itemsRepository.getItem(id = itemId)
@@ -63,15 +95,15 @@ open class ItemBaseViewModel(
 
     }
 
-    fun updateItem(item: Item) {
+    protected fun updateItem(item: Item) {
         coroutinesUtils.runBG {
             itemsRepository.update(item)
         }
     }
 
-    fun deleteItem(item: Item) {
+    protected fun deleteItem(item: Item) {
         coroutinesUtils.runBG {
-            itemsRepository.delete(item)
+            itemsRepository.delete(item.id)
         }
     }
 

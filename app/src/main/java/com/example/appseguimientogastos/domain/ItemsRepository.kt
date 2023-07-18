@@ -8,7 +8,7 @@ interface ItemsRepository {
     suspend fun getIncomesList(): List<Item>
     suspend fun getExpensesList(): List<Item>
     suspend fun getSavingsList(): List<Item>
-    suspend fun getItem(id: Int): Item
+    suspend fun getItem(id: Int): Item?
     suspend fun update(item: Item)
-    suspend fun delete(item: Item)
+    suspend fun delete(itemId: Int)
 }
