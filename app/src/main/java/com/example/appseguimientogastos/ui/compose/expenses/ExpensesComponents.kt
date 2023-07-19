@@ -5,11 +5,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.compose.components.OverviewCard
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 
 
 /**
@@ -21,6 +21,7 @@ fun ExpensesCard(
     currentMonth: MutableState<Month>,
     navController: NavHostController, expensesScreen: MainComposeDestination,
     listItemData: List<Item>,
+    total: Double,
 
     ) {
 
@@ -32,6 +33,7 @@ fun ExpensesCard(
         expensesScreen,
         navController,
         listItemData,
+        total,
     )
 
 }

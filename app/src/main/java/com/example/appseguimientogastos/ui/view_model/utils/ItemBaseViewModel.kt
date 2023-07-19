@@ -40,7 +40,7 @@ open class ItemBaseViewModel(
 
     }
 
-    fun onAddItem(
+    protected fun onAddItem(
         origin: String,
         price: String,
         month: String,

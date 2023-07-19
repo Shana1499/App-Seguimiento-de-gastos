@@ -12,11 +12,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.R
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.compose.components.AddScreen
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.data.model.Month
-import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.navigation.AddIncome
 import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
@@ -52,7 +52,7 @@ fun AddIncomeScreenComposable(
                 currentMonth = state.currentMonth,
                 newScreen = Incomes,
                 navController = navController,
-                onAddItem = viewModel::onAddItem
+                onAddItem = viewModel::addItem
             )
         }
     }

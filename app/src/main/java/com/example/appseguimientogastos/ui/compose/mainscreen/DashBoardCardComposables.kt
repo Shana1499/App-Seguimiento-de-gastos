@@ -42,7 +42,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.data.model.getCurrentMonth
 import com.example.appseguimientogastos.data.model.getPreviouMonth
@@ -60,10 +59,9 @@ import com.example.compose.md_theme_light_ingreso
 fun DashBoardCard(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
-    listIncomes: List<Item>,
-    listExpenses: List<Item>,
-    listSavings: List<Item>,
-    progressList: List<Float>
+    progressList: List<Float>,
+    onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
+    budget: Double,
 ) {
 
 
@@ -82,10 +80,10 @@ fun DashBoardCard(
 
         //Content
         ContentDashBoardComposable(
-            currentMonth = currentMonth, listIncomes = listIncomes,
-            listExpenses = listExpenses,
-            listSavings = listSavings,
-            progressList = progressList
+            currentMonth = currentMonth,
+            progressList = progressList,
+            onUpdateMonth =onUpdateMonth,
+            budget =budget
         )
     }
 }
@@ -142,7 +140,8 @@ fun ColumnInfoProgressCircleComposable(
     progressList: List<Float>,
     titleList: List<Int>,
     colorList: List<Color>,
-    canvasSizeInfo: Dp
+    canvasSizeInfo: Dp,
+    budget: Double
 ) {
     Column(modifier = modifier.padding((dimensionResource(id = R.dimen.default_normalpadding)))) {
         Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
@@ -154,7 +153,7 @@ fun ColumnInfoProgressCircleComposable(
                 )
 
                 Text(
-                    text = "0.00€",
+                    text = String.format("%.2f", budget)+" €",
                     style = MaterialTheme.typography.displayMedium
                 )
 
@@ -174,6 +173,7 @@ fun ColumnInfoProgressCircleComposable(
 fun FilterChipsComposables(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
+    onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
 ) {
     var showDialog by remember { mutableStateOf(false) }
     var selectedMonthText by remember { mutableStateOf(monthList[0].name) }
@@ -186,6 +186,7 @@ fun FilterChipsComposables(
         selected = true,
         onClick = {
             currentMonth.value = getPreviouMonth()
+            onUpdateMonth(currentMonth)
         },
         elevation = FilterChipDefaults.elevatedFilterChipElevation()
     )
@@ -198,6 +199,8 @@ fun FilterChipsComposables(
         selected = true,
         onClick = {
             currentMonth.value = getCurrentMonth()
+            onUpdateMonth(currentMonth)
+
         },
         elevation = FilterChipDefaults.elevatedFilterChipElevation()
     )
@@ -232,6 +235,7 @@ fun FilterChipsComposables(
                     onClick = {
                         selectedMonthText = monthSelected.name
                         currentMonth.value = monthSelected
+                        onUpdateMonth(currentMonth)
                         showDialog = false
                     })
                 Divider()
@@ -244,15 +248,13 @@ fun FilterChipsComposables(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContentDashBoardComposable(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
-    listIncomes: List<Item>,
-    listExpenses: List<Item>,
-    listSavings: List<Item>,
-    progressList: List<Float>
+    progressList: List<Float>,
+    onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
+    budget: Double
 ) {
     val colorList = listOf(
         md_theme_light_ingreso,
@@ -283,7 +285,8 @@ fun ContentDashBoardComposable(
             progressList = progressList,
             titleList = titleList,
             colorList = colorList,
-            canvasSizeInfo = canvasSizeInfo
+            canvasSizeInfo = canvasSizeInfo,
+            budget = budget
         )
     }
 
@@ -293,7 +296,7 @@ fun ContentDashBoardComposable(
             .padding(horizontal = dimensionResource(id = R.dimen.default_normalpadding)),
         horizontalArrangement = Arrangement.Center
     ) {
-        FilterChipsComposables(modifier, currentMonth = currentMonth)
+        FilterChipsComposables(modifier, currentMonth = currentMonth, onUpdateMonth=onUpdateMonth)
     }
 
 
@@ -330,7 +333,7 @@ fun CustomProgressBar(
             var startAngle = -90f
 
             progressList.forEachIndexed { index, progress ->
-                val sweepAngle = progress * 360f
+                val sweepAngle = (progress/100f) * 360f
                 drawArc(
                     color = colorList[index],
                     startAngle = startAngle,
@@ -363,7 +366,7 @@ fun InfoProgressbar(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        progressList.forEachIndexed { index, _ ->
+        progressList.forEachIndexed { index, progress ->
             Row(modifier.padding(bottom = dimensionResource(id = R.dimen.default_smallpadding))) {
                 Canvas(
                     modifier = drawSize
@@ -383,7 +386,7 @@ fun InfoProgressbar(
                         start = dimensionResource(id = R.dimen.default_normalpadding),
                         end = dimensionResource(id = R.dimen.default_normalpadding)
                     ),
-                    text = progressList[index].toString() + "% " + stringResource(id = titleList[index]),
+                    text = String.format("%.2f", progress)+"% " + stringResource(id = titleList[index]),
                     style = MaterialTheme.typography.displaySmall
 
                 )
@@ -410,7 +413,10 @@ fun MonthListPickerComposablePreview() {
                 val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
 
                 Row() {
-                    FilterChipsComposables(currentMonth = currentMonth)
+                    FilterChipsComposables(
+                        currentMonth = currentMonth,
+                        onUpdateMonth = {}
+                    )
 
                 }
 

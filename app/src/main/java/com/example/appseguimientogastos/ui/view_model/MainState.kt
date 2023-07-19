@@ -15,6 +15,7 @@ data class MainState(
     val expensesListByMonth: List<Item> = listOf(),
     val savingsListByMonth: List<Item> = listOf(),
     val progressList: List<Float> = listOf(),
+    val budget: Double = 0.0,
     val isLoading: Boolean = true,
 
     )

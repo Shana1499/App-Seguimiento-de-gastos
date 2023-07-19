@@ -72,7 +72,10 @@ fun MainScreenComposable(
                     listIncomes = basestate.incomesList,
                     listExpenses = basestate.expensesList,
                     listSavings = basestate.savingsList,
-                    progressList = mainstate.progressList
+                    progressList = mainstate.progressList,
+                    onUpdateMonth = viewModel::onUpdateMonth,
+                    listIGA = viewModel.getTotalIGA(),
+                    budget = mainstate.budget
                 )
             }
 
@@ -93,6 +96,9 @@ fun MainScreen(
     listExpenses: List<Item>,
     listSavings: List<Item>,
     progressList: List<Float>,
+    onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
+    listIGA: List<Double>,
+    budget: Double
 ) {
     LazyColumn {
         item {
@@ -101,24 +107,28 @@ fun MainScreen(
 
             ) {
                 DashBoardCard(
-                    currentMonth = currentMonth, listIncomes = listIncomes,
-                    listExpenses = listExpenses,
-                    listSavings = listSavings,
-                    progressList = progressList
+                    currentMonth = currentMonth,
+                    progressList = progressList,
+                    onUpdateMonth = onUpdateMonth,
+                    budget = budget
+
                 )
                 IncomeCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
                     navController = navController,
                     incomeScreen = incomeScreen,
-                    listItemData = listIncomes
+                    listItemData = listIncomes,
+                    total = listIGA[0]
                 )
                 ExpensesCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
                     navController = navController,
                     expensesScreen = expensesScreen,
-                    listItemData = listExpenses
+                    listItemData = listExpenses,
+                    total = listIGA[1]
+
 
                 )
                 SavingsCard(
@@ -126,7 +136,9 @@ fun MainScreen(
                     currentMonth = currentMonth,
                     navController = navController,
                     savingsScreen = savingsScreen,
-                    listItemData = listSavings
+                    listItemData = listSavings,
+                    total = listIGA[2]
+
 
                 )
             }
