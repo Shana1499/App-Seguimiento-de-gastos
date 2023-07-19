@@ -21,6 +21,7 @@ fun SavingsCard(
     currentMonth: MutableState<Month>,
     savingsScreen: MainComposeDestination,
     listItemData: List<Item>,
+    total: Double,
 
     ) {
 
@@ -31,6 +32,7 @@ fun SavingsCard(
         savingsScreen,
         navController,
         listItemData,
+        total,
     )
 
 }

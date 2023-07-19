@@ -10,10 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.ui.compose.components.AddScreen
-import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Type
+import com.example.appseguimientogastos.ui.compose.components.AddScreen
+import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.navigation.AddSavings
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.ui.navigation.Savings
@@ -50,7 +50,7 @@ fun AddSavingScreenComposable(
                 currentMonth = state.currentMonth,
                 newScreen = Savings,
                 navController = navController,
-                onAddItem = viewModel::onAddItem
+                onAddItem = viewModel::addItem
             )
         }
     }

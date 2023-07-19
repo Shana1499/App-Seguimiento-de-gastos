@@ -15,13 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.R
+import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.compose.expenses.ExpensesCard
 import com.example.appseguimientogastos.ui.compose.income.IncomeCard
 import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
-import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.Main
@@ -49,7 +49,7 @@ fun MainScreenComposable(
     // COMPOSABLES (UI)
 
     val currentScreen = Main
-    if (basestate.isLoading) {
+    if (mainstate.isLoading) {
         CircularProgressIndicator(
             modifier = Modifier
                 .padding(8.dp)
@@ -72,7 +72,10 @@ fun MainScreenComposable(
                     listIncomes = basestate.incomesList,
                     listExpenses = basestate.expensesList,
                     listSavings = basestate.savingsList,
-                    progressList = mainstate.progressList
+                    progressList = mainstate.progressList,
+                    onUpdateMonth = viewModel::onUpdateMonth,
+                    listIGA = viewModel.getTotalIGA(),
+                    budget = mainstate.budget
                 )
             }
 
@@ -93,6 +96,9 @@ fun MainScreen(
     listExpenses: List<Item>,
     listSavings: List<Item>,
     progressList: List<Float>,
+    onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
+    listIGA: List<Double>,
+    budget: Double
 ) {
     LazyColumn {
         item {
@@ -101,24 +107,28 @@ fun MainScreen(
 
             ) {
                 DashBoardCard(
-                    currentMonth = currentMonth, listIncomes = listIncomes,
-                    listExpenses = listExpenses,
-                    listSavings = listSavings,
-                    progressList = progressList
+                    currentMonth = currentMonth,
+                    progressList = progressList,
+                    onUpdateMonth = onUpdateMonth,
+                    budget = budget
+
                 )
                 IncomeCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
                     navController = navController,
                     incomeScreen = incomeScreen,
-                    listItemData = listIncomes
+                    listItemData = listIncomes,
+                    total = listIGA[0]
                 )
                 ExpensesCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
                     navController = navController,
                     expensesScreen = expensesScreen,
-                    listItemData = listExpenses
+                    listItemData = listExpenses,
+                    total = listIGA[1]
+
 
                 )
                 SavingsCard(
@@ -126,7 +136,9 @@ fun MainScreen(
                     currentMonth = currentMonth,
                     navController = navController,
                     savingsScreen = savingsScreen,
-                    listItemData = listSavings
+                    listItemData = listSavings,
+                    total = listIGA[2]
+
 
                 )
             }

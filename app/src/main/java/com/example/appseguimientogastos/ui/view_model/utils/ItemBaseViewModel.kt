@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 open class ItemBaseViewModel(
     protected val itemsRepository: ItemsRepository,
 ) : ViewModel() {
-    val coroutinesUtils = CoroutinesUtils()
+    protected val coroutinesUtils = CoroutinesUtils()
 
 
     // UI state
@@ -24,7 +24,7 @@ open class ItemBaseViewModel(
     )
 
 
-    fun getItemByMonthList(
+    protected fun getItemByMonthList(
         currentMonth: MutableState<Month>,
         mutableList: List<Item>
     ): MutableList<Item> {
@@ -38,36 +38,70 @@ open class ItemBaseViewModel(
 
         return newMutableList
 
-
     }
 
-    fun addItem(origin: String, price: String, month: String, type: Type) {
-        val newitem = Item(
+    protected fun onAddItem(
+        origin: String,
+        price: String,
+        month: String,
+        type: Type,
+        onAddItemCompleted:()->Unit
+    ) {
+        val newItem = Item(
             origin = origin,
-            price = price.toDouble(),
+            price = price.toDoubleOrNull() ?: 0.0,
             month = month,
             type = type.typeName
         )
         coroutinesUtils.runBG {
-            itemsRepository.addItem(item = newitem)
+            itemsRepository.addItem(newItem)
+            // actualizar baseState
+            updateBaseState(onAddItemCompleted=onAddItemCompleted)
         }
 
+
     }
 
-    /*fun getItem(itemId: Int): ItemVO {
-        return itemsRepository.getItem(id = itemId)
+    protected fun updateBaseState(onAddItemCompleted: () -> Unit) {
+        coroutinesUtils.runBG {
+            // por cada lista un get
+            val incomesList = itemsRepository.getIncomesList()
+            val expensesList = itemsRepository.getExpensesList()
+            val savingsList = itemsRepository.getSavingsList()
+
+            coroutinesUtils.runMain {
+                baseState.value = baseState.value.copy(
+                    // poner las listas
+                    incomesList = incomesList,
+                    expensesList = expensesList,
+                    savingsList = savingsList,
+                    isLoading = false
+                )
+                onAddItemCompleted()
+
+            }
+        }
     }
 
-    fun updateItem(item: ItemVO) {
+    protected fun getItem(itemId: Int): Item? {
+        var item: Item? = null
+        coroutinesUtils.runBG {
+            item = itemsRepository.getItem(id = itemId)
+        }
+        return item
+
+    }
+
+    protected fun updateItem(item: Item) {
         coroutinesUtils.runBG {
             itemsRepository.update(item)
         }
     }
 
-    fun deleteItem(item: ItemVO) {
+    protected fun deleteItem(item: Item) {
         coroutinesUtils.runBG {
-            itemsRepository.delete(item)
+            itemsRepository.delete(item.id)
         }
-    }*/
+    }
 
 }

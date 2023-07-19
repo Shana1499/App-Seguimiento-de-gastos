@@ -132,6 +132,7 @@ fun OverviewCard(
     newScreen: MainComposeDestination,
     navController: NavHostController,
     listItemData: List<Item>,
+    total: Double,
 ) {
 
     ElevatedCard(
@@ -159,7 +160,7 @@ fun OverviewCard(
                 )
 
                 //Current Money Value
-                Text(text = "0.00 €", style = MaterialTheme.typography.displayMedium)
+                Text(text = "$total €", style = MaterialTheme.typography.displayMedium)
 
                 DividerComposable()
 

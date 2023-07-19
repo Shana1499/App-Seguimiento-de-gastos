@@ -1,4 +1,5 @@
 package com.example.appseguimientogastos.data.data_source.constant
+import kotlinx.serialization.json.Json
 
 class Constant {
     companion object {
@@ -29,6 +30,9 @@ class Constant {
         const val KEY_LOGIN_EXPIRES_IN = "KEY_LOGIN_EXPIRES_IN"
         const val KEY_SERVER_INTERACTIONS = "KEY_SERVER_INTERACTIONS"
 
+        enum class BuildType {
+            DEBUG, RELEASE
+        }
         fun preferencesName(buildType: BuildType): String = when (buildType) {
             BuildType.DEBUG -> "${NAME}_${DEBUG}"
             BuildType.RELEASE -> NAME
@@ -89,12 +93,19 @@ class Constant {
         val URL_SEPARATOR: String = "/"
 
 
-      /*  val jsonCustom = Json {
+        const val keyItemsList = "KEY_ITEMS_LIST"
+
+
+        val jsonCustom = Json {
             isLenient = true
             ignoreUnknownKeys = true
             allowSpecialFloatingPointValues = true
             useArrayPolymorphism = true
-        }*/
+        }
+
+        /**
+         * Constant.jsonCustom.decodeFromString(STRING JSON)
+        Constant.jsonCustom.encodeToString(OBJETO)*/
     }
 
     object Network {
@@ -131,13 +142,12 @@ class Constant {
 
 }
 
-fun buildType(type: String): BuildType = when (type) {
-    Constant.DEBUG -> BuildType.DEBUG
-    else -> BuildType.RELEASE
+
+fun buildType(type: String): Constant.Companion.BuildType = when (type) {
+    Constant.DEBUG -> Constant.Companion.BuildType.DEBUG
+    else -> Constant.Companion.BuildType.RELEASE
 }
 
-enum class BuildType {
-    DEBUG, RELEASE
-}
+
 
 
