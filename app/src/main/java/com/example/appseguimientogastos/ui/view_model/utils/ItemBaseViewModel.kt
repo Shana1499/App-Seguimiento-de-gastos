@@ -38,7 +38,6 @@ open class ItemBaseViewModel(
 
         return newMutableList
 
-
     }
 
     fun onAddItem(
@@ -57,9 +56,7 @@ open class ItemBaseViewModel(
         coroutinesUtils.runBG {
             itemsRepository.addItem(newItem)
             // actualizar baseState
-            updateBaseState(onAddItemCompleted=onAddItemCompleted )
-
-
+            updateBaseState(onAddItemCompleted=onAddItemCompleted)
         }
 
 

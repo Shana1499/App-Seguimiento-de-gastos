@@ -16,7 +16,7 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
         updateMainState()
     }
 
-    fun updateMainState() {
+    private fun updateMainState() {
         coroutinesUtils.runMain {
 
             uiState.value = uiState.value.copy(
@@ -51,12 +51,6 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
         }
 
     }
-// mover al base state
-    /* val incomesList = getItemByTypeList(Type.INCOMES)
-    val expensesList = getItemByTypeList(Type.EXPENSES)
-    val savingsList = getItemByTypeList(Type.SAVINGS) */
-
-
     fun computeProgress(
     ): List<Float> {
         val newProgressList = mutableListOf<Float>()

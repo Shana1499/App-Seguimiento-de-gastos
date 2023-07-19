@@ -15,13 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.R
+import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.compose.expenses.ExpensesCard
 import com.example.appseguimientogastos.ui.compose.income.IncomeCard
 import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
-import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.Main
@@ -49,7 +49,7 @@ fun MainScreenComposable(
     // COMPOSABLES (UI)
 
     val currentScreen = Main
-    if (basestate.isLoading) {
+    if (mainstate.isLoading) {
         CircularProgressIndicator(
             modifier = Modifier
                 .padding(8.dp)

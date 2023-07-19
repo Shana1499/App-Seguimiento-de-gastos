@@ -19,7 +19,7 @@ class ItemsRepositoryImpl(private val local: Local) : ItemsRepository {
         local.getItemsListByType(Type.EXPENSES).map { it.toModel() }
 
     override suspend fun getSavingsList(): List<Item> =
-        local.getItemsListByType(Type.EXPENSES).map { it.toModel() }
+        local.getItemsListByType(Type.SAVINGS).map { it.toModel() }
 
     override suspend fun getItem(id: Int): Item? = local.getItem(id)?.toModel()
 

@@ -1,8 +1,6 @@
 package com.example.appseguimientogastos.data.data_source
 
-import android.content.ContentValues
 import android.content.Context
-import android.util.Log
 import com.example.appseguimientogastos.data.data_source.constant.Constant
 import com.example.appseguimientogastos.data.data_source.settings.Settings
 import com.example.appseguimientogastos.data.model.ItemVO
@@ -20,7 +18,6 @@ class DatabaseImpl(private val androidContext: Context, private val settings: Se
         }
         item.id = newId
         currentItemsList.addNew(item)
-        Log.d(ContentValues.TAG, "currentItemsList: $currentItemsList")
         saveItemsList(currentItemsList)
     }
 
@@ -63,9 +60,7 @@ class DatabaseImpl(private val androidContext: Context, private val settings: Se
     }
 
     private suspend fun saveItemsList(itemsList: ItemVOs) {
-        Log.d(ContentValues.TAG, "itemsList: $itemsList")
         val jsonItemsList = ItemVOs.toJson(itemsList)
-        Log.d(ContentValues.TAG, "jsonItemsList: $jsonItemsList")
         settings.setString(Constant.keyItemsList, jsonItemsList)
     }
 }
