@@ -18,7 +18,7 @@ class AddViewModelItem(itemsRepository: ItemsRepository) :
     )
 
     init {
-        updateMainState(onAddItemCompleted = {})
+        updateMainState()
     }
 
     fun addItem(
@@ -26,22 +26,25 @@ class AddViewModelItem(itemsRepository: ItemsRepository) :
         price: String,
         month: String,
         type: Type,
-        onAddItemCompleted:()->Unit
+        onAddItemCompleted: () -> Unit
     ) {
-        onAddItem(origin, price, month, type){
-            updateMainState(onAddItemCompleted=onAddItemCompleted)
+        onAddItem(origin, price, month, type) {
+            updateMainState(
+                onAddItemCompleted = onAddItemCompleted,
+            )
 
         }
     }
 
-    private fun updateMainState(onAddItemCompleted: () -> Unit, currentMonth: MutableState<Month> = mutableStateOf(
-        getCurrentMonth()
-    )
+    private fun updateMainState(
+        onAddItemCompleted: () -> Unit = {}, currentMonth: MutableState<Month> = mutableStateOf(
+            getCurrentMonth()
+        ), onChangeScreenCompleted: () -> Unit = {}
     ) {
         coroutinesUtils.runMain {
 
             uiState.value = uiState.value.copy(
-                currentMonth =currentMonth,
+                currentMonth = currentMonth,
                 isLoading = true
             )
 
@@ -72,8 +75,9 @@ class AddViewModelItem(itemsRepository: ItemsRepository) :
     }
 
 
-
-
+    fun onChangeScreen(onChangeScreenCompleted: () -> Unit = {}) {
+        updateMainState(onChangeScreenCompleted = onChangeScreenCompleted)
+    }
 
 
 }

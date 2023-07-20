@@ -24,6 +24,7 @@ fun IncomeCard(
     incomeScreen: MainComposeDestination,
     listItemData: List<Item>,
     total: Double,
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
 
     ) {
 
@@ -33,7 +34,8 @@ fun IncomeCard(
         currentMonth = currentMonth,
         newScreen = incomeScreen, navController = navController,
         listItemData = listItemData,
-        total = total
+        total = total,
+        onChangeScreen=onChangeScreen
     )
 
 }

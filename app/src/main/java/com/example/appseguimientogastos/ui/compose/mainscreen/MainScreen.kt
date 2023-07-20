@@ -69,13 +69,14 @@ fun MainScreenComposable(
                     incomeScreen = Incomes,
                     expensesScreen = Expenses,
                     savingsScreen = Savings,
-                    listIncomes = basestate.incomesList,
-                    listExpenses = basestate.expensesList,
-                    listSavings = basestate.savingsList,
+                    listIncomes = mainstate.incomesListByMonth,
+                    listExpenses = mainstate.expensesListByMonth,
+                    listSavings = mainstate.savingsListByMonth,
                     progressList = mainstate.progressList,
                     onUpdateMonth = viewModel::onUpdateMonth,
                     listIGA = viewModel.getTotalIGA(),
-                    budget = mainstate.budget
+                    budget = mainstate.budget,
+                    onChangeScreen = viewModel::onChangeScreen
                 )
             }
 
@@ -98,7 +99,8 @@ fun MainScreen(
     progressList: List<Float>,
     onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
     listIGA: List<Double>,
-    budget: Double
+    budget: Double,
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit
 ) {
     LazyColumn {
         item {
@@ -119,7 +121,8 @@ fun MainScreen(
                     navController = navController,
                     incomeScreen = incomeScreen,
                     listItemData = listIncomes,
-                    total = listIGA[0]
+                    total = listIGA[0],
+                    onChangeScreen = onChangeScreen
                 )
                 ExpensesCard(
                     modifier = modifier,
@@ -127,9 +130,8 @@ fun MainScreen(
                     navController = navController,
                     expensesScreen = expensesScreen,
                     listItemData = listExpenses,
-                    total = listIGA[1]
-
-
+                    total = listIGA[1],
+                    onChangeScreen = onChangeScreen
                 )
                 SavingsCard(
                     modifier = modifier,
@@ -137,9 +139,8 @@ fun MainScreen(
                     navController = navController,
                     savingsScreen = savingsScreen,
                     listItemData = listSavings,
-                    total = listIGA[2]
-
-
+                    total = listIGA[2],
+                    onChangeScreen = onChangeScreen
                 )
             }
         }

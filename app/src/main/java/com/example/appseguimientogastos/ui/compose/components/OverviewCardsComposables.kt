@@ -43,13 +43,16 @@ fun OverviewTitleComposable(
     modifier: Modifier = Modifier,
     title: String,
     newScreen: MainComposeDestination,
-    navController: NavHostController
+    navController: NavHostController,
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit={}
 ) {
     Row(modifier = modifier) {
         Text(text = title, style = MaterialTheme.typography.displayLarge)
         TopEndNavigationButton(
             screen = newScreen,
-            onTabSelected = { newScreenSample -> navController.navigateSingleTopTo(newScreenSample.route) })
+            onTabSelected = { newScreenSample ->
+                onChangeScreen(){
+                navController.navigateSingleTopTo(newScreenSample.route)}})
     }
 }
 
@@ -133,6 +136,7 @@ fun OverviewCard(
     navController: NavHostController,
     listItemData: List<Item>,
     total: Double,
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
 ) {
 
     ElevatedCard(
@@ -156,7 +160,8 @@ fun OverviewCard(
                 OverviewTitleComposable(
                     title = title,
                     newScreen = newScreen,
-                    navController = navController
+                    navController = navController,
+                    onChangeScreen=onChangeScreen
                 )
 
                 //Current Money Value

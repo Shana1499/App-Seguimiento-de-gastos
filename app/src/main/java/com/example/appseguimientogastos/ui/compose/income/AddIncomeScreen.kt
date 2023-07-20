@@ -52,7 +52,8 @@ fun AddIncomeScreenComposable(
                 currentMonth = state.currentMonth,
                 newScreen = Incomes,
                 navController = navController,
-                onAddItem = viewModel::addItem
+                onAddItem = viewModel::addItem,
+                onChangeScreen = viewModel::onChangeScreen
             )
         }
     }
@@ -65,7 +66,9 @@ fun AddIncomeScreen(
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit
+    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit,
+    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
+
 ) {
 
     AddScreen(
@@ -75,7 +78,8 @@ fun AddIncomeScreen(
         stringResource(R.string.add_incomes),
         newScreen = newScreen,
         navController = navController,
-        onAddItem= onAddItem
+        onAddItem= onAddItem,
+        onChangeScreen=onChangeScreen
     )
 
 }
