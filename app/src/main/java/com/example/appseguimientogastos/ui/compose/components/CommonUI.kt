@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
-import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.navigation.tabRowScreens
 import kotlinx.coroutines.CoroutineScope
 
@@ -20,7 +19,7 @@ fun CommonUI(
     currentScreen: MainComposeDestination,
     drawerState: DrawerState,
     scope: CoroutineScope,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -29,7 +28,7 @@ fun CommonUI(
             CustomNavigationDrawer(
                 allScreens = tabRowScreens,
                 onTabSelected = { newScreen ->
-                    navController.navigateSingleTopTo(newScreen.route)
+                    navController.navigate(newScreen.route)
                 },
                 currentScreen = currentScreen,
                 drawerState = drawerState,

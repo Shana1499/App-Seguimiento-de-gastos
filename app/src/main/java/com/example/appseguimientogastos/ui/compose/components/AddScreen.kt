@@ -45,7 +45,6 @@ import com.example.appseguimientogastos.data.model.monthList
 import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
-import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.navigation.tabRowScreens
 import com.example.compose.AppSeguimientoGastosTheme
 
@@ -59,7 +58,8 @@ fun AddScreen(
     newScreen: MainComposeDestination,
     navController: NavHostController,
     onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit,
-    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateBack: () -> Unit
 ) {
 
     var showDialog by remember { mutableStateOf(false) }
@@ -75,8 +75,8 @@ fun AddScreen(
             modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding)),
             title = titleScreen,
             newScreen = newScreen,
-            navController = navController,
-            onChangeScreen = onChangeScreen
+            onChangeScreen = onChangeScreen,
+            onNavigateNext = onNavigateBack
         )
 
         Divider(
@@ -153,10 +153,11 @@ fun AddScreen(
             newScreen = newScreen,
             navController = navController,
             onAddItem = onAddItem,
-            type=currentType,
-            origin=origin,
-            price=price,
+            type = currentType,
+            origin = origin,
+            price = price,
             month = month,
+            onNavigateBack = onNavigateBack
 
         )
 
@@ -169,11 +170,12 @@ fun CancelAddButtons(
     modifier: Modifier = Modifier,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit,
+    onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit,
     type: Type,
     origin: String,
     price: String,
     month: String,
+    onNavigateBack: () -> Unit,
 
     ) {
     Box(
@@ -188,24 +190,17 @@ fun CancelAddButtons(
 
             AddItemButton(
                 modifier = modifier,
-                screen = newScreen,
-                onTabSelected = { newScreenSample ->
-                    onAddItem(origin,price, month,type){
-                        navController.navigateSingleTopTo(
-                            newScreenSample.route
-                        )
+                onTabSelected = {
+                    onAddItem(origin, price, month, type) {
+                        onNavigateBack()
                     }
 
                 })
 
             CancelItemButton(
                 modifier = modifier,
-                screen = newScreen,
-                onTabSelected = { newScreenSample ->
-                    navController.navigateSingleTopTo(
-                        newScreenSample.route
-                    )
-                })
+                onTabSelected = onNavigateBack
+            )
         }
     }
 }
@@ -213,14 +208,12 @@ fun CancelAddButtons(
 @Composable
 fun AddItemButton(
     modifier: Modifier = Modifier,
-    screen: MainComposeDestination,
-    onTabSelected: (MainComposeDestination) -> Unit
+    onTabSelected: () -> Unit
 
 ) {
     Button(
-        onClick = {
-            onTabSelected(screen)
-        }, modifier = modifier.padding(
+        onClick = onTabSelected,
+        modifier = modifier.padding(
             end = dimensionResource(id = R.dimen.default_smallpadding)
         )
     ) {
@@ -232,12 +225,11 @@ fun AddItemButton(
 @Composable
 fun CancelItemButton(
     modifier: Modifier = Modifier,
-    screen: MainComposeDestination,
-    onTabSelected: (MainComposeDestination) -> Unit
+    onTabSelected: () -> Unit
 
 ) {
     Button(
-        onClick = { onTabSelected(screen) }, modifier = modifier.padding(
+        onClick = onTabSelected, modifier = modifier.padding(
             end = dimensionResource(id = R.dimen.default_smallpadding)
         )
     ) {
@@ -267,8 +259,9 @@ fun FakeAddScreen() {
                 stringResource(R.string.add_incomes),
                 newScreen = currentScreen,
                 navController = navController,
-                onAddItem = {_,_,_,_,_->},
-                onChangeScreen = {}
+                onAddItem = { _, _, _, _, _ -> },
+                onChangeScreen = {},
+                onNavigateBack = {}
             )
         }
     }

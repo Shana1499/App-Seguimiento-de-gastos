@@ -50,6 +50,7 @@ import com.example.compose.AppSeguimientoGastosTheme
 import com.example.compose.md_theme_light_Ahorro
 import com.example.compose.md_theme_light_gastos
 import com.example.compose.md_theme_light_ingreso
+import java.text.NumberFormat
 
 /**
  * DashBoard Card
@@ -153,7 +154,7 @@ fun ColumnInfoProgressCircleComposable(
                 )
 
                 Text(
-                    text = String.format("%.2f", budget)+" €",
+                    text = NumberFormat.getCurrencyInstance().format(budget),
                     style = MaterialTheme.typography.displayMedium
                 )
 

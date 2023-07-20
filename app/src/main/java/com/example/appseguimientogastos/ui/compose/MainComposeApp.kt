@@ -1,14 +1,18 @@
 package com.example.appseguimientogastos.ui.compose
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.compose.expenses.AddExpenseScreenComposable
 import com.example.appseguimientogastos.ui.compose.expenses.ExpensesScreenComposable
 import com.example.appseguimientogastos.ui.compose.income.AddIncomeScreenComposable
@@ -37,64 +41,85 @@ fun MainComposeApp(
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
 
+        val nav = listOf(
+            { navController.navigate(Main.route) },
+            { navController.navigate(Incomes.route) },
+            { navController.navigate(Expenses.route) },
+            { navController.navigate(Savings.route) }
+        )
 
-
-        MainComposeNavHost(
+        CommonUI(
             navController = navController,
-            startDestination = startDestination
-        ) {
+            currentScreen = Main,
+            drawerState = drawerState,
+            scope = scope
+        ) { innerPadding ->
+            Column(Modifier.padding(innerPadding)) {
 
-            composable(route = Main.route) {
-                MainScreenComposable(
+                MainComposeNavHost(
                     navController = navController,
-                    drawerState = drawerState,
-                    scope = scope
-                )
-            }
-            composable(route = Incomes.route) {
-                IncomeScreenComposable(
-                    navController = navController, drawerState = drawerState,
-                    scope = scope
-                )
-            }
-            composable(route = Expenses.route) {
-                ExpensesScreenComposable(
-                    navController = navController, drawerState = drawerState,
-                    scope = scope
-                )
-            }
-            composable(route = Savings.route) {
-                SavingsScreenComposable(
-                    navController = navController, drawerState = drawerState,
-                    scope = scope
-                )
-            }
+                    startDestination = startDestination
+                ) {
 
-            composable(route = AddIncome.route) {
-                AddIncomeScreenComposable(
-                    navController = navController,
-                    drawerState = drawerState,
-                    scope = scope
-                )
-            }
-            composable(route = AddExpenses.route) {
-                AddExpenseScreenComposable(
-                    navController = navController,
-                    drawerState = drawerState,
-                    scope = scope
-                )
-            }
-            composable(route = AddSavings.route) {
-                AddSavingScreenComposable(
-                    navController = navController,
-                    drawerState = drawerState,
-                    scope = scope
-                )
-            }
+                    composable(route = Main.route) {
 
+                        MainScreenComposable(
+                            onNavigateNext = nav
+                        )
+                    }
+                    composable(route = Incomes.route) {
+                        IncomeScreenComposable(
+                            onNavigateBack = { navController.navigate(Main.route)},
+                            onNavigateNext = { navController.navigate(AddIncome.route) },
+                            navController = navController,
+                            drawerState = drawerState,
+                            scope = scope
+                        )
+                    }
+                    composable(route = Expenses.route) {
+                        ExpensesScreenComposable(
+                            onNavigateBack = { navController.navigate(Main.route) },
+                            onNavigateNext = { navController.navigate(AddExpenses.route) },
+                            navController = navController,
+                            drawerState = drawerState,
+                            scope = scope
+                        )
+                    }
+                    composable(route = Savings.route) {
+                        SavingsScreenComposable(
+                            onNavigateBack = { navController.navigate(Main.route) },
+                            onNavigateNext = { navController.navigate(AddSavings.route) },
+                        )
+                    }
 
+                    composable(route = AddIncome.route) {
+                        AddIncomeScreenComposable(
+                            onNavigateBack = { navController.navigate(Incomes.route) },
+                            navController = navController,
+                            drawerState = drawerState,
+                            scope = scope
+                        )
+                    }
+                    composable(route = AddExpenses.route) {
+                        AddExpenseScreenComposable(
+                            onNavigateBack = { navController.navigate(Expenses.route) },
+                            navController = navController,
+                            drawerState = drawerState,
+                            scope = scope
+                        )
+                    }
+                    composable(route = AddSavings.route) {
+                        AddSavingScreenComposable(
+                            onNavigateBack = { navController.navigate(Savings.route) },
+                            navController = navController,
+                            drawerState = drawerState,
+                            scope = scope
+                        )
+                    }
+
+                }
+            }
         }
-
 
     }
 

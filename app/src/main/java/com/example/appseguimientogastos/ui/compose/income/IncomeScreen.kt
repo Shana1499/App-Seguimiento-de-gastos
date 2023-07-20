@@ -1,6 +1,7 @@
 package com.example.appseguimientogastos.ui.compose.income
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,12 +18,9 @@ import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.compose.components.AddButton
-import com.example.appseguimientogastos.ui.compose.components.CommonUI
-import com.example.appseguimientogastos.ui.navigation.AddIncome
 import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
-import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.view_model.BaseState
 import com.example.appseguimientogastos.ui.view_model.IncomeViewModelItem
 import com.example.appseguimientogastos.ui.view_model.MainState
@@ -34,7 +32,9 @@ fun IncomeScreenComposable(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     drawerState: DrawerState,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    onNavigateBack: () -> Unit,
+    onNavigateNext: () -> Unit
 ) {
     // VIEWMODEL
     val viewModel: IncomeViewModelItem = getViewModel()
@@ -44,36 +44,30 @@ fun IncomeScreenComposable(
 
     // COMPOSABLES (UI)
     val currentScreen = Incomes
+    BackHandler(enabled = true) {}
+    IncomeScreen(
+        currentMonth = state.currentMonth,
+        incomeScreen = Main,
+        listData = state.incomesListByMonth,
+        total = viewModel.getTotal(),
+        onChangeScreen = viewModel::onChangeScreen,
+        onNavigateNext = onNavigateNext,
+        onNavigateBack = onNavigateBack
 
-    CommonUI(
-        navController = navController,
-        currentScreen = currentScreen,
-        drawerState = drawerState,
-        scope = scope
-    ) { innerPadding ->
-        Column(modifier.padding(innerPadding)) {
-            IncomeScreen(
-                currentMonth = state.currentMonth,
-                navController = navController,
-                incomeScreen = Main,
-                listData = state.incomesListByMonth,
-                total = viewModel.getTotal(),
-                onChangeScreen = viewModel::onChangeScreen
-            )
-        }
-    }
-
+    )
 }
+
 
 @Composable
 fun IncomeScreen(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
-    navController: NavHostController,
     incomeScreen: MainComposeDestination,
     listData: List<Item>,
     total: Double,
-    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateNext: () -> Unit,
+    onNavigateBack: () -> Unit
 ) {
 
     LazyColumn {
@@ -84,18 +78,16 @@ fun IncomeScreen(
             ) {
 
                 IncomeCard(
-                    navController = navController,
                     currentMonth = currentMonth,
                     incomeScreen = incomeScreen,
                     listItemData = listData,
                     total = total,
-                    onChangeScreen = onChangeScreen
+                    onChangeScreen = onChangeScreen,
+                    onNavigateNext = onNavigateBack
                 )
-                val addScreen = AddIncome
                 AddButton(
-                    screen = addScreen,
-                    onTabSelected = { newAddScreen -> navController.navigateSingleTopTo(newAddScreen.route) })
-
+                    onTabSelected = onNavigateNext
+                )
 
             }
         }

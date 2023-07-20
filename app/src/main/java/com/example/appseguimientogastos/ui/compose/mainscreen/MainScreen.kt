@@ -1,11 +1,11 @@
 package com.example.appseguimientogastos.ui.compose.mainscreen
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -13,12 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
-import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.compose.expenses.ExpensesCard
 import com.example.appseguimientogastos.ui.compose.income.IncomeCard
 import com.example.appseguimientogastos.ui.compose.savings.SavingsCard
@@ -30,16 +28,13 @@ import com.example.appseguimientogastos.ui.navigation.Savings
 import com.example.appseguimientogastos.ui.view_model.BaseState
 import com.example.appseguimientogastos.ui.view_model.MainState
 import com.example.appseguimientogastos.ui.view_model.MainViewModelItem
-import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.getViewModel
 
 
 @Composable
 fun MainScreenComposable(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
-    drawerState: DrawerState,
-    scope: CoroutineScope,
+    onNavigateNext: List<() -> Unit>,
 ) {
     // VIEWMODEL
     val viewModel: MainViewModelItem = getViewModel()
@@ -49,39 +44,30 @@ fun MainScreenComposable(
     // COMPOSABLES (UI)
 
     val currentScreen = Main
+    BackHandler(enabled = true) {}
     if (mainstate.isLoading) {
         CircularProgressIndicator(
             modifier = Modifier
                 .padding(8.dp)
         )
     } else {
-        CommonUI(
-            navController = navController,
-            currentScreen = currentScreen,
-            drawerState = drawerState,
-            scope = scope
-        ) { innerPadding ->
-            Column(modifier.padding(innerPadding)) {
-                //en lugar de viwmodel poner las listas
-                MainScreen(
-                    currentMonth = mainstate.currentMonth,
-                    navController = navController,
-                    incomeScreen = Incomes,
-                    expensesScreen = Expenses,
-                    savingsScreen = Savings,
-                    listIncomes = mainstate.incomesListByMonth,
-                    listExpenses = mainstate.expensesListByMonth,
-                    listSavings = mainstate.savingsListByMonth,
-                    progressList = mainstate.progressList,
-                    onUpdateMonth = viewModel::onUpdateMonth,
-                    listIGA = viewModel.getTotalIGA(),
-                    budget = mainstate.budget,
-                    onChangeScreen = viewModel::onChangeScreen
-                )
-            }
-
-        }
+        MainScreen(
+            currentMonth = mainstate.currentMonth,
+            incomeScreen = Incomes,
+            expensesScreen = Expenses,
+            savingsScreen = Savings,
+            listIncomes = mainstate.incomesListByMonth,
+            listExpenses = mainstate.expensesListByMonth,
+            listSavings = mainstate.savingsListByMonth,
+            progressList = mainstate.progressList,
+            onUpdateMonth = viewModel::onUpdateMonth,
+            listIGA = viewModel.getTotalIGA(),
+            budget = mainstate.budget,
+            onChangeScreen = viewModel::onChangeScreen,
+            onNavigateNext = onNavigateNext
+        )
     }
+
 
 }
 
@@ -89,7 +75,6 @@ fun MainScreenComposable(
 fun MainScreen(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
-    navController: NavHostController,
     incomeScreen: MainComposeDestination,
     expensesScreen: MainComposeDestination,
     savingsScreen: MainComposeDestination,
@@ -100,7 +85,8 @@ fun MainScreen(
     onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
     listIGA: List<Double>,
     budget: Double,
-    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateNext: List<() -> Unit>
 ) {
     LazyColumn {
         item {
@@ -118,29 +104,31 @@ fun MainScreen(
                 IncomeCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
-                    navController = navController,
                     incomeScreen = incomeScreen,
                     listItemData = listIncomes,
                     total = listIGA[0],
-                    onChangeScreen = onChangeScreen
+                    onChangeScreen = onChangeScreen,
+                    onNavigateNext = onNavigateNext[1]
                 )
                 ExpensesCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
-                    navController = navController,
                     expensesScreen = expensesScreen,
                     listItemData = listExpenses,
                     total = listIGA[1],
-                    onChangeScreen = onChangeScreen
+                    onChangeScreen = onChangeScreen,
+                    onNavigateNext = onNavigateNext[2]
+
                 )
                 SavingsCard(
                     modifier = modifier,
                     currentMonth = currentMonth,
-                    navController = navController,
                     savingsScreen = savingsScreen,
                     listItemData = listSavings,
                     total = listIGA[2],
-                    onChangeScreen = onChangeScreen
+                    onChangeScreen = onChangeScreen,
+                    onNavigateNext = onNavigateNext[3]
+
                 )
             }
         }

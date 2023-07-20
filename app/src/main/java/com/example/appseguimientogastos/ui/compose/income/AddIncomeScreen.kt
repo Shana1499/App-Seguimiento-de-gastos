@@ -1,8 +1,7 @@
 package com.example.appseguimientogastos.ui.compose.income
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -16,7 +15,6 @@ import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.compose.MainComposeApp
 import com.example.appseguimientogastos.ui.compose.components.AddScreen
-import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.navigation.AddIncome
 import com.example.appseguimientogastos.ui.navigation.Incomes
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
@@ -32,6 +30,7 @@ fun AddIncomeScreenComposable(
     navController: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
+    onNavigateBack: () -> Unit,
 ) {
     // VIEWMODEL
     val viewModel: AddViewModelItem = getViewModel()
@@ -40,24 +39,16 @@ fun AddIncomeScreenComposable(
 
     // COMPOSABLES (UI)
     val currentScreen = AddIncome
-
-    CommonUI(
+    BackHandler(enabled = true) {}
+    AddIncomeScreen(
+        currentMonth = state.currentMonth,
+        newScreen = Incomes,
         navController = navController,
-        currentScreen = currentScreen,
-        drawerState = drawerState,
-        scope = scope
-    ) { innerPadding ->
-        Column(modifier.padding(innerPadding)) {
-            AddIncomeScreen(
-                currentMonth = state.currentMonth,
-                newScreen = Incomes,
-                navController = navController,
-                onAddItem = viewModel::addItem,
-                onChangeScreen = viewModel::onChangeScreen
-            )
-        }
-    }
+        onAddItem = viewModel::addItem,
+        onChangeScreen = viewModel::onChangeScreen,
+        onNavigateBack = onNavigateBack
 
+    )
 }
 
 @Composable
@@ -66,8 +57,9 @@ fun AddIncomeScreen(
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit,
-    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
+    onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit,
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateBack: () -> Unit
 
 ) {
 
@@ -78,8 +70,9 @@ fun AddIncomeScreen(
         stringResource(R.string.add_incomes),
         newScreen = newScreen,
         navController = navController,
-        onAddItem= onAddItem,
-        onChangeScreen=onChangeScreen
+        onAddItem = onAddItem,
+        onChangeScreen = onChangeScreen,
+        onNavigateBack = onNavigateBack
     )
 
 }
