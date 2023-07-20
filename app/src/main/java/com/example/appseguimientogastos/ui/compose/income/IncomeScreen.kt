@@ -57,7 +57,8 @@ fun IncomeScreenComposable(
                 navController = navController,
                 incomeScreen = Main,
                 listData = state.incomesListByMonth,
-                total = viewModel.getTotal()
+                total = viewModel.getTotal(),
+                onChangeScreen = viewModel::onChangeScreen
             )
         }
     }
@@ -72,7 +73,8 @@ fun IncomeScreen(
     incomeScreen: MainComposeDestination,
     listData: List<Item>,
     total: Double,
-    ) {
+    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
+) {
 
     LazyColumn {
         item {
@@ -86,7 +88,8 @@ fun IncomeScreen(
                     currentMonth = currentMonth,
                     incomeScreen = incomeScreen,
                     listItemData = listData,
-                    total = total
+                    total = total,
+                    onChangeScreen = onChangeScreen
                 )
                 val addScreen = AddIncome
                 AddButton(

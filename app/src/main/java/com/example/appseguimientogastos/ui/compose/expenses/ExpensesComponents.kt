@@ -22,6 +22,7 @@ fun ExpensesCard(
     navController: NavHostController, expensesScreen: MainComposeDestination,
     listItemData: List<Item>,
     total: Double,
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
 
     ) {
 
@@ -34,6 +35,7 @@ fun ExpensesCard(
         navController,
         listItemData,
         total,
+        onChangeScreen,
     )
 
 }

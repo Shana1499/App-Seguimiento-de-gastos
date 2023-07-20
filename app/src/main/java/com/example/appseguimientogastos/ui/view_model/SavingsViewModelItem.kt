@@ -20,7 +20,14 @@ class SavingsViewModelItem(itemsRepository: ItemsRepository) :
         updateMainState()
     }
 
-    private fun updateMainState(currentMonth: MutableState<Month> = mutableStateOf(getCurrentMonth())) {
+    init {
+        updateMainState()
+    }
+
+    private fun updateMainState(
+        currentMonth: MutableState<Month> = mutableStateOf(getCurrentMonth()),
+        onChangeScreenCompleted: () -> Unit = {}
+    ) {
         coroutinesUtils.runMain {
 
             uiState.value = uiState.value.copy(
@@ -47,6 +54,7 @@ class SavingsViewModelItem(itemsRepository: ItemsRepository) :
                             savingsListByMonth = savingsListByMonth,
                             isLoading = false
                         )
+                        onChangeScreenCompleted()
                     }
                 }
             }
@@ -58,6 +66,10 @@ class SavingsViewModelItem(itemsRepository: ItemsRepository) :
             uiState.value.currentMonth,
             baseState.value.savingsList
         ).sumOf { it.price }
+    }
+
+    fun onChangeScreen(onChangeScreenCompleted: () -> Unit = {}){
+        updateMainState(onChangeScreenCompleted=onChangeScreenCompleted)
     }
 }
 

@@ -27,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,18 +41,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.data.model.getCurrentMonth
-import com.example.appseguimientogastos.data.model.month
 import com.example.appseguimientogastos.data.model.monthList
 import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.navigation.Main
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
 import com.example.appseguimientogastos.ui.navigation.tabRowScreens
-import com.example.appseguimientogastos.ui.view_model.AddViewModelItem
-import com.example.appseguimientogastos.ui.view_model.BaseState
-import com.example.appseguimientogastos.ui.view_model.MainState
 import com.example.compose.AppSeguimientoGastosTheme
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +58,8 @@ fun AddScreen(
     titleScreen: String,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit
+    onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit,
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit
 ) {
 
     var showDialog by remember { mutableStateOf(false) }
@@ -80,7 +75,8 @@ fun AddScreen(
             modifier = modifier.padding(dimensionResource(id = R.dimen.default_normalpadding)),
             title = titleScreen,
             newScreen = newScreen,
-            navController = navController
+            navController = navController,
+            onChangeScreen = onChangeScreen
         )
 
         Divider(
@@ -272,6 +268,7 @@ fun FakeAddScreen() {
                 newScreen = currentScreen,
                 navController = navController,
                 onAddItem = {_,_,_,_,_->},
+                onChangeScreen = {}
             )
         }
     }

@@ -54,7 +54,8 @@ fun ExpensesScreenComposable(
                 navController = navController,
                 expensesScreen = Main,
                 listData = state.expensesListByMonth,
-                total = viewModel.getTotal()
+                total = viewModel.getTotal(),
+                onChangeScreen = viewModel::onChangeScreen
             )
         }
     }
@@ -68,6 +69,7 @@ fun ExpensesScreen(
     expensesScreen: MainComposeDestination,
     listData: List<Item>,
     total: Double,
+    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
 ) {
 
     // COMPOSABLES (UI)
@@ -82,7 +84,8 @@ fun ExpensesScreen(
                     navController = navController,
                     expensesScreen = expensesScreen,
                     listItemData = listData,
-                    total = total
+                    total = total,
+                    onChangeScreen = onChangeScreen
                 )
                 val addScreen= AddExpenses
                 AddButton(

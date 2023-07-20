@@ -20,7 +20,10 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
         updateMainState()
     }
 
-    private fun updateMainState(currentMonth: MutableState<Month> = mutableStateOf(getCurrentMonth())) {
+    private fun updateMainState(
+        currentMonth: MutableState<Month> = mutableStateOf(getCurrentMonth()),
+        onChangeScreenCompleted: () -> Unit={}
+    ) {
         coroutinesUtils.runMain {
 
             uiState.value = uiState.value.copy(
@@ -53,6 +56,7 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
                             budget = budget,
                             isLoading = false
                         )
+                        onChangeScreenCompleted()
                     }
                 }
             }
@@ -125,8 +129,12 @@ class MainViewModelItem(itemsRepository: ItemsRepository) :
 
     fun onUpdateMonth(currentMonth: MutableState<Month>) {
         if (currentMonth == uiState.value.currentMonth) {
-            updateMainState(currentMonth)
+            updateMainState(currentMonth=currentMonth)
         }
+    }
+
+    fun onChangeScreen(onChangeScreenCompleted: () -> Unit = {}){
+        updateMainState(onChangeScreenCompleted=onChangeScreenCompleted)
     }
 
 }

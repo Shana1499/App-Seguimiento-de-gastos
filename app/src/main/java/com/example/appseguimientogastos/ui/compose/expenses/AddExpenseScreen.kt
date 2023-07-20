@@ -49,7 +49,8 @@ fun AddExpenseScreenComposable(
                 currentMonth = state.currentMonth,
                 newScreen = Expenses,
                 navController = navController,
-                onAddItem = viewModel::addItem
+                onAddItem = viewModel::addItem,
+                onChangeScreen = viewModel::onChangeScreen
             )
         }
     }
@@ -62,7 +63,8 @@ fun AddExpensesScreen(
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    onAddItem: (origin: String, price:String, month:String, type:Type, onAddItemCompleted:()->Unit)->Unit
+    onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit,
+    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
 ) {
 
     AddScreen(
@@ -73,6 +75,7 @@ fun AddExpensesScreen(
         newScreen = newScreen,
         navController = navController,
         onAddItem = onAddItem,
+        onChangeScreen = onChangeScreen
     )
 
 }

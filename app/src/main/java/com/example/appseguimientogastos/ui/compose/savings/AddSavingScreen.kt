@@ -50,7 +50,8 @@ fun AddSavingScreenComposable(
                 currentMonth = state.currentMonth,
                 newScreen = Savings,
                 navController = navController,
-                onAddItem = viewModel::addItem
+                onAddItem = viewModel::addItem,
+                onChangeScreen = viewModel::onChangeScreen
             )
         }
     }
@@ -63,7 +64,8 @@ fun AddSavingsScreen(
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
     navController: NavHostController,
-    onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit
+    onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit,
+    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
 ) {
 
     AddScreen(
@@ -73,7 +75,8 @@ fun AddSavingsScreen(
         stringResource(R.string.add_savings),
         newScreen = newScreen,
         navController = navController,
-        onAddItem = onAddItem
+        onAddItem = onAddItem,
+        onChangeScreen=onChangeScreen
     )
 
 }

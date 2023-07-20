@@ -53,7 +53,8 @@ fun SavingsScreenComposable(
                 navController = navController,
                 savingsScreen = Main,
                 listData = state.savingsListByMonth,
-                total = viewModel.getTotal()
+                total = viewModel.getTotal(),
+                onChangeScreen = viewModel::onChangeScreen
             )
         }
     }
@@ -66,6 +67,8 @@ fun SavingsScreen(
     savingsScreen: MainComposeDestination,
     listData: List<Item>,
     total: Double,
+    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
+
 ) {
     // COMPOSABLES (UI)
 
@@ -81,7 +84,8 @@ fun SavingsScreen(
                     currentMonth = currentMonth,
                     savingsScreen = savingsScreen,
                     listItemData = listData,
-                    total = total
+                    total = total,
+                    onChangeScreen = onChangeScreen
                 )
                 val addScreen= AddSavings
                 AddButton(
