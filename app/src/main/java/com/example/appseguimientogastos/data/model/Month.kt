@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.data
+package com.example.appseguimientogastos.data.model
 
 import android.os.Build
 import java.time.LocalDate

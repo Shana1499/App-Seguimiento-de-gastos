@@ -4,14 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
-import com.example.appseguimientogastos.MainComposeDestination
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.data.item.local.ItemVO
-import com.example.appseguimientogastos.data.item.local.Type
-import com.example.appseguimientogastos.data.monthList
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.compose.components.OverviewCard
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 
 
 /**
@@ -21,45 +18,24 @@ import com.example.appseguimientogastos.ui.compose.components.OverviewCard
 @Composable
 fun IncomeCard(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
     currentMonth: MutableState<Month>,
     incomeScreen: MainComposeDestination,
-) {
+    listItemData: List<Item>,
+    total: Double,
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateNext: () -> Unit,
 
-    val listIncomes = listOf<ItemVO>(
-        ItemVO(
-            id = 0,
-            origin = "prueba1Incomes",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba2Incomes",
-            price = 14.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ), ItemVO(
-            id = 0,
-            origin = "prueba3Incomes",
-            price = 16.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[6].name
-        ),
-        ItemVO(
-            id = 0,
-            origin = "prueba4Incomes",
-            price = 12.0,
-            type = Type.INCOMES.typeName,
-            month = monthList[0].name
-        )
-    )
+    ) {
+
     OverviewCard(
         modifier = modifier,
         title = stringResource(R.string.ingresos),
         currentMonth = currentMonth,
-        newScreen = incomeScreen, navController = navController,
-        listItemData=listIncomes
+        newScreen = incomeScreen,
+        listItemData = listItemData,
+        total = total,
+        onChangeScreen =onChangeScreen,
+        onNavigateNext = onNavigateNext
     )
 
 }

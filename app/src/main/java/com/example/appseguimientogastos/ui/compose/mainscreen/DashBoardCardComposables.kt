@@ -1,6 +1,5 @@
 package com.example.appseguimientogastos.ui.compose.mainscreen
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,22 +42,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.appseguimientogastos.R
-import com.example.appseguimientogastos.data.Month
-import com.example.appseguimientogastos.data.getCurrentMonth
-import com.example.appseguimientogastos.data.getPreviouMonth
-import com.example.appseguimientogastos.data.monthList
+import com.example.appseguimientogastos.data.model.Month
+import com.example.appseguimientogastos.data.model.getCurrentMonth
+import com.example.appseguimientogastos.data.model.getPreviouMonth
+import com.example.appseguimientogastos.data.model.monthList
 import com.example.compose.AppSeguimientoGastosTheme
 import com.example.compose.md_theme_light_Ahorro
 import com.example.compose.md_theme_light_gastos
 import com.example.compose.md_theme_light_ingreso
+import java.text.NumberFormat
 
 /**
  * DashBoard Card
  * */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashBoardCard(modifier: Modifier = Modifier, currentMonth: MutableState<Month>) {
+fun DashBoardCard(
+    modifier: Modifier = Modifier,
+    currentMonth: MutableState<Month>,
+    progressList: List<Float>,
+    onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
+    budget: Double,
+) {
 
+
+    //UI
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
@@ -72,7 +80,12 @@ fun DashBoardCard(modifier: Modifier = Modifier, currentMonth: MutableState<Mont
         TitleDashBoardComposable()
 
         //Content
-        ContentDashBoardComposable(currentMonth = currentMonth)
+        ContentDashBoardComposable(
+            currentMonth = currentMonth,
+            progressList = progressList,
+            onUpdateMonth =onUpdateMonth,
+            budget =budget
+        )
     }
 }
 
@@ -128,7 +141,8 @@ fun ColumnInfoProgressCircleComposable(
     progressList: List<Float>,
     titleList: List<Int>,
     colorList: List<Color>,
-    canvasSizeInfo: Dp
+    canvasSizeInfo: Dp,
+    budget: Double
 ) {
     Column(modifier = modifier.padding((dimensionResource(id = R.dimen.default_normalpadding)))) {
         Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopEnd) {
@@ -140,7 +154,7 @@ fun ColumnInfoProgressCircleComposable(
                 )
 
                 Text(
-                    text = "0.00€",
+                    text = NumberFormat.getCurrencyInstance().format(budget),
                     style = MaterialTheme.typography.displayMedium
                 )
 
@@ -160,6 +174,7 @@ fun ColumnInfoProgressCircleComposable(
 fun FilterChipsComposables(
     modifier: Modifier = Modifier,
     currentMonth: MutableState<Month>,
+    onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
 ) {
     var showDialog by remember { mutableStateOf(false) }
     var selectedMonthText by remember { mutableStateOf(monthList[0].name) }
@@ -172,6 +187,7 @@ fun FilterChipsComposables(
         selected = true,
         onClick = {
             currentMonth.value = getPreviouMonth()
+            onUpdateMonth(currentMonth)
         },
         elevation = FilterChipDefaults.elevatedFilterChipElevation()
     )
@@ -179,11 +195,13 @@ fun FilterChipsComposables(
     FilterChip(
         modifier = modifier.padding(end = dimensionResource(id = R.dimen.default_smallpadding)),
         label = {
-            Text(text ="Mes Actual")
+            Text(text = "Mes Actual")
         },
         selected = true,
         onClick = {
             currentMonth.value = getCurrentMonth()
+            onUpdateMonth(currentMonth)
+
         },
         elevation = FilterChipDefaults.elevatedFilterChipElevation()
     )
@@ -218,6 +236,7 @@ fun FilterChipsComposables(
                     onClick = {
                         selectedMonthText = monthSelected.name
                         currentMonth.value = monthSelected
+                        onUpdateMonth(currentMonth)
                         showDialog = false
                     })
                 Divider()
@@ -230,10 +249,14 @@ fun FilterChipsComposables(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentDashBoardComposable(modifier: Modifier = Modifier, currentMonth: MutableState<Month>) {
-    val progressList: List<Float> = listOf(0.2f, 0.4f, 0.4f)
+fun ContentDashBoardComposable(
+    modifier: Modifier = Modifier,
+    currentMonth: MutableState<Month>,
+    progressList: List<Float>,
+    onUpdateMonth: (currentMonth: MutableState<Month>) -> Unit,
+    budget: Double
+) {
     val colorList = listOf(
         md_theme_light_ingreso,
         md_theme_light_gastos,
@@ -263,7 +286,8 @@ fun ContentDashBoardComposable(modifier: Modifier = Modifier, currentMonth: Muta
             progressList = progressList,
             titleList = titleList,
             colorList = colorList,
-            canvasSizeInfo = canvasSizeInfo
+            canvasSizeInfo = canvasSizeInfo,
+            budget = budget
         )
     }
 
@@ -273,7 +297,7 @@ fun ContentDashBoardComposable(modifier: Modifier = Modifier, currentMonth: Muta
             .padding(horizontal = dimensionResource(id = R.dimen.default_normalpadding)),
         horizontalArrangement = Arrangement.Center
     ) {
-        FilterChipsComposables(modifier, currentMonth = currentMonth)
+        FilterChipsComposables(modifier, currentMonth = currentMonth, onUpdateMonth=onUpdateMonth)
     }
 
 
@@ -310,7 +334,7 @@ fun CustomProgressBar(
             var startAngle = -90f
 
             progressList.forEachIndexed { index, progress ->
-                val sweepAngle = progress * 360f
+                val sweepAngle = (progress/100f) * 360f
                 drawArc(
                     color = colorList[index],
                     startAngle = startAngle,
@@ -343,7 +367,7 @@ fun InfoProgressbar(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        progressList.forEachIndexed { index, _ ->
+        progressList.forEachIndexed { index, progress ->
             Row(modifier.padding(bottom = dimensionResource(id = R.dimen.default_smallpadding))) {
                 Canvas(
                     modifier = drawSize
@@ -363,7 +387,7 @@ fun InfoProgressbar(
                         start = dimensionResource(id = R.dimen.default_normalpadding),
                         end = dimensionResource(id = R.dimen.default_normalpadding)
                     ),
-                    text = "xx% " + stringResource(id = titleList[index]),
+                    text = String.format("%.2f", progress)+"% " + stringResource(id = titleList[index]),
                     style = MaterialTheme.typography.displaySmall
 
                 )
@@ -390,50 +414,13 @@ fun MonthListPickerComposablePreview() {
                 val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
 
                 Row() {
-                    FilterChipsComposables(currentMonth = currentMonth)
+                    FilterChipsComposables(
+                        currentMonth = currentMonth,
+                        onUpdateMonth = {}
+                    )
 
                 }
 
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun DashBoardComposablePreview() {
-    AppSeguimientoGastosTheme {
-        Surface(
-        ) {
-            Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
-
-            ) {
-                val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
-
-                DashBoardCard(Modifier, currentMonth)
-
-            }
-        }
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun DashBoardComposableDarkPreview() {
-    AppSeguimientoGastosTheme {
-        Surface(
-        ) {
-            Column(
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.default_normalpadding))
-
-            ) {
-                val currentMonth = remember { mutableStateOf(getCurrentMonth()) }
-
-                DashBoardCard(Modifier, currentMonth)
             }
         }
     }

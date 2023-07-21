@@ -1,4 +1,4 @@
-package com.example.appseguimientogastos.ui.compose
+package com.example.appseguimientogastos.ui.compose.components
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.appseguimientogastos.MainComposeDestination
+import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -41,7 +41,7 @@ fun MainComposeAppBar(
 }
 
 @Composable
-fun CustoNavigationDrawer(
+fun CustomNavigationDrawer(
     modifier: Modifier = Modifier,
     allScreens: List<MainComposeDestination>,
     onTabSelected: (MainComposeDestination) -> Unit,
