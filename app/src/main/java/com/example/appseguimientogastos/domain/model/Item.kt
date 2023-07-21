@@ -11,10 +11,11 @@ data class Item(
     val type: String,
     val month: String
 ) {
-
-
     fun getFormattedPrice(): String =
         NumberFormat.getCurrencyInstance().format(price)
+
+    override fun toString(): String = "origin: $origin, amount: ${getFormattedPrice()}"
+
 
 }
 

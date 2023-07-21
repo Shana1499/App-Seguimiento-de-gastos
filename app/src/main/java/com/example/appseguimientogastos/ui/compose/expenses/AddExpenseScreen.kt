@@ -1,7 +1,6 @@
 package com.example.appseguimientogastos.ui.compose.expenses
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -13,7 +12,6 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.compose.components.AddScreen
-import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.navigation.AddExpenses
 import com.example.appseguimientogastos.ui.navigation.Expenses
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
@@ -29,6 +27,7 @@ fun AddExpenseScreenComposable(
     navController: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
+    onNavigateBack: () -> Unit,
 ) {
     // VIEWMODEL
     val viewModel: AddViewModelItem = getViewModel()
@@ -36,26 +35,18 @@ fun AddExpenseScreenComposable(
     val basestate: BaseState = viewModel.baseState.collectAsState().value
 
     // COMPOSABLES (UI)//
-   val currentScreen = AddExpenses
-
-    CommonUI(
-        navController = navController,
-        currentScreen = currentScreen,
-        drawerState = drawerState,
-        scope = scope
-    ) { innerPadding ->
-        Column(modifier.padding(innerPadding)) {
+    val currentScreen = AddExpenses
+    BackHandler(enabled = true) {}
             AddExpensesScreen(
                 currentMonth = state.currentMonth,
                 newScreen = Expenses,
                 navController = navController,
                 onAddItem = viewModel::addItem,
-                onChangeScreen = viewModel::onChangeScreen
+                onChangeScreen = viewModel::onChangeScreen,
+                onNavigateBack=onNavigateBack
             )
         }
-    }
 
-}
 
 @Composable
 fun AddExpensesScreen(
@@ -64,7 +55,8 @@ fun AddExpensesScreen(
     newScreen: MainComposeDestination,
     navController: NavHostController,
     onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit,
-    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateBack: () -> Unit
 ) {
 
     AddScreen(
@@ -75,7 +67,8 @@ fun AddExpensesScreen(
         newScreen = newScreen,
         navController = navController,
         onAddItem = onAddItem,
-        onChangeScreen = onChangeScreen
+        onChangeScreen = onChangeScreen,
+        onNavigateBack=onNavigateBack
     )
 
 }

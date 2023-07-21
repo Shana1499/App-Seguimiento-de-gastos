@@ -1,7 +1,6 @@
 package com.example.appseguimientogastos.ui.compose.savings
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -13,7 +12,6 @@ import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Type
 import com.example.appseguimientogastos.ui.compose.components.AddScreen
-import com.example.appseguimientogastos.ui.compose.components.CommonUI
 import com.example.appseguimientogastos.ui.navigation.AddSavings
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 import com.example.appseguimientogastos.ui.navigation.Savings
@@ -29,6 +27,7 @@ fun AddSavingScreenComposable(
     navController: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope,
+    onNavigateBack: () -> Unit,
 ) {
     // VIEWMODEL
     val viewModel: AddViewModelItem = getViewModel()
@@ -38,25 +37,17 @@ fun AddSavingScreenComposable(
     // COMPOSABLES (UI)
 
     val currentScreen = AddSavings
-
-    CommonUI(
+    BackHandler(enabled = true) {}
+    AddSavingsScreen(
+        currentMonth = state.currentMonth,
+        newScreen = Savings,
         navController = navController,
-        currentScreen = currentScreen,
-        drawerState = drawerState,
-        scope = scope
-    ) { innerPadding ->
-        Column(modifier.padding(innerPadding)) {
-            AddSavingsScreen(
-                currentMonth = state.currentMonth,
-                newScreen = Savings,
-                navController = navController,
-                onAddItem = viewModel::addItem,
-                onChangeScreen = viewModel::onChangeScreen
-            )
-        }
-    }
-
+        onAddItem = viewModel::addItem,
+        onChangeScreen = viewModel::onChangeScreen,
+        onNavigateBack = onNavigateBack
+    )
 }
+
 
 @Composable
 fun AddSavingsScreen(
@@ -65,7 +56,8 @@ fun AddSavingsScreen(
     newScreen: MainComposeDestination,
     navController: NavHostController,
     onAddItem: (origin: String, price: String, month: String, type: Type, onAddItemCompleted: () -> Unit) -> Unit,
-    onChangeScreen:(onChangeScreenCompleted: () -> Unit) -> Unit
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateBack: () -> Unit
 ) {
 
     AddScreen(
@@ -76,7 +68,8 @@ fun AddSavingsScreen(
         newScreen = newScreen,
         navController = navController,
         onAddItem = onAddItem,
-        onChangeScreen=onChangeScreen
+        onChangeScreen = onChangeScreen,
+        onNavigateBack = onNavigateBack
     )
 
 }

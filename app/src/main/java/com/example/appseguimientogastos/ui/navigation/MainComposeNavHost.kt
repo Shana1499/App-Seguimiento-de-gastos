@@ -36,7 +36,6 @@ fun MainComposeNavHost(
     )
 }
 
-
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
         // Pop up to the start destination of the graph to

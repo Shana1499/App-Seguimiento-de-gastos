@@ -30,12 +30,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Item
 import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
-import com.example.appseguimientogastos.ui.navigation.navigateSingleTopTo
+import java.text.NumberFormat
 
 
 @Composable
@@ -43,16 +42,18 @@ fun OverviewTitleComposable(
     modifier: Modifier = Modifier,
     title: String,
     newScreen: MainComposeDestination,
-    navController: NavHostController,
-    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit={}
+    onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit = {},
+    onNavigateNext: () -> Unit
 ) {
     Row(modifier = modifier) {
         Text(text = title, style = MaterialTheme.typography.displayLarge)
         TopEndNavigationButton(
             screen = newScreen,
-            onTabSelected = { newScreenSample ->
-                onChangeScreen(){
-                navController.navigateSingleTopTo(newScreenSample.route)}})
+            onTabSelected = {
+                onChangeScreen() {
+                    onNavigateNext()
+                }
+            })
     }
 }
 
@@ -102,21 +103,17 @@ fun ContentSummaryComposable(
         if (expanded) {
             newList.take(5).forEach { item ->
                 Row {
-                    Text(text = item.origin)
-                    Text(text = item.month)
-                    Text(text = item.getFormattedPrice())
+                    Text(text = item.toString())
                 }
             }
         }
         // else only show the first one
         else {
             Row {
-                Text(text = newList[0].origin)
-                Text(text = newList[0].month)
-                Text(text = newList[0].getFormattedPrice())
+                Text(text = newList[0].toString())
             }
         }
-    }else{
+    } else {
         Text(text = "There is no data")
     }
 
@@ -133,10 +130,10 @@ fun OverviewCard(
     title: String,
     currentMonth: MutableState<Month>,
     newScreen: MainComposeDestination,
-    navController: NavHostController,
     listItemData: List<Item>,
     total: Double,
     onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateNext: () -> Unit,
 ) {
 
     ElevatedCard(
@@ -160,12 +157,12 @@ fun OverviewCard(
                 OverviewTitleComposable(
                     title = title,
                     newScreen = newScreen,
-                    navController = navController,
-                    onChangeScreen=onChangeScreen
+                    onChangeScreen = onChangeScreen,
+                    onNavigateNext = onNavigateNext
                 )
 
                 //Current Money Value
-                Text(text = "$total €", style = MaterialTheme.typography.displayMedium)
+                Text(text = NumberFormat.getCurrencyInstance().format(total), style = MaterialTheme.typography.displayMedium)
 
                 DividerComposable()
 
@@ -199,8 +196,7 @@ fun TopEndNavigationButton(
 @Composable
 fun AddButton(
     modifier: Modifier = Modifier,
-    screen: MainComposeDestination,
-    onTabSelected: (MainComposeDestination) -> Unit
+    onTabSelected: () -> Unit
 ) {
     Box(
         modifier
@@ -209,14 +205,13 @@ fun AddButton(
         contentAlignment = Alignment.TopEnd
     ) {
         FloatingActionButton(
-            onClick = { onTabSelected(screen) },
+            onClick = onTabSelected,
             modifier = Modifier.align(Alignment.BottomEnd)
         ) {
             Icon(imageVector = Icons.Filled.Add, contentDescription = "Add")
         }
     }
 }
-
 
 
 @Composable

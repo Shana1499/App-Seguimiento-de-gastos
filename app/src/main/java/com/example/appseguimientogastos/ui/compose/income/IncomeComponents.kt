@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import com.example.appseguimientogastos.R
 import com.example.appseguimientogastos.data.model.Month
 import com.example.appseguimientogastos.domain.model.Item
@@ -19,12 +18,12 @@ import com.example.appseguimientogastos.ui.navigation.MainComposeDestination
 @Composable
 fun IncomeCard(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
     currentMonth: MutableState<Month>,
     incomeScreen: MainComposeDestination,
     listItemData: List<Item>,
     total: Double,
     onChangeScreen: (onChangeScreenCompleted: () -> Unit) -> Unit,
+    onNavigateNext: () -> Unit,
 
     ) {
 
@@ -32,10 +31,11 @@ fun IncomeCard(
         modifier = modifier,
         title = stringResource(R.string.ingresos),
         currentMonth = currentMonth,
-        newScreen = incomeScreen, navController = navController,
+        newScreen = incomeScreen,
         listItemData = listItemData,
         total = total,
-        onChangeScreen=onChangeScreen
+        onChangeScreen =onChangeScreen,
+        onNavigateNext = onNavigateNext
     )
 
 }
